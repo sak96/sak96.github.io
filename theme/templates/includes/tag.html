@@ -1,0 +1,6 @@
+<div class="tags">
+    <span>Post Tags:</span>
+    {% for tag in article.tags %}
+    <a href="{{tag.url}}">&nbsp;#{{tag.name }}{{"," if not loop.last }}</a>
+    {% endfor %}
+</div>

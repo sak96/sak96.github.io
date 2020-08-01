@@ -1,0 +1,138 @@
+:root{
+    --bg: #282828;
+    --fg: #ebdbb2;
+    --gray: #a89984;
+    --blue: #83a598;
+    --green: #b8bb26;
+    --red: #fb4934;
+}
+[data-theme="light"]{
+    --bg: #fbf1c7;
+    --fg: #3c3836;
+    --gray: #a89984;
+    --blue: #076678;
+    --green: #79740e;
+    --red: #9d0006;
+}
+*{
+    box-sizing: border-box;
+}
+body{
+    background-color: var(--bg);
+    color: var(--fg);
+}
+a{
+    text-decoration: none;
+    color: var(--blue);
+}
+h1, h2, h3, h4, h5, h6{
+    color: var(--green);
+}
+small {
+    color: var(--gray);
+}
+.navbar {
+    border-bottom: 1px solid var(--green);
+}
+.navbar div {
+    display: inline-block;
+}
+.navbar a:before{
+    content: "["
+}
+.navbar a:after{
+    content: "]"
+}
+.nav-right {
+    position: absolute;
+    right: 0.5rem;
+}
+#navbar-toggler{
+    display: none;
+}
+.content{
+    width: 80%;
+    margin: auto;
+}
+.coming-soon{
+    display:block;
+    width: 100%;
+    text-align: center;
+}
+.item {
+    display: block;
+    margin: 0.5rem 0;
+    padding: 1rem;
+    border: 1px solid var(--red);
+    color: var(--fg);
+}
+.item > :first-child{
+    margin-top: 0;
+}
+.img-fluid{
+    width: 100%;
+}
+.copyright{
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+.paginator{
+    margin: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+}
+.footer,
+.tags {
+    margin: 0.5rem;
+    display: flex;
+    justify-content: center; 
+}
+.disabled {
+    color: var(--gray);
+}
+@media only screen and (max-width: 500px){
+    .navbar {
+        border: none;
+    }
+    .nav-header {
+        border-bottom: 0.025rem solid var(--green);
+    }
+    .navbar div {
+        display: block;
+        position: static;
+    }
+    #navbar-toggler {
+        transform: rotate(90deg);
+        position: absolute;
+        right: 1rem;
+        display: inline;
+        background-color: inherit;
+        border: none;
+        color: inherit;
+    }
+    .navbar a:after,
+    .navbar a:before{
+        content: ""
+    }
+    .navbar a{
+        border-bottom: 0.025rem solid var(--green);
+        display: none;
+    }
+    .nav-header a{
+        display: inline-block;
+        border: none;
+    }
+    .navbar a.show {
+        display: block;
+    }
+    .content {
+        width: 100%;
+    }
+    .footer {
+        display: inline-block;
+    }
+    .paginator span {
+        display: none;
+    }
+}

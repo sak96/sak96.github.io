@@ -1,0 +1,64 @@
+{% extends "layouts/default.html" %}
+
+# add title ##
+{% block title %}{{title}}{% endblock title %}
+
+{% block feeds %}
+    {{ super() }}
+    {%if atom_url is defined and atom_url is not none and atom_url %}
+        <link rel="alternate" type="application/atom+xml" title="{{title}}" href='{{SITEURL}}/{{atom_url|replace("{slug}", slug)}}'>
+    {% endif %}
+    {%if rss_url is defined and rss_url is not none and rss_url %}
+        <link rel="alternate" type="application/rss+xml" title="{{title}}" href='{{SITEURL}}/{{rss_url|replace("{slug}", slug)}}'>
+    {% endif %}
+{% endblock feeds %}
+
+{% block content %}
+    <!-- article list are articles belonging to authors, tags, categories -->
+    {%if articles_page.object_list|length != 0 %}
+        <h2>
+            {{title}} Articles
+        </h2>
+        <div>
+            {% for article in articles_page.object_list %}
+                <a href="{{SITEURL}}/{{article.url}}" class="item">
+                    <h4>{{article.title}}</h4>
+                    <p>{{article.summary}}</p>
+                    <small>{{article.date.strftime("%B %d, %Y")}}</small>
+                </a>
+            {% endfor %}
+        </div>
+    <!-- navigation for paged article groups -->
+    <div class="paginator">
+        <a {%if not articles_page.has_previous() %}
+            class="disabled"
+            {% endif %}
+        href='{{SITEURL}}/{{articles_paginator.page(1).url}}'>
+        &lt;&lt;<span> First</span>
+        </a>
+        <a {%if not articles_page.has_previous() %}
+            class="disabled"
+            {% endif %}
+        href='{{SITEURL}}/{{articles_previous_page.url}}'>
+            &lt;<span > Prev</span>
+        </a>
+
+        <span class="page-item" >&hellip;</span>
+
+        <a {%if not articles_page.has_next() %}
+            class="disabled"
+            {% endif %}
+        href='{{SITEURL}}/{{articles_next_page.url}}'>
+            <span class="page-item">Next </span>&gt; 
+        </a> 
+        <a {%if not articles_page.has_next() %}
+            class="disabled"
+            {% endif %} 
+        href='{{SITEURL}}/{{articles_paginator.page(articles_paginator.num_pages).url}}'>
+            <span class="page-item">Last </span>&gt;&gt;
+        </a>
+    </div>
+    {% else %}
+        {% include 'includes/coming_soon.html' %}
+    {% endif %}
+{% endblock content %}

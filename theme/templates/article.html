@@ -1,0 +1,29 @@
+{% extends "layouts/default.html" %}
+
+# add title ##
+{% block title %}{{article.title}}{% endblock title %}
+
+# add content to thin ##
+{% block content %}
+	<div>
+		<h1>{{ article.title }}</h1>
+		<h5>{{ article.summary }}</h5>
+		<small>Written on {{ article.date.strftime("%B %d, %Y") }}</small>
+		<hr>
+		{% if article.poster != _blank %}
+		<img class="img-fluid" src="{{static}}/images/posters/{{article.poster}}">
+		<hr>
+		{% else %}
+		<img class="img-fluid" src="{{SITEURL}}/theme/images/blog.svg">
+		<hr>
+		{% endif %}
+	</div>
+	<div> {{ article.content }}
+	</div>
+    {% include 'includes/tag.html' %}
+	{% include 'includes/post_comments.html' %}
+    <hr>
+    <small class="copyright">
+        © {{ article.date.strftime("%Y") }} Copyright <a href={{SITEURL}}>{{SITENAME}}</a>
+    </small>
+{% endblock content %}

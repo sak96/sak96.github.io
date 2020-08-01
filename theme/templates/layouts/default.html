@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>{% block title %}{{SITENAME}}{% endblock title%}</title>
+  <link rel="shortcut icon" 
+  href="{{SITEURL}}/theme/images/favicon.svg">
+  <meta name="viewport" 
+  content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  {% block feeds %}
+    {% if FEED_ALL_ATOM is defined and FEED_ALL_ATOM is not none 
+    and FEED_ALL_ATOM %}
+    <link rel="alternate" type="application/atom+xml"
+    title="{{SITENAME}}" href="{{SITEURL}}/{{FEED_ALL_ATOM}}" />
+    {% endif %}
+    {% if FEED_ALL_RSS is defined and FEED_ALL_RSS is not none 
+    and FEED_ALL_RSS %}
+    <link rel="alternate" type="application/rss+xml" 
+    title="{{SITENAME}}" href="{{SITEURL}}/{{FEED_ALL_RSS}}" />
+    {% endif %}
+  {% endblock feeds %}
+    <style>
+    {% include 'includes/gruvbox.css' %} #}
+    </style>
+  <link rel="stylesheet" href="{{SITEURL}}/theme/syntax/pygment.css">
+</head>
+
+<body>
+  {% include 'includes/nav.html' %}
+    <div class="content">
+        {% block content %}NoContent{% endblock content %}
+    {% include 'includes/footer.html' %}
+  </div>
+</body>
+</html>

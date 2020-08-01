@@ -1,0 +1,23 @@
+<div class="navbar">
+    <div class="nav-header"/>
+        <a href="{{SITEURL}}/">{{SITENAME}}</a>
+        <a id="navbar-toggler">|||</a>
+    </div>
+    <div class="nav-start">
+        <a href="{{SITEURL}}/authors.html">Authors</a>
+        <a href="{{SITEURL}}/categories.html">Categories</a>
+        <a href="{{SITEURL}}/tags.html">Tags</a>
+    </div>
+    <div class="nav-right">
+        {% if FEED_ALL_ATOM is defined and FEED_ALL_ATOM is not none and FEED_ALL_ATOM %}
+        <a href="{{SITEURL}}/{{FEED_ALL_ATOM}}">Atom</a>
+        {% endif %}
+        {% if FEED_ALL_RSS is defined and FEED_ALL_RSS is not none and FEED_ALL_RSS %}
+        <a href="{{SITEURL}}/{{FEED_ALL_RSS}}">Rss</a>
+        {% endif %}
+        <a id="theme">Theme</a>
+    </div>
+</div>
+<script>
+    {% include 'includes/nav.js' %}
+</script>

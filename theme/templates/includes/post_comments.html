@@ -1,0 +1,64 @@
+{% if GITHUB_OWNER is defined and GITHUB_OWNER and GITHUB_REPO is defined and GITHUB_REPO %}
+<hr class="my-3">
+<div id="comments"></div>
+<script>
+  let commentUrl = "https://api.github.com/repos/{{GITHUB_OWNER}}/{{GITHUB_REPO}}/issues/{{article.issue_no}}/comments"
+  let issueUrl = "https://github.com/{{GITHUB_OWNER}}/{{GITHUB_REPO}}/issues/{{article.issue_no}}"
+  function PopulateComment(comments) {
+    commentsDiv = document.getElementById("comments");
+
+    // comments heading
+    let heading = document.createElement("div")
+    heading.innerText = "Comments"
+    commentsDiv.append(heading)
+
+    comments.forEach(comment => {
+      // username 
+      let username = document.createElement("span")
+      username.innerText = comment.user.login
+
+      // posting time
+      updateTime = document.createElement("small")
+      updateTime.innerText = "(" + comment.updated_at + ")"
+
+      // comment body
+      commentBody = document.createElement("div")
+      commentBody.innerText = comment.body
+
+      //line break
+      lineBreak = document.createElement("br")
+
+      // create comment box
+      commentBox = document.createElement("a")
+      commentBox.classList.add("item")
+      commentBox.append(username)
+      commentBox.append(updateTime)
+      commentBox.append(lineBreak)
+      commentBox.append(commentBody)
+      commentBox.href = comment.html_url
+
+      commentsDiv.append(commentBox)
+    });
+
+    // add comment
+    let addComment = document.createElement("a")
+    addComment.classList.add("item")
+    addComment.href = issueUrl
+    addComment.innerText = "Have some comments? Add comment ..."
+    commentsDiv.append(addComment)
+
+  }
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', commentUrl, true);
+  xhr.responseType = 'json';
+  xhr.onload = function () {
+    var status = xhr.status;
+    if (status === 200) {
+      console.log(PopulateComment(xhr.response));
+    } else {
+      console.log(xhr.response);
+    }
+  };
+  xhr.send();
+</script>
+{% endif %}

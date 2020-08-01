@@ -1,0 +1,7 @@
+<hr>
+<div class="footer">
+    <span>Powered by:</span>
+    {% for name, link in LINKS %}
+    <a href="{{link}}">{{name}}{{"," if not loop.last }}</a>
+    {% endfor %}
+</div>

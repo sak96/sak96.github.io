@@ -1,0 +1,36 @@
+{% extends "layouts/default.html" %}
+
+# add title ##
+{% block title %}{{title}}{% endblock title %}:w
+
+{% block content %}
+    <!-- article collections are : authors, tags, categories -->
+    {%if items|length != 0 %}
+        <h2>{{title}}</h2>
+        <div>
+            {% for item, articles in items%}
+                <span class="item">
+                <a href="{{SITEURL}}/{{item.url}}" >
+                    {{item.name}}({{articles|length}})
+                </a> 
+                <span>
+                    {%if atom_url is defined and atom_url is not none
+                    and atom_url %}
+                    <a href='{{SITEURL}}/{{atom_url|replace("{slug}", item.slug)}}'>
+                    [atom]
+                    </a>
+                    {% endif %}
+                    {%if rss_url is defined and rss_url is not none 
+                    and rss_url %}
+                    <a href='{{SITEURL}}/{{rss_url|replace("{slug}", item.slug)}}'>
+                    [rss]
+                    </a>
+                    {% endif %}
+                </span>
+                </span>
+            {% endfor %}
+        </div>
+    {% else %}
+        {% include 'includes/coming_soon.html' %}
+    {% endif %}
+{% endblock content %}
