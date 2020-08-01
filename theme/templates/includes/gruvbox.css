@@ -54,6 +54,7 @@ small {
     width: 80%;
     margin: auto;
 }
+.not-found,
 .coming-soon{
     display:block;
     width: 100%;
