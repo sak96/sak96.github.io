@@ -17,7 +17,7 @@ function setCookie(cname, cvalue, exdays) {
     var d = new Date();
     d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
     var expires = "expires=" + d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + (";path=" + {{SITEURL}} + "/") + ";SameSite=Lax";
+    document.cookie = cname + "=" + cvalue + ";" + expires + (";path=" + "{{SITEURL}}" + "/") + ";SameSite=Lax";
 }
 document.querySelector("#navbar-toggler").onclick = function (e) {
     document.querySelectorAll(".nav-start a,.nav-end a").forEach(
@@ -29,6 +29,8 @@ document.querySelector("#navbar-toggler").onclick = function (e) {
     if (theme !== "light"){
         document.documentElement.setAttribute('data-theme', ''); 
         setCookie("theme", "", -1); 
+    }else{
+        document.documentElement.setAttribute('data-theme', theme);
     }
 }
 document.querySelector("#theme").onclick = function (e) {
