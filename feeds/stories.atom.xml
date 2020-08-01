@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>sak96-blog - stories</title><link href="https://sak96.github.io/" rel="alternate"></link><link href="https://sak96.github.io/feeds/stories.atom.xml" rel="self"></link><id>https://sak96.github.io/</id><updated>2020-07-22T00:00:00+01:00</updated><entry><title>using browser as scratch file editor</title><link href="https://sak96.github.io/using-browser-as-scratch-file-editor.html" rel="alternate"></link><published>2020-07-22T00:00:00+01:00</published><updated>2020-07-22T00:00:00+01:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2020-07-22:/using-browser-as-scratch-file-editor.html</id><summary type="html">&lt;p&gt;Leveraging data urls to use browser as scratch file editor.&lt;/p&gt;</summary><content type="html">&lt;p&gt;When browsing internet you may find a need to write down some temporary notes. I call it
+scratch files. Opening text editor for editing these scratch files is too much pain or
+just too much of context swap.&lt;/p&gt;
+&lt;h1&gt;In Browser Temporary File Editor&lt;/h1&gt;
+&lt;p&gt;Here is the in-browser scratch file editor.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;data:text/html,&amp;lt;html contenteditable&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Go ahead copy paste it to url bar. Bookmark it, if required.&lt;/p&gt;
+&lt;h1&gt;The Details&lt;/h1&gt;
+&lt;p&gt;To use browser as text editor, I leverage &lt;a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs" title="data url"&gt;data urls&lt;/a&gt;. Data url are used to
+embed small documents into the url. The above url embedded html page which acts as
+editor.&lt;/p&gt;
+&lt;p&gt;The format is &lt;code&gt;data:[&amp;lt;mediatype&amp;gt;][;base64],&amp;lt;data&amp;gt;&lt;/code&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Media type specifies the mime type of file.&lt;/li&gt;
+&lt;li&gt;Base 64 is optional and added if data is base64 encoded&lt;/li&gt;
+&lt;li&gt;followed by the content of file.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Our url is &lt;code&gt;data:text/html,&amp;lt;html contenteditable&amp;gt;&lt;/code&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Mime type is &lt;code&gt;text/html&lt;/code&gt;. We are embedding html page.&lt;/li&gt;
+&lt;li&gt;data is html page. The html tag is &lt;code&gt;contenteditable&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;No need to close the html tag as it is corrected by browser.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: The content is lost if you close the tab. Try a extensions if you don't want
+to lose the contents.&lt;/p&gt;</content><category term="stories"></category><category term="story"></category><category term="linux"></category><category term="file"></category></entry><entry><title>Linux: Passing the input the hard way.</title><link href="https://sak96.github.io/linux-passing-the-input-the-hard-way.html" rel="alternate"></link><published>2020-07-18T00:00:00+01:00</published><updated>2020-07-18T00:00:00+01:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2020-07-18:/linux-passing-the-input-the-hard-way.html</id><summary type="html">&lt;p&gt;Story of how unix philosophy "everything is a file" saved the day.&lt;/p&gt;</summary><content type="html">&lt;p&gt;For people familiar with unix philosophy, &lt;a href="https://en.wikipedia.org/wiki/Everything_is_a_file" title="everything is a file"&gt;"Everything is a file"&lt;/a&gt; is
+common phrase. Rarely do we get a case to use it in practice. This is one of those cases.&lt;/p&gt;
+&lt;h1&gt;Problem&lt;/h1&gt;
+&lt;p&gt;At work a pipeline which had to be run by &lt;code&gt;End of Day&lt;/code&gt;, got stuck. After checking the
+logs, it looked like it was stuck waiting for a input prompt. The Prompts was suppose to
+be bypassed by setting environment variable. But recent changes had introduced a flaw.&lt;/p&gt;
+&lt;p&gt;The patch would take some time and this was a lengthy pipeline. So, we had to manually
+resume it. But the prompt was not directly available, as this was a process which was
+deeply nested within pipeline logic.&lt;/p&gt;
+&lt;h1&gt;Solution in theory&lt;/h1&gt;
+&lt;p&gt;"Everything is a file" in unix. This includes directories, devices and even process.
+We leverage this fact to provide input to the process.&lt;/p&gt;
+&lt;p&gt;Process are directories under &lt;code&gt;/proc/&lt;/code&gt; directory. Pid is unique number assigned to the
+process. These are used to name the process directory. Ex: &lt;code&gt;/proc/1234/&lt;/code&gt; is directory
+representing process with pid &lt;code&gt;1234&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;In each process directory, files opened by the process are stored in &lt;code&gt;fd/&lt;/code&gt; directory.
+File descriptors are numbers assigned to files unique to that process. These are used to
+name the files. Ex: &lt;code&gt;/proc/1234/fd/0&lt;/code&gt; is file associated with file descriptors 0 of
+process with pid &lt;code&gt;1234&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;In normal cases file descriptor one is standard input or the file which is the prompt of
+the process. This was true in our case.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Note&lt;/em&gt;: There are to many interesting thing here to cover but lets concentrate on the
+solution.&lt;/p&gt;
+&lt;h1&gt;Implemented Solution&lt;/h1&gt;
+&lt;p&gt;To demonstrate, let us use &lt;code&gt;cat&lt;/code&gt; program.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Run &lt;code&gt;cat&lt;/code&gt; in a terminal. It wait for input.&lt;/li&gt;
+&lt;li&gt;Run &lt;code&gt;echo "Hello World" &amp;gt;&amp;gt; "/proc/$(pidof -s cat)/fd/1"&lt;/code&gt; to input to &lt;code&gt;cat&lt;/code&gt; program.&lt;/li&gt;
+&lt;/ol&gt;</content><category term="stories"></category><category term="story"></category><category term="linux"></category><category term="file"></category></entry></feed>

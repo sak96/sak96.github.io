@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>using browser as scratch file editor</title>
+  <link rel="shortcut icon" 
+  href="https://sak96.github.io/theme/images/favicon.svg">
+  <meta name="viewport" 
+  content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+    <link rel="alternate" type="application/atom+xml"
+    title="sak96-blog" href="https://sak96.github.io/feeds/all.atom.xml" />
+    <style>
+:root{
+    --bg: #282828;
+    --fg: #ebdbb2;
+    --gray: #a89984;
+    --blue: #83a598;
+    --green: #b8bb26;
+    --red: #fb4934;
+}
+[data-theme="light"]{
+    --bg: #fbf1c7;
+    --fg: #3c3836;
+    --gray: #a89984;
+    --blue: #076678;
+    --green: #79740e;
+    --red: #9d0006;
+}
+*{
+    box-sizing: border-box;
+}
+body{
+    background-color: var(--bg);
+    color: var(--fg);
+}
+a{
+    text-decoration: none;
+    color: var(--blue);
+}
+h1, h2, h3, h4, h5, h6{
+    color: var(--green);
+}
+small {
+    color: var(--gray);
+}
+.navbar {
+    border-bottom: 1px solid var(--green);
+}
+.navbar div {
+    display: inline-block;
+}
+.navbar a:before{
+    content: "["
+}
+.navbar a:after{
+    content: "]"
+}
+.nav-right {
+    position: absolute;
+    right: 0.5rem;
+}
+#navbar-toggler{
+    display: none;
+}
+.content{
+    width: 80%;
+    margin: auto;
+}
+.not-found,
+.coming-soon{
+    display:block;
+    width: 100%;
+    text-align: center;
+}
+.item {
+    display: block;
+    margin: 0.5rem 0;
+    padding: 1rem;
+    border: 1px solid var(--red);
+    color: var(--fg);
+}
+.item > :first-child{
+    margin-top: 0;
+}
+.img-fluid{
+    width: 100%;
+}
+.copyright{
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+.paginator{
+    margin: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+}
+.footer,
+.tags {
+    margin: 0.5rem;
+    display: flex;
+    justify-content: center; 
+}
+.disabled {
+    color: var(--gray);
+}
+@media only screen and (max-width: 500px){
+    .navbar {
+        border: none;
+    }
+    .nav-header {
+        border-bottom: 0.025rem solid var(--green);
+    }
+    .navbar div {
+        display: block;
+        position: static;
+    }
+    #navbar-toggler {
+        transform: rotate(90deg);
+        position: absolute;
+        right: 1rem;
+        display: inline;
+        background-color: inherit;
+        border: none;
+        color: inherit;
+    }
+    .navbar a:after,
+    .navbar a:before{
+        content: ""
+    }
+    .navbar a{
+        border-bottom: 0.025rem solid var(--green);
+        display: none;
+    }
+    .nav-header a{
+        display: inline-block;
+        border: none;
+    }
+    .navbar a.show {
+        display: block;
+    }
+    .content {
+        width: 100%;
+    }
+    .footer {
+        display: inline-block;
+    }
+    .paginator span {
+        display: none;
+    }
+} #}
+    </style>
+  <link rel="stylesheet" href="https://sak96.github.io/theme/syntax/pygment.css">
+</head>
+
+<body>
+<div class="navbar">
+    <div class="nav-header"/>
+        <a href="https://sak96.github.io/">sak96-blog</a>
+        <a id="navbar-toggler">|||</a>
+    </div>
+    <div class="nav-start">
+        <a href="https://sak96.github.io/authors.html">Authors</a>
+        <a href="https://sak96.github.io/categories.html">Categories</a>
+        <a href="https://sak96.github.io/tags.html">Tags</a>
+    </div>
+    <div class="nav-right">
+        <a href="https://sak96.github.io/feeds/all.atom.xml">Atom</a>
+        <a id="theme">Theme</a>
+    </div>
+</div>
+<script>
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(";");
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == " ") {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+    var expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + (";path=" + "https://sak96.github.io" + "/") + ";SameSite=Lax";
+}
+document.querySelector("#navbar-toggler").onclick = function (e) {
+    document.querySelectorAll(".nav-start a,.nav-end a").forEach(
+        (e) => e.classList.toggle("show")
+    )
+}
+{
+    let theme = getCookie("theme");
+    if (theme !== "light"){
+        document.documentElement.setAttribute('data-theme', ''); 
+        setCookie("theme", "", -1); 
+    }else{
+        document.documentElement.setAttribute('data-theme', theme);
+    }
+}
+document.querySelector("#theme").onclick = function (e) {
+    if (document.documentElement.getAttribute('data-theme')){
+        document.documentElement.setAttribute('data-theme', ''); 
+        setCookie("theme", "", -1); 
+    }else{
+        let l = "light";
+        document.documentElement.setAttribute('data-theme', l); 
+        setCookie("theme", l, 365); 
+    }
+} </script>    <div class="content">
+	<div>
+		<h1>using browser as scratch file editor</h1>
+		<h5><p>Leveraging data urls to use browser as scratch file editor.</p></h5>
+		<small>Written on July 22, 2020</small>
+		<hr>
+		<img class="img-fluid" src="https://sak96.github.io/theme/images/blog.svg">
+		<hr>
+	</div>
+	<div> <p>When browsing internet you may find a need to write down some temporary notes. I call it
+scratch files. Opening text editor for editing these scratch files is too much pain or
+just too much of context swap.</p>
+<h1>In Browser Temporary File Editor</h1>
+<p>Here is the in-browser scratch file editor.</p>
+<p><code>data:text/html,&lt;html contenteditable&gt;</code></p>
+<p>Go ahead copy paste it to url bar. Bookmark it, if required.</p>
+<h1>The Details</h1>
+<p>To use browser as text editor, I leverage <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs" title="data url">data urls</a>. Data url are used to
+embed small documents into the url. The above url embedded html page which acts as
+editor.</p>
+<p>The format is <code>data:[&lt;mediatype&gt;][;base64],&lt;data&gt;</code>.</p>
+<ul>
+<li>Media type specifies the mime type of file.</li>
+<li>Base 64 is optional and added if data is base64 encoded</li>
+<li>followed by the content of file.</li>
+</ul>
+<p>Our url is <code>data:text/html,&lt;html contenteditable&gt;</code>.</p>
+<ul>
+<li>Mime type is <code>text/html</code>. We are embedding html page.</li>
+<li>data is html page. The html tag is <code>contenteditable</code>.</li>
+<li>No need to close the html tag as it is corrected by browser.</li>
+</ul>
+<p><strong>Note</strong>: The content is lost if you close the tab. Try a extensions if you don't want
+to lose the contents.</p>
+	</div>
+<div class="tags">
+    <span>Post Tags:</span>
+    <a href="tag/story.html">&nbsp;#story,</a>
+    <a href="tag/linux.html">&nbsp;#linux,</a>
+    <a href="tag/file.html">&nbsp;#file</a>
+</div><hr class="my-3">
+<div id="comments"></div>
+<script>
+  let commentUrl = "https://api.github.com/repos/sak96/sak96.github.io/issues/1/comments"
+  let issueUrl = "https://github.com/sak96/sak96.github.io/issues/1"
+  function PopulateComment(comments) {
+    commentsDiv = document.getElementById("comments");
+
+    // comments heading
+    let heading = document.createElement("div")
+    heading.innerText = "Comments"
+    commentsDiv.append(heading)
+
+    comments.forEach(comment => {
+      // username 
+      let username = document.createElement("span")
+      username.innerText = comment.user.login
+
+      // posting time
+      updateTime = document.createElement("small")
+      updateTime.innerText = "(" + comment.updated_at + ")"
+
+      // comment body
+      commentBody = document.createElement("div")
+      commentBody.innerText = comment.body
+
+      //line break
+      lineBreak = document.createElement("br")
+
+      // create comment box
+      commentBox = document.createElement("a")
+      commentBox.classList.add("item")
+      commentBox.append(username)
+      commentBox.append(updateTime)
+      commentBox.append(lineBreak)
+      commentBox.append(commentBody)
+      commentBox.href = comment.html_url
+
+      commentsDiv.append(commentBox)
+    });
+
+    // add comment
+    let addComment = document.createElement("a")
+    addComment.classList.add("item")
+    addComment.href = issueUrl
+    addComment.innerText = "Have some comments? Add comment ..."
+    commentsDiv.append(addComment)
+
+  }
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', commentUrl, true);
+  xhr.responseType = 'json';
+  xhr.onload = function () {
+    var status = xhr.status;
+    if (status === 200) {
+      console.log(PopulateComment(xhr.response));
+    } else {
+      console.log(xhr.response);
+    }
+  };
+  xhr.send();
+</script>
+    <hr>
+    <small class="copyright">
+        © 2020 Copyright <a href=https://sak96.github.io>sak96-blog</a>
+    </small>
+<hr>
+<div class="footer">
+    <span>Powered by:</span>
+    <a href="http://getpelican.com/">Pelican,</a>
+    <a href="https://github.com/pygments/pygments">Pygments,</a>
+    <a href="https://github.com/morhetz/gruvbox-contrib">Gruvbox</a>
+</div>  </div>
+</body>
+</html>

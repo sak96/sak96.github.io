@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>sak96-blog</title><link href="https://sak96.github.io/" rel="alternate"></link><link href="https://sak96.github.io/feeds/all.atom.xml" rel="self"></link><id>https://sak96.github.io/</id><updated>2020-07-22T00:00:00+01:00</updated><entry><title>using browser as scratch file editor</title><link href="https://sak96.github.io/using-browser-as-scratch-file-editor.html" rel="alternate"></link><published>2020-07-22T00:00:00+01:00</published><updated>2020-07-22T00:00:00+01:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2020-07-22:/using-browser-as-scratch-file-editor.html</id><summary type="html">&lt;p&gt;Leveraging data urls to use browser as scratch file editor.&lt;/p&gt;</summary><content type="html">&lt;p&gt;When browsing internet you may find a need to write down some temporary notes. I call it
+scratch files. Opening text editor for editing these scratch files is too much pain or
+just too much of context swap.&lt;/p&gt;
+&lt;h1&gt;In Browser Temporary File Editor&lt;/h1&gt;
+&lt;p&gt;Here is the in-browser scratch file editor.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;data:text/html,&amp;lt;html contenteditable&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Go ahead copy paste it to url bar. Bookmark it, if required.&lt;/p&gt;
+&lt;h1&gt;The Details&lt;/h1&gt;
+&lt;p&gt;To use browser as text editor, I leverage &lt;a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs" title="data url"&gt;data urls&lt;/a&gt;. Data url are used to
+embed small documents into the url. The above url embedded html page which acts as
+editor.&lt;/p&gt;
+&lt;p&gt;The format is &lt;code&gt;data:[&amp;lt;mediatype&amp;gt;][;base64],&amp;lt;data&amp;gt;&lt;/code&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Media type specifies the mime type of file.&lt;/li&gt;
+&lt;li&gt;Base 64 is optional and added if data is base64 encoded&lt;/li&gt;
+&lt;li&gt;followed by the content of file.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Our url is &lt;code&gt;data:text/html,&amp;lt;html contenteditable&amp;gt;&lt;/code&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Mime type is &lt;code&gt;text/html&lt;/code&gt;. We are embedding html page.&lt;/li&gt;
+&lt;li&gt;data is html page. The html tag is &lt;code&gt;contenteditable&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;No need to close the html tag as it is corrected by browser.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: The content is lost if you close the tab. Try a extensions if you don't want
+to lose the contents.&lt;/p&gt;</content><category term="stories"></category><category term="story"></category><category term="linux"></category><category term="file"></category></entry><entry><title>Linux: Passing the input the hard way.</title><link href="https://sak96.github.io/linux-passing-the-input-the-hard-way.html" rel="alternate"></link><published>2020-07-18T00:00:00+01:00</published><updated>2020-07-18T00:00:00+01:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2020-07-18:/linux-passing-the-input-the-hard-way.html</id><summary type="html">&lt;p&gt;Story of how unix philosophy "everything is a file" saved the day.&lt;/p&gt;</summary><content type="html">&lt;p&gt;For people familiar with unix philosophy, &lt;a href="https://en.wikipedia.org/wiki/Everything_is_a_file" title="everything is a file"&gt;"Everything is a file"&lt;/a&gt; is
+common phrase. Rarely do we get a case to use it in practice. This is one of those cases.&lt;/p&gt;
+&lt;h1&gt;Problem&lt;/h1&gt;
+&lt;p&gt;At work a pipeline which had to be run by &lt;code&gt;End of Day&lt;/code&gt;, got stuck. After checking the
+logs, it looked like it was stuck waiting for a input prompt. The Prompts was suppose to
+be bypassed by setting environment variable. But recent changes had introduced a flaw.&lt;/p&gt;
+&lt;p&gt;The patch would take some time and this was a lengthy pipeline. So, we had to manually
+resume it. But the prompt was not directly available, as this was a process which was
+deeply nested within pipeline logic.&lt;/p&gt;
+&lt;h1&gt;Solution in theory&lt;/h1&gt;
+&lt;p&gt;"Everything is a file" in unix. This includes directories, devices and even process.
+We leverage this fact to provide input to the process.&lt;/p&gt;
+&lt;p&gt;Process are directories under &lt;code&gt;/proc/&lt;/code&gt; directory. Pid is unique number assigned to the
+process. These are used to name the process directory. Ex: &lt;code&gt;/proc/1234/&lt;/code&gt; is directory
+representing process with pid &lt;code&gt;1234&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;In each process directory, files opened by the process are stored in &lt;code&gt;fd/&lt;/code&gt; directory.
+File descriptors are numbers assigned to files unique to that process. These are used to
+name the files. Ex: &lt;code&gt;/proc/1234/fd/0&lt;/code&gt; is file associated with file descriptors 0 of
+process with pid &lt;code&gt;1234&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;In normal cases file descriptor one is standard input or the file which is the prompt of
+the process. This was true in our case.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Note&lt;/em&gt;: There are to many interesting thing here to cover but lets concentrate on the
+solution.&lt;/p&gt;
+&lt;h1&gt;Implemented Solution&lt;/h1&gt;
+&lt;p&gt;To demonstrate, let us use &lt;code&gt;cat&lt;/code&gt; program.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Run &lt;code&gt;cat&lt;/code&gt; in a terminal. It wait for input.&lt;/li&gt;
+&lt;li&gt;Run &lt;code&gt;echo "Hello World" &amp;gt;&amp;gt; "/proc/$(pidof -s cat)/fd/1"&lt;/code&gt; to input to &lt;code&gt;cat&lt;/code&gt; program.&lt;/li&gt;
+&lt;/ol&gt;</content><category term="stories"></category><category term="story"></category><category term="linux"></category><category term="file"></category></entry><entry><title>Git Simplified (Part 1): Introduction</title><link href="https://sak96.github.io/git-simplified-part-1-introduction.html" rel="alternate"></link><published>2020-04-29T00:00:00+01:00</published><updated>2020-04-29T00:00:00+01:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2020-04-29:/git-simplified-part-1-introduction.html</id><summary type="html">&lt;p&gt;This article provides introduction to git internals.&lt;/p&gt;</summary><content type="html">&lt;p&gt;Git is the stupid &lt;code&gt;content tracker&lt;/code&gt; (as per it's &lt;a href="https://linux.die.net/man/1/git" title="git man page"&gt;man page&lt;/a&gt;). It lets you keep track of modification done to content. This gives a timeline of how content developed over time. Content is not tracked at file level, More explained in &lt;a href="https://www.youtube.com/watch?v=4XpnKHJAok8" title="Torvalds on git"&gt;Linus Torvalds talk on git&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Content tracking may be required for various reasons.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Track Ownership of changes.&lt;/li&gt;
+&lt;li&gt;Backup and Restore to certain older point.&lt;/li&gt;
+&lt;li&gt;Synchronization between different sources (by agreeing on common point to sync with).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;To learn how to use Git, you mostly likely will find guides explaining about git command line usage. Once you are good with command line usage, you may find it helpful to know about "how git works". This series of articles aim to familiarize reader with high level over view of git working. Series combines articles describing independent topic. This article introduction to git internals.&lt;/p&gt;
+&lt;h2&gt;Articles&lt;/h2&gt;
+&lt;p&gt;Links To other articles of this series are here.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="https://sak96.github.io/git-simplified-part-1-introduction.html"&gt;Git: Introduction&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Git like other content tracking system functions by recording state of content at given time. Each such state are called as &lt;code&gt;commits&lt;/code&gt;. The whole tracking system is &lt;code&gt;Directed Acyclic Graph&lt;/code&gt; of commits. Each commit is identified by a &lt;code&gt;hash&lt;/code&gt;.&lt;/p&gt;
+&lt;h3&gt;Directed Acyclic Graph&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Example: &lt;code&gt;child -&amp;gt; parent -&amp;gt; grandparent&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Graph&lt;/code&gt; is structure which represents relation between objects using connection.&lt;ul&gt;
+&lt;li&gt;The object in this case is &lt;code&gt;commits&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;The relationship in this case is &lt;code&gt;parent-child&lt;/code&gt; relationship.&lt;/li&gt;
+&lt;li&gt;Multiple child can share single parent.&lt;/li&gt;
+&lt;li&gt;Single child may be created by Multiple parents.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Directed&lt;/code&gt; refers to the fact that these relationships have a direction.&lt;ul&gt;
+&lt;li&gt;The direction in this case is from child to parent.&lt;/li&gt;
+&lt;li&gt;The arrow head points to the direction.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Acyclic&lt;/code&gt; means the graph does not have cycles or loops.&lt;ul&gt;
+&lt;li&gt;A commit or its parents (recursively) cannot point back to the commit itself.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Better explained by &lt;a href="https://en.wikipedia.org/wiki/Directed_acyclic_graph" title="Wikipedia: DAG"&gt;wiki&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Hash&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Hash function are function whose input is variable size and output is fixed size.&lt;/li&gt;
+&lt;li&gt;Hash of data is output of hash function with the data as input.&lt;/li&gt;
+&lt;li&gt;Cryptographic hashes are hash functions which are hard to reverse. In simple terms, for given hash(output) the input is hard to determine.&lt;/li&gt;
+&lt;li&gt;Hashing function used in git is &lt;code&gt;sha-1&lt;/code&gt; (or &lt;code&gt;sha-256&lt;/code&gt; in recent versions. Check &lt;a href="https://git-scm.com/docs/hash-function-transition/2.18.0" title="Hashes"&gt;hash function transition&lt;/a&gt;).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Data Model&lt;/h2&gt;
+&lt;p&gt;Git data model can be at high level categorized into two variations.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Object store: Map of hash to objects. Ex: commit&lt;/li&gt;
+&lt;li&gt;References: Maps human-readable strings to hashes. Ex: branches&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Resources&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Git: &lt;a href="https://linux.die.net/man/1/git" title="git man page"&gt;Stupid Content Tracker&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=4XpnKHJAok8" title="Torvalds on git"&gt;Tech Talk: Linus Torvalds on git&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://en.wikipedia.org/wiki/Directed_acyclic_graph" title="Wikipedia: DAG"&gt;wiki: Directed acyclic graph&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://git-scm.com/docs/hash-function-transition/2.18.0" title="Hashes"&gt;Hash Function Transition&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;</content><category term="git series"></category><category term="version"></category><category term="git"></category><category term="information"></category></entry><entry><title>My Notes: Debugging And Patching Docker</title><link href="https://sak96.github.io/my-notes-debugging-and-patching-docker.html" rel="alternate"></link><published>2020-02-29T00:00:00+00:00</published><updated>2020-02-29T00:00:00+00:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2020-02-29:/my-notes-debugging-and-patching-docker.html</id><summary type="html">&lt;p&gt;This article provide some notes for debugging and patching docker.&lt;/p&gt;</summary><content type="html">&lt;p&gt;Containerization of software and services allows easy deployment, portability and many other benefits. Docker is one of wide-spread adopted technology used for containerization. I use docker while on work. There are many guide and articles about using and debugging docker. Here is my guide for debugging and patching docker. And link to &lt;a href="#Resources"&gt;resources&lt;/a&gt;.&lt;/p&gt;
+&lt;h1&gt;Terminologies.&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Docker: software used for containerization.&lt;/li&gt;
+&lt;li&gt;Image: snapshot of container.&lt;/li&gt;
+&lt;li&gt;Container: running instance of image.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;Information Gathering.&lt;/h1&gt;
+&lt;p&gt;The first stage of any debugging session is gathering information. Skipping this steps may lead to spending hours on issue which may have been resolved in minutes.&lt;/p&gt;
+&lt;h2&gt;Container inspection.&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Get all running container.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;user@host$&lt;/span&gt; docker ps
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;List all containers (running, created, exited, ...).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;user@host$&lt;/span&gt; docker ps -a
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Filter container list (say status=exited).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;user@host$&lt;/span&gt; docker ps -a -f &lt;span class="s2"&gt;&amp;quot;status=exited&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Get container logs.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;user@host$&lt;/span&gt; docker logs &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$container_name&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Get more information on the container.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;user@host$&lt;/span&gt; docker container inspect &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$container_name&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Images inspection.&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;List all docker images.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;user@host$&lt;/span&gt; docker images
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Get more information on the image.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;user@host$&lt;/span&gt; docker image inspect &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$image_name&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;:&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$image_tag&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Format output into JSON.&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Get names of exited container.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;user@host$&lt;/span&gt; docker ps -a -f &lt;span class="s2"&gt;&amp;quot;status=exited&amp;quot;&lt;/span&gt; --format &lt;span class="s2"&gt;&amp;quot;{{json .Names}}&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;Live Debugging.&lt;/h1&gt;
+&lt;p&gt;Once information is gathered, we may need to tweak the container or live-debug. Most of these cases may require us to get a shell on the docker. The method of getting a shell may differ based on weather docker is running or docker has exited.&lt;/p&gt;
+&lt;h2&gt;Docker is running.&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Exec into the shell (bash or sh or other shell).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;user@host$&lt;/span&gt; docker &lt;span class="nb"&gt;exec&lt;/span&gt; -it &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$container_name&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; /bin/sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Run command &lt;code&gt;ls ./&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;user@host$&lt;/span&gt; docker &lt;span class="nb"&gt;exec&lt;/span&gt; -t &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$container_name&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; ls ./
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Docker has exited.&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Get image, tag pair for exited container.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;user@host$&lt;/span&gt; docker ps -f &lt;span class="s2"&gt;&amp;quot;name=&lt;/span&gt;&lt;span class="nv"&gt;$container_name&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; --format &lt;span class="s2"&gt;&amp;quot;{{json .Image}}&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Run image to get shell.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;user@host$&lt;/span&gt; docker run -it --entrypoint sh &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$image_name&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;:&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$image_tag&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Run command &lt;code&gt;ls ./&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;user@host$&lt;/span&gt; docker run -it --entrypoint ls &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$image_name&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;:&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$image_tag&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; ./
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;Post Debugging.&lt;/h1&gt;
+&lt;p&gt;After figuring out the issue, You may want to patch the environment or rollback and also do some basic cleanup. Rollback would be to tag previous tag to latest. In case previous tag is not available (as it is first deployment) or the version has some specific changes which cannot be reverted and patch release may take time, then docker needs to be patched.&lt;/p&gt;
+&lt;h2&gt;Rollback.&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Tag latest to previous version&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;user@host$&lt;/span&gt; docker tag &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$image_name&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;:&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$image_previous_tag&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$image_name&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;:latest
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Patch.&lt;/h2&gt;
+&lt;p&gt;Patching depends on the method used for debugging. In case of running container you can just commit it. For exited container which was run using custom entry point, entry point is overwritten. So the patching required to revert the entry point.&lt;/p&gt;
+&lt;h3&gt;Docker was exec-ed.&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Commit the live-debugging container.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;user@host$&lt;/span&gt; docker container commit &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$container_name&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$image_name&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;:&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$image_tag&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;-patched
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Kill the live-debugging container&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;user@host$&lt;/span&gt; docker container &lt;span class="nb"&gt;kill&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$container_name&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Tag the patched version to latest.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;user@host$&lt;/span&gt; docker tag &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$image_name&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;:&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$image_tag&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;-patched &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$image_name&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;:latest
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Bring the latest service docker up.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Docker was exec-ed (entry point has changed).&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Find the old entry point&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;user@host$&lt;/span&gt; docker image inspect &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$image_name&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;:&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$image_tag&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; --format &lt;span class="s2"&gt;&amp;quot;Entrypoint {{json .Config.Entrypoint}}&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Find the old cmd&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;user@host$&lt;/span&gt; docker image inspect &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$image_name&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;:&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$image_tag&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; --format &lt;span class="s2"&gt;&amp;quot;CMD {{json .Config.Cmd}}&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Commit the docker with the old entry point and cmd&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;user@host$&lt;/span&gt; docker container commit -change&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$old_entrypoint&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; --change&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$old_cmd&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$container_name&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$image_name&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;:&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$image_tag&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;-patched
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Kill the live-debugging container&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;user@host$&lt;/span&gt; docker container &lt;span class="nb"&gt;kill&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$container_name&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Tag the patched version to latest.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;user@host$&lt;/span&gt; docker tag &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$image_name&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;:&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$image_tag&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;-patched &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$image_name&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;:latest
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Bring the latest service docker up.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;Cleaning up.&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Delete exited container. You can use -q instead of --format flag part for getting only ids.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;user@host$&lt;/span&gt; docker ps -a -f &lt;span class="s2"&gt;&amp;quot;status=exited&amp;quot;&lt;/span&gt; --format &lt;span class="s2"&gt;&amp;quot;{{json .Names}}&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; xargs -r docker rm
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Delete untagged images.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;user@host$&lt;/span&gt; docker images prune
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;Tips.&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Using &lt;code&gt;-q&lt;/code&gt; for quiet mode on command provides only image ids or container ids. &lt;/li&gt;
+&lt;li&gt;Using &lt;code&gt;docker cp&lt;/code&gt; can help in file transfer to and from container.&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;docker cp  "$container_name":"$container_file_path" "local_file_path"&lt;/code&gt; -&amp;gt; from
+    container.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;docker cp  "local_file_path" "$container_name":"$container_file_path"&lt;/code&gt; -&amp;gt; to 
+    container.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;Resources.&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://docs.docker.com/engine/reference/commandline/ps/"&gt;&lt;code&gt;docker ps&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://docs.docker.com/engine/reference/commandline/images/"&gt;&lt;code&gt;docker images&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://docs.docker.com/engine/reference/commandline/image_inspect/"&gt;&lt;code&gt;docker image inspect&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://docs.docker.com/engine/reference/commandline/container_inspect/"&gt;&lt;code&gt;docker container inspect&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://docs.docker.com/engine/reference/commandline/logs/"&gt;&lt;code&gt;docker logs&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://docs.docker.com/engine/reference/commandline/container_exec/"&gt;&lt;code&gt;docker container exec&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://docs.docker.com/engine/reference/commandline/run/"&gt;&lt;code&gt;docker run&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://docs.docker.com/engine/reference/commandline/container_commit/"&gt;&lt;code&gt;docker container commit&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://docs.docker.com/engine/reference/commandline/image_prune/"&gt;&lt;code&gt;docker image prune&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://docs.docker.com/config/formatting/"&gt;&lt;code&gt;--format&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://docs.docker.com/engine/reference/commandline/cp/"&gt;&lt;code&gt;docker cp&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><category term="notes"></category><category term="patching"></category><category term="debugging"></category><category term="docker"></category></entry><entry><title>Summary: "What nobody tells you about documentation"</title><link href="https://sak96.github.io/summary-what-nobody-tells-you-about-documentation.html" rel="alternate"></link><published>2020-02-22T00:00:00+00:00</published><updated>2020-02-22T00:00:00+00:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2020-02-22:/summary-what-nobody-tells-you-about-documentation.html</id><summary type="html">&lt;p&gt;This article tries to summaries "What nobody tells you about documentation"&lt;/p&gt;</summary><content type="html">&lt;p&gt;The article &lt;a href="https://www.divio.com/blog/documentation"&gt;"What nobody tells you about documentation"&lt;/a&gt; details on writing manuals for software. It provides details of different it's components, their intent, content, scope and purpose. This simplifies the process by helping writer have right mindset.&lt;/p&gt;
+&lt;h2&gt;Types of Documentation.&lt;/h2&gt;
+&lt;h3&gt;Tutorial.&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Example: README.&lt;/li&gt;
+&lt;li&gt;Level: beginner.&lt;/li&gt;
+&lt;li&gt;Orientation: to learn.&lt;/li&gt;
+&lt;li&gt;Purpose: practical + to study.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;* Apply:&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Doorway to your software for any user (setup/installation should be included).&lt;/li&gt;
+&lt;li&gt;Multiple tasks (task: short set of steps).&lt;/li&gt;
+&lt;li&gt;Contains simple tasks.&lt;/li&gt;
+&lt;li&gt;Rewards user with knowledge.&lt;/li&gt;
+&lt;li&gt;Must work 100% (makes user confident).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;* Avoid:&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Need not use best practice if not required (complicates process).&lt;/li&gt;
+&lt;li&gt;Do not explain beyond what is required (makes tutorial long).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;How to guides.&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Example: how to print integer.&lt;/li&gt;
+&lt;li&gt;Level: intermediate.&lt;/li&gt;
+&lt;li&gt;Orientation: goal.&lt;/li&gt;
+&lt;li&gt;Purpose: practical + for work.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;* Apply:&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Must be working (can be part of test-cases).&lt;/li&gt;
+&lt;li&gt;Contains good heading (possible search phrase).&lt;/li&gt;
+&lt;li&gt;Should be flexible (include small variation).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;* Avoid:&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Should not explain more (link to API documentation).&lt;/li&gt;
+&lt;li&gt;Need not have set up or installation steps (intermediate level).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Explanation.&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Example: API docs.&lt;/li&gt;
+&lt;li&gt;Level: experienced.&lt;/li&gt;
+&lt;li&gt;Orientation: technical details.&lt;/li&gt;
+&lt;li&gt;Purpose: theory + to study.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;* Apply:&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Should be code based (auto generate is better).&lt;/li&gt;
+&lt;li&gt;Example if required (for edge case which is difficult to describe).&lt;/li&gt;
+&lt;li&gt;Consistent structure (improves readability).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;* Avoid:&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Should not explain about design decision (explain what code does, not why).&lt;/li&gt;
+&lt;li&gt;Should not be goal oriented (put it in how to guide).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Reference.&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Example: white paper.&lt;/li&gt;
+&lt;li&gt;Level: advanced expert.&lt;/li&gt;
+&lt;li&gt;Orientation: to inform.&lt;/li&gt;
+&lt;li&gt;Purpose: theory + working.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;* Apply:&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Contains design decision (including alternatives).&lt;/li&gt;
+&lt;li&gt;Provides historical reasons.&lt;/li&gt;
+&lt;li&gt;States good practices.&lt;/li&gt;
+&lt;li&gt;Includes discussion or exploration contents. &lt;/li&gt;
+&lt;/ul&gt;</content><category term="summary"></category><category term="writing"></category><category term="documentation"></category><category term="programming"></category></entry><entry><title>Summary: "Write An Excellent Programming Blog"</title><link href="https://sak96.github.io/summary-write-an-excellent-programming-blog.html" rel="alternate"></link><published>2020-02-15T00:00:00+00:00</published><updated>2020-02-15T00:00:00+00:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2020-02-15:/summary-write-an-excellent-programming-blog.html</id><summary type="html">&lt;p&gt;This article tries to summaries "Write An Excellent Programming Blog"&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;a href="http://bit.ly/excellent-blog"&gt;"Write An Excellent Programming Blog"&lt;/a&gt; talks about how to write tech-based articles. The Article categories articles, and details about how to write articles for given category, which provides guidelines for beginners to write articles.&lt;/p&gt;
+&lt;h2&gt;Types of articles.&lt;/h2&gt;
+&lt;h3&gt;* Story.&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Series of steps in event.&lt;/li&gt;
+&lt;li&gt;Moral of event.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;* Opinion.&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;State hypothesis.&lt;/li&gt;
+&lt;li&gt;Provide evidence for hypothesis.&lt;/li&gt;
+&lt;li&gt;Response to possible question.&lt;/li&gt;
+&lt;li&gt;Restate the hypothesis.&lt;/li&gt;
+&lt;li&gt;Note: Do not hurt feeling.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;* How to Guides.&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Doing x is good for y problem.&lt;/li&gt;
+&lt;li&gt;Step for doing x.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;* How things work.&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Pick thought-provoking subject, say x.&lt;/li&gt;
+&lt;li&gt;Explain how x works.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;* Review.&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;I used x.&lt;/li&gt;
+&lt;li&gt;State your experience.&lt;/li&gt;
+&lt;li&gt;State Strength vs Weakness.&lt;/li&gt;
+&lt;li&gt;Have conclusion (using some criteria).&lt;/li&gt;
+&lt;li&gt;Analyze, do not say yes or no.&lt;/li&gt;
+&lt;li&gt;Concluded with info useful for reader.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;How to get audience ?&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Aggregators.&lt;/li&gt;
+&lt;li&gt;Weekly Feeds.&lt;/li&gt;
+&lt;li&gt;Do not compete for audience.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;How to improve ?&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Practice: write, write and write.&lt;/li&gt;
+&lt;li&gt;Pull style from your liked authors.&lt;/li&gt;
+&lt;li&gt;Read, analyze and apply.&lt;/li&gt;
+&lt;li&gt;Get editors or friend review.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;How to make time to write ?&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Choose exciting topics.&lt;/li&gt;
+&lt;li&gt;Write infrequently.&lt;/li&gt;
+&lt;li&gt;Practice with Short Reviews.&lt;/li&gt;
+&lt;/ul&gt;</content><category term="summary"></category><category term="writing"></category><category term="articles"></category><category term="programming"></category></entry></feed>
