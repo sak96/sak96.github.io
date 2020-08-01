@@ -1,8 +1,7 @@
 - [ ] add `README.md` and documentation
-    - [ ] add tutorial (clone, gh-page)
-        - [ ] add readme.md
-        - [ ] add [gif](https://github.com/barryclark/jekyll-now/blob/master/images/jekyll-now-theme-screenshot.jpg) for cloning
-        - [ ] how to post
+    - [x] add readme.md
+    - [ ] add [gif](https://github.com/barryclark/jekyll-now/blob/master/images/jekyll-now-theme-screenshot.jpg) for cloning
+    - [ ] how to post
 - [ ] setup pelican 
     - [x] init
         - [x] pelican quick start
