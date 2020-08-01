@@ -7,6 +7,7 @@
     - [x] init
         - [x] pelican quick start
         - [x] requirement.txt 
+        - [x] license
     - [ ] Theme
         - [ ] categories
         - [ ] author
