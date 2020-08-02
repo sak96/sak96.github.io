@@ -43,7 +43,7 @@ small {
 .navbar a:after{
     content: "]"
 }
-.nav-right {
+.nav-end {
     position: absolute;
     right: 0.5rem;
 }
@@ -87,7 +87,7 @@ small {
 .tags {
     margin: 0.5rem;
     display: flex;
-    justify-content: center; 
+    justify-content: center;
 }
 .disabled {
     color: var(--gray);
