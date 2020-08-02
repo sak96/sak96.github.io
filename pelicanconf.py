@@ -31,4 +31,6 @@ DEFAULT_PAGINATION = 10
 
 # Uncomment following line if you want document-relative URLs when developing
 # RELATIVE_URLS = True
-
+THEME = "./theme"
+TEMPLATE_PAGES = {"404.html": "404.html"}
+MARKDOWN = {"extensions": ["fenced_code", "codehilite"]}
