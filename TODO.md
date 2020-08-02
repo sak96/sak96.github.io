@@ -15,5 +15,5 @@
         - [ ] paginate 
         - [x] comments
             - [x] using [github issues](https://github.com/izuzak/izuzak.github.com/blob/master/_posts/2011-02-18-github-hosted-comments-for-github-hosted-blogs.markdown) MVP
-            - [ ] create [issue template](https://docs.github.com/en/github/building-a-strong-community/manually-creating-a-single-issue-template-for-your-repository)
+            - [x] create [issue template](https://docs.github.com/en/github/building-a-strong-community/manually-creating-a-single-issue-template-for-your-repository)
     - [ ] [sitemap](https://github.com/pelican-plugins/sitemap)

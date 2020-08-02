@@ -37,11 +37,13 @@ GITHUB_REPO  = "github repo name"
 GITHUB_OWNER = "github user name"
 ```
 
+1. update field `assignees` in `.github/ISSUE_TEMPLATE/comments-issue.md` to github user name.
+
 # Writing Posts
 1. create `content` folder (if not existing).
 1. create `articles` folder in above folder (if not existing).
 1. create category folder for the post in above folder (if not existing).
-1. create a post with "`year`-`month`-`day`_`slug for post`.md name.
+1. create a post with "`year`-`month`-`day`_`slug for post`.md" name.
 1. add following yaml front matter.
 ```markdown
 ---
