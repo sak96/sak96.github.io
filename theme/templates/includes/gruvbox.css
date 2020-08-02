@@ -73,11 +73,6 @@ small {
 .img-fluid{
     width: 100%;
 }
-.copyright{
-    display: inline-block;
-    width: 100%;
-    text-align: center;
-}
 .paginator{
     margin: 0.5rem;
     display: flex;
