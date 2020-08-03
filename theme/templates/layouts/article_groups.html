@@ -13,7 +13,7 @@
                 <a href="{{SITEURL}}/{{item.url}}" >
                     {{item.name}}({{articles|length}})
                 </a> 
-                <span>
+                <small>
                     {%if atom_url is defined and atom_url is not none
                     and atom_url %}
                     <a href='{{SITEURL}}/{{atom_url|replace("{slug}", item.slug)}}'>
@@ -26,7 +26,7 @@
                     [rss]
                     </a>
                     {% endif %}
-                </span>
+                </small>
                 </span>
             {% endfor %}
         </div>
