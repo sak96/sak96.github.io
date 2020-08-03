@@ -80,8 +80,11 @@ small {
     display: block;
     margin: 0.5rem 0;
     padding: 1rem;
-    border: 1px solid var(--red);
+    border-bottom: 1px dashed var(--red);
     color: var(--fg);
+}
+.item:first-child {
+    border-top: 1px dashed var(--red);
 }
 .item > :first-child{
     margin-top: 0;
