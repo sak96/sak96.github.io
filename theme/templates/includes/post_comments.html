@@ -5,12 +5,16 @@
   let commentUrl = "https://api.github.com/repos/{{GITHUB_OWNER}}/{{GITHUB_REPO}}/issues/{{article.issue_no}}/comments"
   let issueUrl = "https://github.com/{{GITHUB_OWNER}}/{{GITHUB_REPO}}/issues/{{article.issue_no}}"
   function PopulateComment(comments) {
-    commentsDiv = document.getElementById("comments");
+    commentsBlock = document.getElementById("comments");
 
     // comments heading
     let heading = document.createElement("div")
     heading.innerText = "Comments"
-    commentsDiv.append(heading)
+    commentsBlock.append(heading)
+
+    // comments placeholder
+    let commentsDiv = document.createElement("div")
+    commentsBlock.append(commentsDiv)
 
     comments.forEach(comment => {
       // username 
