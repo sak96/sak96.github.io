@@ -290,12 +290,16 @@ document.querySelector("#theme").onclick = function (e) {
   let commentUrl = "https://api.github.com/repos/sak96/sak96.github.io/issues/1/comments"
   let issueUrl = "https://github.com/sak96/sak96.github.io/issues/1"
   function PopulateComment(comments) {
-    commentsDiv = document.getElementById("comments");
+    commentsBlock = document.getElementById("comments");
 
     // comments heading
     let heading = document.createElement("div")
     heading.innerText = "Comments"
-    commentsDiv.append(heading)
+    commentsBlock.append(heading)
+
+    // comments placeholder
+    let commentsDiv = document.createElement("div")
+    commentsBlock.append(commentsDiv)
 
     comments.forEach(comment => {
       // username 

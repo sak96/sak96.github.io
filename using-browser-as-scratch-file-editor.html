@@ -254,7 +254,7 @@ to lose the contents.</p>
 <div class="tags">
     <span>Post Tags:</span>
     <a href="tag/story.html">&nbsp;#story,</a>
-    <a href="tag/linux.html">&nbsp;#linux,</a>
+    <a href="tag/browser.html">&nbsp;#browser,</a>
     <a href="tag/file.html">&nbsp;#file</a>
 </div><hr class="my-3">
 <div id="comments"></div>
@@ -262,12 +262,16 @@ to lose the contents.</p>
   let commentUrl = "https://api.github.com/repos/sak96/sak96.github.io/issues/7/comments"
   let issueUrl = "https://github.com/sak96/sak96.github.io/issues/7"
   function PopulateComment(comments) {
-    commentsDiv = document.getElementById("comments");
+    commentsBlock = document.getElementById("comments");
 
     // comments heading
     let heading = document.createElement("div")
     heading.innerText = "Comments"
-    commentsDiv.append(heading)
+    commentsBlock.append(heading)
+
+    // comments placeholder
+    let commentsDiv = document.createElement("div")
+    commentsBlock.append(commentsDiv)
 
     comments.forEach(comment => {
       // username 
