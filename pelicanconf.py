@@ -23,7 +23,7 @@ AUTHOR_FEED_RSS = None
 LINKS = (
     ("Pelican", "http://getpelican.com/"),
     ("Pygments", "https://github.com/pygments/pygments"),
-    ("Gruvbox", "https://github.com/morhetz/gruvbox-contrib"),
+    ("Vim-One", "https://github.com/rakr/vim-one"),
 )
 
 
