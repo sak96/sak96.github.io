@@ -1,5 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>sak96-blog - wsl</title><link href="https://sak96.github.io/" rel="alternate"></link><link href="https://sak96.github.io/feeds/wsl.atom.xml" rel="self"></link><id>https://sak96.github.io/</id><updated>2020-08-20T00:00:00+01:00</updated><entry><title>WSL1 with Xserver without Admin</title><link href="https://sak96.github.io/wsl1-with-xserver-without-admin.html" rel="alternate"></link><published>2020-08-20T00:00:00+01:00</published><updated>2020-08-20T00:00:00+01:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2020-08-20:/wsl1-with-xserver-without-admin.html</id><summary type="html">&lt;p&gt;My experience setting up WSL1 along with problems and solutions&lt;/p&gt;</summary><content type="html">&lt;p&gt;WSL or windows subsystem for linux is way to use linux interface on windows machine.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>sak96-blog - wsl</title><link href="https://sak96.github.io/" rel="alternate"></link><link href="https://sak96.github.io/feeds/wsl.atom.xml" rel="self"></link><id>https://sak96.github.io/</id><updated>2020-10-14T00:00:00+01:00</updated><entry><title>WSL2 with GUI without Admin</title><link href="https://sak96.github.io/wsl2-with-gui-without-admin.html" rel="alternate"></link><published>2020-10-14T00:00:00+01:00</published><updated>2020-10-14T00:00:00+01:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2020-10-14:/wsl2-with-gui-without-admin.html</id><summary type="html">&lt;p&gt;My experience setting up WSL2 along with problems and solutions&lt;/p&gt;</summary><content type="html">&lt;p&gt;WSL or windows subsystem for linux is way to use linux interface on windows machine.
+WSL2 comes with better support for filesystem and network for linux interface.
+Previous &lt;a href="https://sak96.github.io/wsl1-with-xserver-without-admin.html"&gt;Article&lt;/a&gt; describes wsl1 setup.&lt;/p&gt;
+&lt;p&gt;WSL2 solves the &lt;a href="https://discourse.ubuntu.com/t/ubuntu-20-04-and-wsl-1/15291" title="Ubuntu sleep"&gt;sleep issue&lt;/a&gt; in Ubuntu wsl with updated glibc.
+WSL2 comes with not only comes with pros but also it's own share of issues.
+For WSL2 using Ubuntu 20.04 seemed easy, keeping WSL1 Debian setup as my backup.
+This Article walk through various problem faced and solutions if found.&lt;/p&gt;
+&lt;h1&gt;VPN and MTU&lt;/h1&gt;
+&lt;p&gt;VPN MTU was less that the WSL2 eth0 network interface.
+This caused network connection to hang on large transfers, more detail &lt;a href="https://github.com/microsoft/WSL/issues/5068#issuecomment-683917384" title="MTU VPN issue"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The VPN MTU can be accessed using following command.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;netsh interface ipv4 show subinterface
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Setting same mtu to eth0 can be done as follows.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ip link &lt;span class="nb"&gt;set&lt;/span&gt; mtu &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;mtu_vpn&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; dev eth0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Single line command will be as follows.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nf"&gt;%bash&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;sudo ip link set mtu $($(wslpath &amp;#39;%windir%\system32&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;etsh.exe&amp;#39;) interface ipv4 show subinterface | $(wslpath &amp;#39;%windir%\system32&lt;/span&gt;&lt;span class="se"&gt;\f&lt;/span&gt;&lt;span class="s"&gt;indstr.exe&amp;#39;) /i vpn   | grep -i vpn | sed &amp;#39;s/^\s\+//g&amp;#39;|  cut -f 1 -d &amp;#39; &amp;#39;) dev eth0&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;Network and GUI&lt;/h1&gt;
+&lt;p&gt;Using &lt;a href="https://sourceforge.net/projects/vcxsrv/" title="Visual C++ X server"&gt;vcXsrv&lt;/a&gt; seemed a fair choice for Xserver to use GUI.
+WSL2 restricts on using windows Network (localhost) on WSL2.
+vcXsrv could no longer be assessed by WSL2 for displaying GUI.
+Admin was required to add firewall allow rule to allow such connection.&lt;/p&gt;
+&lt;p&gt;Solution was to use &lt;code&gt;socat&lt;/code&gt; to connect from WSL2 to Windows as mentioned [here][wsocat_wsl2_issues].&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Install socat in ubuntu using &lt;code&gt;apt&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Download socat for window from &lt;a href="https://sourceforge.net/projects/unix-utils/files/socat/" title="Socat for windows"&gt;here&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Set Downloaded socat path in &lt;code&gt;%socat%&lt;/code&gt; varrable and run below command in cmd.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;start &lt;span class="s2"&gt;&amp;quot;socat&amp;quot;&lt;/span&gt; /min  ubuntu2004.exe -c &lt;span class="s2"&gt;&amp;quot;socat UNIX-LISTEN:/tmp/.X11-unix/X0,fork exec:\&amp;quot;&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;wslpath &lt;span class="s1"&gt;&amp;#39;%socat%&amp;#39;&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt; - TCP\:localhost\:6000\&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;Xserver to Xrdp&lt;/h1&gt;
+&lt;p&gt;The above solution was slow. The other solution was to use ssh tunnel or use Xrdp.
+Install Xrdp and running it was simple, but automating is a challenge to be done.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Installation Command&lt;/span&gt;
+sudo apt install --no-install-recommends xrdp
+
+&lt;span class="c1"&gt;# Starting Service (Yet to automate)&lt;/span&gt;
+service xrdp start
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Rdp using the ip address. More details &lt;a href="https://stackoverflow.com/a/26694162" title="Get Ip Address"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ip -4 addr show eth0 &lt;span class="p"&gt;|&lt;/span&gt; grep -oP &lt;span class="s1"&gt;&amp;#39;(?&amp;lt;=inet\s)\d+(\.\d+){3}&amp;#39;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;Xrdp and Sound&lt;/h1&gt;
+&lt;p&gt;To use sound on Xrdp with pulseaudio, some libraries are required.
+Copying the library from &lt;a href="https://github.com/DesktopECHO/xWSL" title="Xrdp PulseAudio"&gt;here&lt;/a&gt; helped.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;adding&lt;/span&gt; &lt;span class="n"&gt;libraries&lt;/span&gt;
+&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;clone&lt;/span&gt; &lt;span class="n"&gt;https&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;DesktopECHO&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;xWSL&lt;/span&gt;
+&lt;span class="n"&gt;sudo&lt;/span&gt; &lt;span class="n"&gt;mv&lt;/span&gt; &lt;span class="n"&gt;xWSL&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dist&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;lib&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;xrdp&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;pulseaudio&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;installer&lt;/span&gt; &lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;lib&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
+
+&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;restarting&lt;/span&gt; &lt;span class="n"&gt;pulseaudio&lt;/span&gt;
+&lt;span class="n"&gt;pulseaudio&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt;
+&lt;span class="n"&gt;pulseaudio&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;D&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;Teams and WSL2&lt;/h1&gt;
+&lt;p&gt;Teams is messaging platform by microsoft whose installation instruction are &lt;a href="https://docs.microsoft.com/en-us/microsoftteams/get-clients" title="Ms Teams Install"&gt;here&lt;/a&gt;.
+To get working in WSL2 required installation of couple of missing dependencies.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# install teams&lt;/span&gt;
+curl https://packages.microsoft.com/keys/microsoft.asc &lt;span class="p"&gt;|&lt;/span&gt; sudo apt-key add -
+sudo sh -c &lt;span class="s1"&gt;&amp;#39;echo &amp;quot;deb [arch=amd64] https://packages.microsoft.com/repos/ms-teams stable main&amp;quot; &amp;gt; /etc/apt/sources.list.d/teams.list&amp;#39;&lt;/span&gt;
+sudo apt update
+sudo apt install teams
+
+&lt;span class="c1"&gt;# install missing dependencies&lt;/span&gt;
+sudo apt install libsecret-1-0 chromium-codecs-ffmpeg
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="wsl"></category><category term="story"></category><category term="wsl"></category><category term="linux"></category></entry><entry><title>WSL1 with Xserver without Admin</title><link href="https://sak96.github.io/wsl1-with-xserver-without-admin.html" rel="alternate"></link><published>2020-08-20T00:00:00+01:00</published><updated>2020-08-20T00:00:00+01:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2020-08-20:/wsl1-with-xserver-without-admin.html</id><summary type="html">&lt;p&gt;My experience setting up WSL1 along with problems and solutions&lt;/p&gt;</summary><content type="html">&lt;p&gt;WSL or windows subsystem for linux is way to use linux interface on windows machine.
 This post is journey of setup of WSL1 environment and not WSL2. 
 Two parts that are touched are &lt;/p&gt;
 &lt;ol&gt;
