@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>sak96-blog - wsl</title><link href="https://sak96.github.io/" rel="alternate"></link><link href="https://sak96.github.io/feeds/wsl.atom.xml" rel="self"></link><id>https://sak96.github.io/</id><updated>2020-08-20T00:00:00+01:00</updated><entry><title>WSL1 with Xserver without Admin</title><link href="https://sak96.github.io/wsl1-with-xserver-without-admin.html" rel="alternate"></link><published>2020-08-20T00:00:00+01:00</published><updated>2020-08-20T00:00:00+01:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2020-08-20:/wsl1-with-xserver-without-admin.html</id><summary type="html">&lt;p&gt;My experience setting up WSL1 along with problems and solutions&lt;/p&gt;</summary><content type="html">&lt;p&gt;WSL or windows subsystem for linux is way to use linux interface on windows machine.
+This post is journey of setup of WSL1 environment and not WSL2. 
+Two parts that are touched are &lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Debian over Ubuntu &lt;/li&gt;
+&lt;li&gt;GUI setup&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1&gt;Debian over Ubuntu&lt;/h1&gt;
+&lt;p&gt;Ubuntu 20.04 had few bugs when on WSL1.
+Ubuntu 18.04 came with python2.
+Debian 10.5 was slim, was easy to install firefox-esr.&lt;/p&gt;
+&lt;h2&gt;Size&lt;/h2&gt;
+&lt;p&gt;Debian was slimmer than both version of Ubuntu.&lt;/p&gt;
+&lt;h2&gt;Cannot Sleep&lt;/h2&gt;
+&lt;p&gt;In Ubuntu 20.04, glibc version is 2.31 which breaks sleep.
+Error which shows up is &lt;code&gt;sleep: cannot read realtime clock: Invalid argument&lt;/code&gt;.
+According to &lt;a href="https://discourse.ubuntu.com/t/ubuntu-20-04-and-wsl-1/15291" title="Ubuntu sleep"&gt;thread&lt;/a&gt; the fix wait for microsoft wsl patch.
+It mentions that Ubuntu 18.04 in WSL1 or using WSL2 will avoid this.&lt;/p&gt;
+&lt;p&gt;In Debian 10.5 WSL in microsoft store the glibc version is older.
+Sleep work fine with this version of glibc in WSL1.&lt;/p&gt;
+&lt;h2&gt;Python3&lt;/h2&gt;
+&lt;p&gt;One of the main reason of not using Ubuntu 18.04 is it comes with python2.
+Debian 10.5 did not come with python2 hence no major headache on this part.&lt;/p&gt;
+&lt;p&gt;Though you could set your /bin/python to python3 (and pip) as follows&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# For Ubuntu&lt;/span&gt;
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 &lt;span class="m"&gt;2&lt;/span&gt;
+sudo update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 &lt;span class="m"&gt;2&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Firefox&lt;/h2&gt;
+&lt;p&gt;In Debian WSL installing and installing firefox-esr worked without issue.
+There were few issue in case of Ubuntu 20.04 but not sure of Ubuntu 18.04.
+Also Ubuntu requires you to add repository to use firefox-esr.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# For Ubuntu&lt;/span&gt;
+sudo apt install --no-install-recommends software-properties-common
+sudo add-apt-repository ppa:mozillateam/ppa
+sudo apt update
+sudo apt install --no-install-recommends firefox-esr 
+sudo update-alternatives --install /usr/bin/firefox firefox /usr/bin/firefox-esr &lt;span class="m"&gt;2&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Downside&lt;/h2&gt;
+&lt;p&gt;Debian 10.5 contains vim and neo vim version do not play well with popup handling.
+Also i3status used to fail continuously with segmentation violation. 
+Fix is using deb package for i3status from &lt;a href="https://packages.debian.org/buster/i3status" title="i3 status package"&gt;next version&lt;/a&gt; of Debian.&lt;/p&gt;
+&lt;h1&gt;GUI Setup&lt;/h1&gt;
+&lt;p&gt;WSL does not ship with xserver. Xserver is what handle GUI. I use &lt;a href="https://sourceforge.net/projects/vcxsrv/" title="Visual C++ X server"&gt;vcXsrv&lt;/a&gt; as Xserver.&lt;/p&gt;
+&lt;h2&gt;Working&lt;/h2&gt;
+&lt;p&gt;Start vcXsrv which will run Xserver.
+Run GUI software like i3 providing the servers details.&lt;/p&gt;
+&lt;h2&gt;Non Admin&lt;/h2&gt;
+&lt;p&gt;I don't like running softwares as admin even if it is for installation.
+In wiki for vcXsrv we have &lt;a href="https://sourceforge.net/p/vcxsrv/wiki/Making%20Portable/" title="portable xcXsrv"&gt;section&lt;/a&gt; to make it portable.
+It requires the software to be extracted as 7z file.
+Followed by removal of "$PLUGINSDIR" folder.
+The extracted path used here is &lt;code&gt;%userprofile%\AppData\Local\VcXsrv\&lt;/code&gt;.&lt;/p&gt;
+&lt;h2&gt;Shortcut&lt;/h2&gt;
+&lt;p&gt;I wanted to run the server and i3 without on single click.
+Simple script crafted by hand is below.&lt;/p&gt;
+&lt;p&gt;Note: First run after boot will fail. Kill vcXsrv and retry.&lt;/p&gt;
+&lt;p&gt;Setting up variables.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;@&lt;/span&gt;&lt;span class="k"&gt;echo&lt;/span&gt; off
+&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;command=nohup /usr/bin/i3 &amp;gt;/dev/null 2&amp;gt;&amp;amp;1&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nv"&gt;windowmode&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;nodecoration
+&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nv"&gt;dispnum&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;1
+&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nv"&gt;bash&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;%userprofile%&lt;/span&gt;\AppData\Local\Microsoft\WindowsApps\debian.exe
+&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nv"&gt;vcxsrvexec&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;%userprofile%&lt;/span&gt;\appdata\local\vcxsrv\vcxsrv.exe
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Running the shortcut.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;start&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Xserver&amp;quot;&lt;/span&gt; /D &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;%userprofile%&lt;/span&gt;&lt;span class="s2"&gt;\AppData\Local\VcXsrv\&amp;quot;&lt;/span&gt; &lt;span class="nv"&gt;%vcxsrvexec%&lt;/span&gt; &lt;span class="se"&gt;^&lt;/span&gt;
+&lt;span class="se"&gt;:&lt;/span&gt;&lt;span class="nv"&gt;%dispnum%&lt;/span&gt; -ac -terminate -lesspointer -&lt;span class="nv"&gt;%windowmode%&lt;/span&gt; -clipboard -wgl &lt;span class="se"&gt;^&lt;/span&gt;
+&lt;span class="se"&gt;-&lt;/span&gt;logfile &lt;span class="nv"&gt;%userprofile%&lt;/span&gt;\appdata\local\vcxsrv\vcxsrv.log
+
+&lt;span class="k"&gt;IF&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;%bash%&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;
+  &lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nv"&gt;bash&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;%systemroot%&lt;/span&gt;\system32\bash.exe
+&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nv"&gt;disp&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;localhost:&lt;span class="nv"&gt;%dispnum%&lt;/span&gt;.0
+&lt;span class="nv"&gt;%bash%&lt;/span&gt; -c &lt;span class="s2"&gt;&amp;quot;export DISPLAY=&lt;/span&gt;&lt;span class="nv"&gt;%disp%&lt;/span&gt;&lt;span class="s2"&gt;; cd $HOME; &lt;/span&gt;&lt;span class="nv"&gt;%command%&lt;/span&gt;&lt;span class="s2"&gt; &amp;amp; disown&amp;quot;&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="wsl"></category><category term="story"></category><category term="wsl"></category><category term="linux"></category></entry></feed>
