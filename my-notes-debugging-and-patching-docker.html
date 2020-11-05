@@ -241,13 +241,11 @@ document.querySelector("#theme").onclick = function (e) {
 <div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker ps
 </code></pre></div>
 
-
 <ul>
 <li>List all containers (running, created, exited, ...).</li>
 </ul>
 <div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker ps -a
 </code></pre></div>
-
 
 <ul>
 <li>Filter container list (say status=exited).</li>
@@ -255,20 +253,17 @@ document.querySelector("#theme").onclick = function (e) {
 <div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker ps -a -f <span class="s2">&quot;status=exited&quot;</span>
 </code></pre></div>
 
-
 <ul>
 <li>Get container logs.</li>
 </ul>
 <div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker logs <span class="s2">&quot;</span><span class="nv">$container_name</span><span class="s2">&quot;</span>
 </code></pre></div>
 
-
 <ul>
 <li>Get more information on the container.</li>
 </ul>
 <div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker container inspect <span class="s2">&quot;</span><span class="nv">$container_name</span><span class="s2">&quot;</span>
 </code></pre></div>
-
 
 <h2>Images inspection.</h2>
 <ul>
@@ -277,13 +272,11 @@ document.querySelector("#theme").onclick = function (e) {
 <div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker images
 </code></pre></div>
 
-
 <ul>
 <li>Get more information on the image.</li>
 </ul>
 <div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker image inspect <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:<span class="s2">&quot;</span><span class="nv">$image_tag</span><span class="s2">&quot;</span>
 </code></pre></div>
-
 
 <h2>Format output into JSON.</h2>
 <ul>
@@ -291,7 +284,6 @@ document.querySelector("#theme").onclick = function (e) {
 </ul>
 <div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker ps -a -f <span class="s2">&quot;status=exited&quot;</span> --format <span class="s2">&quot;{{json .Names}}&quot;</span>
 </code></pre></div>
-
 
 <h1>Live Debugging.</h1>
 <p>Once information is gathered, we may need to tweak the container or live-debug. Most of these cases may require us to get a shell on the docker. The method of getting a shell may differ based on weather docker is running or docker has exited.</p>
@@ -302,13 +294,11 @@ document.querySelector("#theme").onclick = function (e) {
 <div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker <span class="nb">exec</span> -it <span class="s2">&quot;</span><span class="nv">$container_name</span><span class="s2">&quot;</span> /bin/sh
 </code></pre></div>
 
-
 <ul>
 <li>Run command <code>ls ./</code>.</li>
 </ul>
 <div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker <span class="nb">exec</span> -t <span class="s2">&quot;</span><span class="nv">$container_name</span><span class="s2">&quot;</span> ls ./
 </code></pre></div>
-
 
 <h2>Docker has exited.</h2>
 <ul>
@@ -317,20 +307,17 @@ document.querySelector("#theme").onclick = function (e) {
 <div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker ps -f <span class="s2">&quot;name=</span><span class="nv">$container_name</span><span class="s2">&quot;</span> --format <span class="s2">&quot;{{json .Image}}&quot;</span>
 </code></pre></div>
 
-
 <ul>
 <li>Run image to get shell.</li>
 </ul>
 <div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker run -it --entrypoint sh <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:<span class="s2">&quot;</span><span class="nv">$image_tag</span><span class="s2">&quot;</span>
 </code></pre></div>
 
-
 <ul>
 <li>Run command <code>ls ./</code>.</li>
 </ul>
 <div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker run -it --entrypoint ls <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:<span class="s2">&quot;</span><span class="nv">$image_tag</span><span class="s2">&quot;</span> ./
 </code></pre></div>
-
 
 <h1>Post Debugging.</h1>
 <p>After figuring out the issue, You may want to patch the environment or rollback and also do some basic cleanup. Rollback would be to tag previous tag to latest. In case previous tag is not available (as it is first deployment) or the version has some specific changes which cannot be reverted and patch release may take time, then docker needs to be patched.</p>
@@ -341,7 +328,6 @@ document.querySelector("#theme").onclick = function (e) {
 <div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker tag <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:<span class="s2">&quot;</span><span class="nv">$image_previous_tag</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:latest
 </code></pre></div>
 
-
 <h2>Patch.</h2>
 <p>Patching depends on the method used for debugging. In case of running container you can just commit it. For exited container which was run using custom entry point, entry point is overwritten. So the patching required to revert the entry point.</p>
 <h3>Docker was exec-ed.</h3>
@@ -351,20 +337,17 @@ document.querySelector("#theme").onclick = function (e) {
 <div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker container commit <span class="s2">&quot;</span><span class="nv">$container_name</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:<span class="s2">&quot;</span><span class="nv">$image_tag</span><span class="s2">&quot;</span>-patched
 </code></pre></div>
 
-
 <ul>
 <li>Kill the live-debugging container</li>
 </ul>
 <div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker container <span class="nb">kill</span> <span class="s2">&quot;</span><span class="nv">$container_name</span><span class="s2">&quot;</span>
 </code></pre></div>
 
-
 <ul>
 <li>Tag the patched version to latest.</li>
 </ul>
 <div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker tag <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:<span class="s2">&quot;</span><span class="nv">$image_tag</span><span class="s2">&quot;</span>-patched <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:latest
 </code></pre></div>
-
 
 <ul>
 <li>Bring the latest service docker up.</li>
@@ -376,13 +359,11 @@ document.querySelector("#theme").onclick = function (e) {
 <div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker image inspect <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:<span class="s2">&quot;</span><span class="nv">$image_tag</span><span class="s2">&quot;</span> --format <span class="s2">&quot;Entrypoint {{json .Config.Entrypoint}}&quot;</span>
 </code></pre></div>
 
-
 <ul>
 <li>Find the old cmd</li>
 </ul>
 <div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker image inspect <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:<span class="s2">&quot;</span><span class="nv">$image_tag</span><span class="s2">&quot;</span> --format <span class="s2">&quot;CMD {{json .Config.Cmd}}&quot;</span>
 </code></pre></div>
-
 
 <ul>
 <li>Commit the docker with the old entry point and cmd</li>
@@ -390,20 +371,17 @@ document.querySelector("#theme").onclick = function (e) {
 <div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker container commit -change<span class="o">=</span><span class="s2">&quot;</span><span class="nv">$old_entrypoint</span><span class="s2">&quot;</span> --change<span class="o">=</span><span class="s2">&quot;</span><span class="nv">$old_cmd</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$container_name</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:<span class="s2">&quot;</span><span class="nv">$image_tag</span><span class="s2">&quot;</span>-patched
 </code></pre></div>
 
-
 <ul>
 <li>Kill the live-debugging container</li>
 </ul>
 <div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker container <span class="nb">kill</span> <span class="s2">&quot;</span><span class="nv">$container_name</span><span class="s2">&quot;</span>
 </code></pre></div>
 
-
 <ul>
 <li>Tag the patched version to latest.</li>
 </ul>
 <div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker tag <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:<span class="s2">&quot;</span><span class="nv">$image_tag</span><span class="s2">&quot;</span>-patched <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:latest
 </code></pre></div>
-
 
 <ul>
 <li>Bring the latest service docker up.</li>
@@ -415,13 +393,11 @@ document.querySelector("#theme").onclick = function (e) {
 <div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker ps -a -f <span class="s2">&quot;status=exited&quot;</span> --format <span class="s2">&quot;{{json .Names}}&quot;</span> <span class="p">|</span> xargs -r docker rm
 </code></pre></div>
 
-
 <ul>
 <li>Delete untagged images.</li>
 </ul>
 <div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker images prune
 </code></pre></div>
-
 
 <h1>Tips.</h1>
 <ul>

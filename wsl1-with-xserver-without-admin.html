@@ -254,7 +254,6 @@ sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 <span
 sudo update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 <span class="m">2</span>
 </code></pre></div>
 
-
 <h2>Firefox</h2>
 <p>In Debian WSL installing and installing firefox-esr worked without issue.
 There were few issue in case of Ubuntu 20.04 but not sure of Ubuntu 18.04.
@@ -266,7 +265,6 @@ sudo apt update
 sudo apt install --no-install-recommends firefox-esr 
 sudo update-alternatives --install /usr/bin/firefox firefox /usr/bin/firefox-esr <span class="m">2</span>
 </code></pre></div>
-
 
 <h2>Downside</h2>
 <p>Debian 10.5 contains vim and neo vim version do not play well with popup handling.
@@ -295,7 +293,6 @@ Simple script crafted by hand is below.</p>
 <span class="k">set</span> <span class="nv">bash</span><span class="p">=</span><span class="nv">%userprofile%</span>\AppData\Local\Microsoft\WindowsApps\debian.exe
 <span class="k">set</span> <span class="nv">vcxsrvexec</span><span class="p">=</span><span class="nv">%userprofile%</span>\appdata\local\vcxsrv\vcxsrv.exe
 </code></pre></div>
-
 
 <p>Running the shortcut.</p>
 <div class="codehilite"><pre><span></span><code><span class="k">start</span> <span class="s2">&quot;Xserver&quot;</span> /D <span class="s2">&quot;</span><span class="nv">%userprofile%</span><span class="s2">\AppData\Local\VcXsrv\&quot;</span> <span class="nv">%vcxsrvexec%</span> <span class="se">^</span>
