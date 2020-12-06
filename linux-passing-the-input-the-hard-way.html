@@ -12,20 +12,20 @@
     title="sak96-blog" href="https://sak96.github.io/feeds/all.atom.xml" />
     <style>
 :root{
-    --bg: #282c34;
-    --fg: #abb2bf;
+    --bg: #212121;
+    --fg: #eeffff;
     --gray: #5c6370;
-    --blue: #61afef;
-    --green: #98c379;
-    --red: #b35046;
+    --blue: #82aaff;
+    --green: #c3e88d;
+    --red: #f07178;
 }
 [data-theme="light"]{
     --bg: #fafafa;
-    --fg: #494b53;
-    --gray: #a0a1a7;
-    --blue: #4078f2;
-    --green: #50a14f;
-    --red: #ca1243;
+    --fg: #212121;
+    --gray: #90a4ae;
+    --blue: #6182b8;
+    --green:#91b859;
+    --red: #e53935;
 }
 *{
     box-sizing: border-box;
@@ -68,6 +68,7 @@ small {
 }
 .content{
     width: 80%;
+    max-width: 50rem;
     margin: auto;
 }
 .not-found,
@@ -80,11 +81,8 @@ small {
     display: block;
     margin: 0.5rem 0;
     padding: 1rem;
-    border-bottom: 1px dashed var(--red);
-    color: var(--fg);
-}
-.item:first-child {
     border-top: 1px dashed var(--red);
+    color: var(--fg);
 }
 .item > :first-child{
     margin-top: 0;
@@ -221,9 +219,7 @@ document.querySelector("#theme").onclick = function (e) {
 		<h1>Linux: Passing the input the hard way.</h1>
 		<h5><p>Story of how unix philosophy "everything is a file" saved the day.</p></h5>
 		<small>Written on July 18, 2020</small>
-		<hr>
 		<img class="img-fluid" src="https://sak96.github.io/theme/images/blog.svg">
-		<hr>
 	</div>
 	<div> <p>For people familiar with unix philosophy, <a href="https://en.wikipedia.org/wiki/Everything_is_a_file" title="everything is a file">"Everything is a file"</a> is
 common phrase. Rarely do we get a case to use it in practice. This is one of those cases.</p>

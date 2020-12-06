@@ -12,20 +12,20 @@
     title="sak96-blog" href="https://sak96.github.io/feeds/all.atom.xml" />
     <style>
 :root{
-    --bg: #282c34;
-    --fg: #abb2bf;
+    --bg: #212121;
+    --fg: #eeffff;
     --gray: #5c6370;
-    --blue: #61afef;
-    --green: #98c379;
-    --red: #b35046;
+    --blue: #82aaff;
+    --green: #c3e88d;
+    --red: #f07178;
 }
 [data-theme="light"]{
     --bg: #fafafa;
-    --fg: #494b53;
-    --gray: #a0a1a7;
-    --blue: #4078f2;
-    --green: #50a14f;
-    --red: #ca1243;
+    --fg: #212121;
+    --gray: #90a4ae;
+    --blue: #6182b8;
+    --green:#91b859;
+    --red: #e53935;
 }
 *{
     box-sizing: border-box;
@@ -68,6 +68,7 @@ small {
 }
 .content{
     width: 80%;
+    max-width: 50rem;
     margin: auto;
 }
 .not-found,
@@ -80,11 +81,8 @@ small {
     display: block;
     margin: 0.5rem 0;
     padding: 1rem;
-    border-bottom: 1px dashed var(--red);
-    color: var(--fg);
-}
-.item:first-child {
     border-top: 1px dashed var(--red);
+    color: var(--fg);
 }
 .item > :first-child{
     margin-top: 0;
@@ -221,9 +219,7 @@ document.querySelector("#theme").onclick = function (e) {
 		<h1>Summary: "Write An Excellent Programming Blog"</h1>
 		<h5><p>This article tries to summaries "Write An Excellent Programming Blog"</p></h5>
 		<small>Written on February 15, 2020</small>
-		<hr>
 		<img class="img-fluid" src="/images/posters/program_articles.svg">
-		<hr>
 	</div>
 	<div> <p><a href="http://bit.ly/excellent-blog">"Write An Excellent Programming Blog"</a> talks about how to write tech-based articles. The Article categories articles, and details about how to write articles for given category, which provides guidelines for beginners to write articles.</p>
 <h2>Types of articles.</h2>
