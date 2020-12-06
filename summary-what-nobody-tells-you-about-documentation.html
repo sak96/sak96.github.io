@@ -10,6 +10,7 @@
   <meta charset="UTF-8">
     <link rel="alternate" type="application/atom+xml"
     title="sak96-blog" href="https://sak96.github.io/feeds/all.atom.xml" />
+  <link rel="stylesheet" href="https://sak96.github.io/theme/syntax/pygment.css">
     <style>
 :root{
     --bg: #212121;
@@ -26,6 +27,16 @@
     --blue: #6182b8;
     --green:#91b859;
     --red: #e53935;
+}
+.codehilite pre{
+    white-space: pre-wrap;       /* css-3 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+.codehilite pre code {
+  white-space: pre-wrap;
 }
 *{
     box-sizing: border-box;
@@ -148,9 +159,7 @@ small {
     .paginator span {
         display: none;
     }
-} #}
-    </style>
-  <link rel="stylesheet" href="https://sak96.github.io/theme/syntax/pygment.css">
+}    </style>
 </head>
 
 <body>
