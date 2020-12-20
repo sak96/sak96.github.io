@@ -2,8 +2,8 @@
 <hr class="my-3">
 <div id="comments"></div>
 <script>
-  let commentUrl = "https://api.github.com/repos/{{GITHUB_OWNER}}/{{GITHUB_REPO}}/issues/{{article.issue_no}}/comments"
-  let issueUrl = "https://github.com/{{GITHUB_OWNER}}/{{GITHUB_REPO}}/issues/{{article.issue_no}}"
+  let commentUrl = "https://api.github.com/repos/{{GITHUB_OWNER}}/{{GITHUB_REPO}}/issues/{{article.issue}}/comments"
+  let issueUrl = "https://github.com/{{GITHUB_OWNER}}/{{GITHUB_REPO}}/issues/{{article.issue}}"
   function PopulateComment(comments) {
     commentsBlock = document.getElementById("comments");
 

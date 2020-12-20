@@ -42,7 +42,7 @@ GITHUB_OWNER = "github user name"
 1. add following yaml front matter.
 ```markdown
 ---
-issue_no: github-issue-number
+issue: github-issue-number
 poster: poster-if-in-content/images/posters/-folder 
 status: published-or-unpublished
 summary: summary-of-post 
