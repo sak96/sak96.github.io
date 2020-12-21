@@ -6,7 +6,7 @@ Previous &lt;a href="https://sak96.github.io/wsl1-with-xserver-without-admin.htm
 WSL2 comes with not only comes with pros but also it's own share of issues.
 For WSL2 using Ubuntu 20.04 seemed easy, keeping WSL1 Debian setup as my backup.
 This Article walk through various problem faced and solutions if found.&lt;/p&gt;
-&lt;h1&gt;VPN and MTU&lt;/h1&gt;
+&lt;h2&gt;VPN and MTU&lt;/h2&gt;
 &lt;p&gt;VPN MTU was less that the WSL2 eth0 network interface.
 This caused network connection to hang on large transfers, more detail &lt;a href="https://github.com/microsoft/WSL/issues/5068#issuecomment-683917384" title="MTU VPN issue"&gt;here&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;The VPN MTU can be accessed using following command.&lt;/p&gt;
@@ -21,7 +21,7 @@ This caused network connection to hang on large transfers, more detail &lt;a hre
 &lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nf"&gt;%bash&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;sudo ip link set mtu $($(wslpath &amp;#39;%windir%\system32&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;etsh.exe&amp;#39;) interface ipv4 show subinterface | $(wslpath &amp;#39;%windir%\system32&lt;/span&gt;&lt;span class="se"&gt;\f&lt;/span&gt;&lt;span class="s"&gt;indstr.exe&amp;#39;) /i vpn   | grep -i vpn | sed &amp;#39;s/^\s\+//g&amp;#39;|  cut -f 1 -d &amp;#39; &amp;#39;) dev eth0&amp;quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;h1&gt;Network and GUI&lt;/h1&gt;
+&lt;h2&gt;Network and GUI&lt;/h2&gt;
 &lt;p&gt;Using &lt;a href="https://sourceforge.net/projects/vcxsrv/" title="Visual C++ X server"&gt;vcXsrv&lt;/a&gt; seemed a fair choice for Xserver to use GUI.
 WSL2 restricts on using windows Network (localhost) on WSL2.
 vcXsrv could no longer be assessed by WSL2 for displaying GUI.
@@ -35,7 +35,7 @@ Admin was required to add firewall allow rule to allow such connection.&lt;/p&gt
 &lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;start &lt;span class="s2"&gt;&amp;quot;socat&amp;quot;&lt;/span&gt; /min  ubuntu2004.exe -c &lt;span class="s2"&gt;&amp;quot;socat UNIX-LISTEN:/tmp/.X11-unix/X0,fork exec:\&amp;quot;&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;wslpath &lt;span class="s1"&gt;&amp;#39;%socat%&amp;#39;&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt; - TCP\:localhost\:6000\&amp;quot;&amp;quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;h1&gt;Xserver to Xrdp&lt;/h1&gt;
+&lt;h2&gt;Xserver to Xrdp&lt;/h2&gt;
 &lt;p&gt;The above solution was slow. The other solution was to use ssh tunnel or use Xrdp.
 Install Xrdp and running it was simple, but automating is a challenge to be done.&lt;/p&gt;
 &lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Installation Command&lt;/span&gt;
@@ -65,7 +65,7 @@ You can add this to bat file or add alias to the same.&lt;/p&gt;
 &lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;mstsc.exe /v:&lt;span class="k"&gt;$(&lt;/span&gt;hostname -I&lt;span class="k"&gt;)&lt;/span&gt; &lt;span class="k"&gt;$(&lt;/span&gt;wslpath -w ~/rdp.rdp&lt;span class="k"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;h1&gt;Xrdp and Sound&lt;/h1&gt;
+&lt;h2&gt;Xrdp and Sound&lt;/h2&gt;
 &lt;p&gt;To use sound on Xrdp with pulseaudio, some libraries are required.
 Copying the library from &lt;a href="https://github.com/DesktopECHO/xWSL" title="Xrdp PulseAudio"&gt;here&lt;/a&gt; helped.&lt;/p&gt;
 &lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;adding&lt;/span&gt; &lt;span class="n"&gt;libraries&lt;/span&gt;
@@ -77,7 +77,7 @@ Copying the library from &lt;a href="https://github.com/DesktopECHO/xWSL" title=
 &lt;span class="n"&gt;pulseaudio&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;D&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;h1&gt;Teams and WSL2&lt;/h1&gt;
+&lt;h2&gt;Teams and WSL2&lt;/h2&gt;
 &lt;p&gt;Teams is messaging platform by microsoft whose installation instruction are &lt;a href="https://docs.microsoft.com/en-us/microsoftteams/get-clients" title="Ms Teams Install"&gt;here&lt;/a&gt;.
 To get working in WSL2 required installation of couple of missing dependencies.&lt;/p&gt;
 &lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# install teams&lt;/span&gt;
@@ -88,6 +88,24 @@ sudo apt install teams
 
 &lt;span class="c1"&gt;# install missing dependencies&lt;/span&gt;
 sudo apt install libsecret-1-0 chromium-codecs-ffmpeg
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Automating at Startup&lt;/h2&gt;
+&lt;p&gt;Setting mtu and booting up xrdp every time is annoying.
+For mtu setting least value of vpn and network works without trouble.
+Xrdp startup command needs a small sleep to ensure that command really worked.&lt;/p&gt;
+&lt;p&gt;To make this work open run menu by pressing &lt;code&gt;win&lt;/code&gt; + &lt;code&gt;R&lt;/code&gt;.
+Type &lt;code&gt;shell:startup&lt;/code&gt; to open the startup folder.
+Add the following script in a file &lt;code&gt;wsl.bat&lt;/code&gt; in the folder.
+Replace &lt;code&gt;$least_value&lt;/code&gt; with least value of the mtu.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;wsl sudo ip link &lt;span class="nb"&gt;set&lt;/span&gt; mtu &lt;span class="nv"&gt;$least_value&lt;/span&gt; dev eth0&lt;span class="p"&gt;;&lt;/span&gt;
+wsl sudo service xrdp&lt;span class="p"&gt;;&lt;/span&gt; sleep &lt;span class="m"&gt;5&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Make following &lt;code&gt;rdp.bat&lt;/code&gt; file in your desktop for faster launch of rdp.
+Double clicking on this file will start cmd program which launches rdp.
+The cmd prompt can be closed after some time.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;wsl mstsc.exe /v:&lt;span class="k"&gt;$(&lt;/span&gt;hostname -I&lt;span class="k"&gt;)&lt;/span&gt; &lt;span class="k"&gt;$(&lt;/span&gt;wslpath -w ~/rdp.rdp&lt;span class="k"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="wsl"></category><category term="story"></category><category term="wsl"></category><category term="linux"></category></entry><entry><title>WSL1 with Xserver without Admin</title><link href="https://sak96.github.io/wsl1-with-xserver-without-admin.html" rel="alternate"></link><published>2020-08-20T00:00:00+01:00</published><updated>2020-08-20T00:00:00+01:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2020-08-20:/wsl1-with-xserver-without-admin.html</id><summary type="html">&lt;p&gt;My experience setting up WSL1 along with problems and solutions&lt;/p&gt;</summary><content type="html">&lt;p&gt;WSL or windows subsystem for linux is way to use linux interface on windows machine.
 This post is journey of setup of WSL1 environment and not WSL2. 
 Two parts that are touched are &lt;/p&gt;

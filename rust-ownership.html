@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Rust: Ownership</title>
+  <link rel="shortcut icon" 
+  href="https://sak96.github.io/theme/images/favicon.svg">
+  <meta name="viewport" 
+  content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+    <link rel="alternate" type="application/atom+xml"
+    title="sak96-blog" href="https://sak96.github.io/feeds/all.atom.xml" />
+  <link rel="stylesheet" href="https://sak96.github.io/theme/syntax/pygment.css">
+    <style>
+:root{
+    --bg: #212121;
+    --fg: #eeffff;
+    --gray: #5c6370;
+    --blue: #82aaff;
+    --green: #c3e88d;
+    --red: #f07178;
+}
+[data-theme="light"]{
+    --bg: #fafafa;
+    --fg: #212121;
+    --gray: #90a4ae;
+    --blue: #6182b8;
+    --green:#91b859;
+    --red: #e53935;
+}
+.codehilite pre{
+    white-space: pre-wrap;       /* css-3 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+.codehilite pre code {
+  white-space: pre-wrap;
+}
+*{
+    box-sizing: border-box;
+}
+body{
+    background-color: var(--bg);
+    color: var(--fg);
+}
+a{
+    text-decoration: none;
+    color: var(--blue);
+}
+h1, h2, h3, h4, h5, h6{
+    color: var(--green);
+}
+small {
+    color: var(--gray);
+}
+.navbar {
+    border-bottom: 1px solid var(--green);
+}
+.navbar div {
+    display: inline-block;
+}
+.nav-end {
+    position: absolute;
+    right: 0.5rem;
+}
+.navbar a {
+    padding: 0.5rem 0;
+}
+.navbar a:before{
+    content: "["
+}
+.navbar a:after{
+    content: "]"
+}
+#navbar-toggler{
+    display: none;
+}
+.content{
+    width: 80%;
+    max-width: 50rem;
+    margin: auto;
+}
+article em,
+article strong{
+    color: var(--red);
+}
+.not-found,
+.coming-soon{
+    display:block;
+    width: 100%;
+    text-align: center;
+}
+.item {
+    display: block;
+    margin: 0.5rem 0;
+    padding: 1rem;
+    border-top: 1px dashed var(--red);
+    color: var(--fg);
+}
+.item > :first-child{
+    margin-top: 0;
+}
+.img-fluid{
+    width: 100%;
+}
+.paginator{
+    margin: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+}
+.footer,
+.tags {
+    margin: 0.5rem;
+    display: flex;
+    justify-content: center;
+}
+.disabled {
+    color: var(--gray);
+}
+@media only screen and (max-width: 500px){
+    .navbar {
+        border: none;
+    }
+    .nav-header {
+        border-bottom: 0.025rem solid var(--green);
+    }
+    .navbar div {
+        display: block;
+        position: static;
+    }
+    #navbar-toggler {
+        transform: rotate(90deg);
+        position: absolute;
+        right: 1rem;
+        display: inline;
+        background-color: inherit;
+        border: none;
+        color: inherit;
+    }
+    .navbar a:after,
+    .navbar a:before{
+        content: ""
+    }
+    .navbar a{
+        border-bottom: 0.025rem solid var(--green);
+        display: none;
+    }
+    .nav-header a{
+        display: inline-block;
+        border: none;
+    }
+    .navbar a.show {
+        display: block;
+    }
+    .content {
+        width: 100%;
+    }
+    .footer {
+        display: inline-block;
+    }
+    .paginator span {
+        display: none;
+    }
+}    </style>
+</head>
+
+<body>
+<div class="navbar">
+    <div class="nav-header"/>
+        <a href="https://sak96.github.io/index.html">sak96-blog</a>
+        <a id="navbar-toggler">|||</a>
+    </div>
+    <div class="nav-start">
+        <a href="https://sak96.github.io/authors.html">Authors</a>
+        <a href="https://sak96.github.io/categories.html">Categories</a>
+        <a href="https://sak96.github.io/tags.html">Tags</a>
+    </div>
+    <div class="nav-end">
+        <a href="https://sak96.github.io/feeds/all.atom.xml">Atom</a>
+        <a id="theme">Theme</a>
+    </div>
+</div>
+<script>
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(";");
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == " ") {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+    var expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + (";path=" + "https://sak96.github.io" + "/") + ";SameSite=Lax";
+}
+document.querySelector("#navbar-toggler").onclick = function (e) {
+    document.querySelectorAll(".nav-start a,.nav-end a").forEach(
+        (e) => e.classList.toggle("show")
+    )
+}
+{
+    let theme = getCookie("theme");
+    if (theme !== "light"){
+        document.documentElement.setAttribute('data-theme', ''); 
+        setCookie("theme", "", -1); 
+    }else{
+        document.documentElement.setAttribute('data-theme', theme);
+    }
+}
+document.querySelector("#theme").onclick = function (e) {
+    if (document.documentElement.getAttribute('data-theme')){
+        document.documentElement.setAttribute('data-theme', ''); 
+        setCookie("theme", "", -1); 
+    }else{
+        let l = "light";
+        document.documentElement.setAttribute('data-theme', l); 
+        setCookie("theme", l, 365); 
+    }
+} </script>    <div class="content">
+	<div>
+		<h1>Rust: Ownership</h1>
+		<h5><p>This article provide my understanding of rust ownership concept.</p></h5>
+		<h5>Read time: 3 min</h5>
+		<small>Written on December 20, 2020</small>
+		<img class="img-fluid" src="https://sak96.github.io/theme/images/blog.svg">
+	</div>
+	<div> 
+	<article>
+	<!-- cSpell:ignore sbrk, malloc -->
+
+<p>This article explains my understanding of rust ownership concepts.
+Article will only give rough overview and might not hold water in all cases.</p>
+<h2>Memory Management</h2>
+<p>Program (or Software) is set of instruction, followed by machine to solve some problem.
+Some instruction is based on output some instruction executed in the past.
+So the program needs to store output instruction for use by later instructions.
+The storage is called memory (or state) of program.</p>
+<p>But typical machines run more than one program simultaneously or interleaving.
+So memory needs to be managed between program (excluding stack for simplicity).
+This herculean task is undertaken by the operating system through system calls (brk/sbrk).</p>
+<p>Programing Language provide abstraction over memory management.
+Few Approach are briefed below.</p>
+<h3>Programmer Specified</h3>
+<blockquote>
+<p>Example: C</p>
+</blockquote>
+<p>Programer uses <strong>malloc</strong> to ask for memory and <strong>free</strong> to free the memory.
+These function are abstraction on top of brk/sbrk system calls.
+This provides greater control which comes with possibility mistakes.</p>
+<p>If you free memory when it is in use it is called <strong>use after free</strong>.
+If you free memory when it is in already freed it is called <strong>double free</strong>.
+These things can cause program to behave weirdly (could be exploited).</p>
+<h3>Runtime Assisted</h3>
+<blockquote>
+<p>Example: Python</p>
+</blockquote>
+<p>Program is run on top of a runtime which manages memory on behalf of the program.</p>
+<p>The most common way is keep <strong>count of references</strong> to memory.
+The memory is freed when the count goes down to zero.
+But there is issue of <strong>cycle</strong> that is two references referencing each other.
+To resolve this runtime regularly check for such references.</p>
+<p>Improper abstraction can cause weird behaviors.
+But common issues is program accidentally holding to data which is no longer required
+(<em>closures</em> which hold references large data, which is kept but never going to executed).</p>
+<p>Other issue is performance depends on runtime.
+Any improvement will require to understand these abstraction.</p>
+<h3>Compiler Assisted</h3>
+<blockquote>
+<p>Example: Rust</p>
+</blockquote>
+<p>Compiler analyses the code and inserts memory management code at appropriate position.</p>
+<p>The most common way is to do a <strong>life time analysis</strong> of variable.
+Compiler checks for usage of variable (usually the reference) in code.
+If the variable is not used after certain point compiler inserts <em>free</em> logic there.</p>
+<p>This is hard problem as you need to analysis all possible runtime outcomes.
+One way to solve this is by creating a copy of variable on each reference.
+This way the chain of reference is linear and can be dropped once variable is dropped.
+But this may lead to large memory consumptions.
+One of the other ways is Rust ownership model.</p>
+<h2>Ownership</h2>
+<h3>Why Ownership?</h3>
+<p><em>Life time analysis</em> requires to determine all runtime reference at compile time.
+This is hard problem as you need to analysis all possible runtime outcomes.</p>
+<p>Having protocol to allow programmer to not allow unwanted outcomes can help the analysis.
+This restricts number of runtime outcomes and hence reduces compiler's work.
+This protocol is the rust ownership model.</p>
+<h3>What is Ownership?</h3>
+<p>Ownership is a concept where a memory is linked to a owner (variable).
+This allows compiler to free the memory when owner is no longer in use.
+When a owner is no longer in use we call it is <strong>out of scope</strong>.
+In short, Ownership is assigning memory's life time to life time of variable.</p>
+<p>This concept seems simple but is very constraining.
+To provide flexibility concepts like <strong>move</strong> and <strong>borrow</strong> were introduced.</p>
+<h3>What is Move?</h3>
+<p>Move is concept of transfer ownership of memory from one owner to other owner.
+This means the memory is not freed when the previous owner goes <em>out of scope</em>.
+But the memory is not freed when the new owner goes <em>out of scope</em>.</p>
+<h3>What is Borrow?</h3>
+<p>Borrow
+Bonus: Mutability</p>
+	</article>
+	</div>
+<div class="tags">
+    <span>Post Tags:</span>
+    <a href="tag/rust.html">&nbsp;#rust,</a>
+    <a href="tag/ownership.html">&nbsp;#ownership</a>
+</div><hr class="my-3">
+<div id="comments"></div>
+<script>
+  let commentUrl = "https://api.github.com/repos/sak96/sak96.github.io/issues/3/comments"
+  let issueUrl = "https://github.com/sak96/sak96.github.io/issues/3"
+  function PopulateComment(comments) {
+    commentsBlock = document.getElementById("comments");
+
+    // comments heading
+    let heading = document.createElement("div")
+    heading.innerText = "Comments"
+    commentsBlock.append(heading)
+
+    // comments placeholder
+    let commentsDiv = document.createElement("div")
+    commentsBlock.append(commentsDiv)
+
+    comments.forEach(comment => {
+      // username 
+      let username = document.createElement("span")
+      username.innerText = comment.user.login
+
+      // posting time
+      updateTime = document.createElement("small")
+      updateTime.innerText = "(" + comment.updated_at + ")"
+
+      // comment body
+      commentBody = document.createElement("div")
+      commentBody.innerText = comment.body
+
+      //line break
+      lineBreak = document.createElement("br")
+
+      // create comment box
+      commentBox = document.createElement("a")
+      commentBox.classList.add("item")
+      commentBox.append(username)
+      commentBox.append(updateTime)
+      commentBox.append(lineBreak)
+      commentBox.append(commentBody)
+      commentBox.href = comment.html_url
+
+      commentsDiv.append(commentBox)
+    });
+
+    // add comment
+    let addComment = document.createElement("a")
+    addComment.classList.add("item")
+    addComment.href = issueUrl
+    addComment.innerText = "Have some comments? Add comment ..."
+    commentsDiv.append(addComment)
+
+  }
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', commentUrl, true);
+  xhr.responseType = 'json';
+  xhr.onload = function () {
+    var status = xhr.status;
+    if (status === 200) {
+      console.log(PopulateComment(xhr.response));
+    } else {
+      console.log(xhr.response);
+    }
+  };
+  xhr.send();
+</script>
+<hr>
+<div class="footer">
+    <span>Powered by:</span>
+    <a href="http://getpelican.com/">Pelican,</a>
+    <a href="https://github.com/pygments/pygments">Pygments,</a>
+    <a href="https://github.com/rakr/vim-one">Vim-One</a>
+</div>  </div>
+</body>
+</html>

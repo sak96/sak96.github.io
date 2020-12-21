@@ -1,12 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>sak96-blog</title><link href="https://sak96.github.io/" rel="alternate"></link><link href="https://sak96.github.io/feeds/all.atom.xml" rel="self"></link><id>https://sak96.github.io/</id><updated>2020-10-14T00:00:00+01:00</updated><entry><title>WSL2 with GUI without Admin</title><link href="https://sak96.github.io/wsl2-with-gui-without-admin.html" rel="alternate"></link><published>2020-10-14T00:00:00+01:00</published><updated>2020-10-14T00:00:00+01:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2020-10-14:/wsl2-with-gui-without-admin.html</id><summary type="html">&lt;p&gt;My experience setting up WSL2 along with problems and solutions&lt;/p&gt;</summary><content type="html">&lt;p&gt;WSL or windows subsystem for linux is way to use linux interface on windows machine.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>sak96-blog</title><link href="https://sak96.github.io/" rel="alternate"></link><link href="https://sak96.github.io/feeds/all.atom.xml" rel="self"></link><id>https://sak96.github.io/</id><updated>2020-12-20T00:00:00+00:00</updated><entry><title>Rust: Ownership</title><link href="https://sak96.github.io/rust-ownership.html" rel="alternate"></link><published>2020-12-20T00:00:00+00:00</published><updated>2020-12-20T00:00:00+00:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2020-12-20:/rust-ownership.html</id><summary type="html">&lt;p&gt;This article provide my understanding of rust ownership concept.&lt;/p&gt;</summary><content type="html">&lt;!-- cSpell:ignore sbrk, malloc --&gt;
+
+&lt;p&gt;This article explains my understanding of rust ownership concepts.
+Article will only give rough overview and might not hold water in all cases.&lt;/p&gt;
+&lt;h2&gt;Memory Management&lt;/h2&gt;
+&lt;p&gt;Program (or Software) is set of instruction, followed by machine to solve some problem.
+Some instruction is based on output some instruction executed in the past.
+So the program needs to store output instruction for use by later instructions.
+The storage is called memory (or state) of program.&lt;/p&gt;
+&lt;p&gt;But typical machines run more than one program simultaneously or interleaving.
+So memory needs to be managed between program (excluding stack for simplicity).
+This herculean task is undertaken by the operating system through system calls (brk/sbrk).&lt;/p&gt;
+&lt;p&gt;Programing Language provide abstraction over memory management.
+Few Approach are briefed below.&lt;/p&gt;
+&lt;h3&gt;Programmer Specified&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Example: C&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Programer uses &lt;strong&gt;malloc&lt;/strong&gt; to ask for memory and &lt;strong&gt;free&lt;/strong&gt; to free the memory.
+These function are abstraction on top of brk/sbrk system calls.
+This provides greater control which comes with possibility mistakes.&lt;/p&gt;
+&lt;p&gt;If you free memory when it is in use it is called &lt;strong&gt;use after free&lt;/strong&gt;.
+If you free memory when it is in already freed it is called &lt;strong&gt;double free&lt;/strong&gt;.
+These things can cause program to behave weirdly (could be exploited).&lt;/p&gt;
+&lt;h3&gt;Runtime Assisted&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Example: Python&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Program is run on top of a runtime which manages memory on behalf of the program.&lt;/p&gt;
+&lt;p&gt;The most common way is keep &lt;strong&gt;count of references&lt;/strong&gt; to memory.
+The memory is freed when the count goes down to zero.
+But there is issue of &lt;strong&gt;cycle&lt;/strong&gt; that is two references referencing each other.
+To resolve this runtime regularly check for such references.&lt;/p&gt;
+&lt;p&gt;Improper abstraction can cause weird behaviors.
+But common issues is program accidentally holding to data which is no longer required
+(&lt;em&gt;closures&lt;/em&gt; which hold references large data, which is kept but never going to executed).&lt;/p&gt;
+&lt;p&gt;Other issue is performance depends on runtime.
+Any improvement will require to understand these abstraction.&lt;/p&gt;
+&lt;h3&gt;Compiler Assisted&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Example: Rust&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Compiler analyses the code and inserts memory management code at appropriate position.&lt;/p&gt;
+&lt;p&gt;The most common way is to do a &lt;strong&gt;life time analysis&lt;/strong&gt; of variable.
+Compiler checks for usage of variable (usually the reference) in code.
+If the variable is not used after certain point compiler inserts &lt;em&gt;free&lt;/em&gt; logic there.&lt;/p&gt;
+&lt;p&gt;This is hard problem as you need to analysis all possible runtime outcomes.
+One way to solve this is by creating a copy of variable on each reference.
+This way the chain of reference is linear and can be dropped once variable is dropped.
+But this may lead to large memory consumptions.
+One of the other ways is Rust ownership model.&lt;/p&gt;
+&lt;h2&gt;Ownership&lt;/h2&gt;
+&lt;h3&gt;Why Ownership?&lt;/h3&gt;
+&lt;p&gt;&lt;em&gt;Life time analysis&lt;/em&gt; requires to determine all runtime reference at compile time.
+This is hard problem as you need to analysis all possible runtime outcomes.&lt;/p&gt;
+&lt;p&gt;Having protocol to allow programmer to not allow unwanted outcomes can help the analysis.
+This restricts number of runtime outcomes and hence reduces compiler's work.
+This protocol is the rust ownership model.&lt;/p&gt;
+&lt;h3&gt;What is Ownership?&lt;/h3&gt;
+&lt;p&gt;Ownership is a concept where a memory is linked to a owner (variable).
+This allows compiler to free the memory when owner is no longer in use.
+When a owner is no longer in use we call it is &lt;strong&gt;out of scope&lt;/strong&gt;.
+In short, Ownership is assigning memory's life time to life time of variable.&lt;/p&gt;
+&lt;p&gt;This concept seems simple but is very constraining.
+To provide flexibility concepts like &lt;strong&gt;move&lt;/strong&gt; and &lt;strong&gt;borrow&lt;/strong&gt; were introduced.&lt;/p&gt;
+&lt;h3&gt;What is Move?&lt;/h3&gt;
+&lt;p&gt;Move is concept of transfer ownership of memory from one owner to other owner.
+This means the memory is not freed when the previous owner goes &lt;em&gt;out of scope&lt;/em&gt;.
+But the memory is not freed when the new owner goes &lt;em&gt;out of scope&lt;/em&gt;.&lt;/p&gt;
+&lt;h3&gt;What is Borrow?&lt;/h3&gt;
+&lt;p&gt;Borrow
+Bonus: Mutability&lt;/p&gt;</content><category term="rust"></category><category term="rust"></category><category term="ownership"></category></entry><entry><title>WSL2 with GUI without Admin</title><link href="https://sak96.github.io/wsl2-with-gui-without-admin.html" rel="alternate"></link><published>2020-10-14T00:00:00+01:00</published><updated>2020-10-14T00:00:00+01:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2020-10-14:/wsl2-with-gui-without-admin.html</id><summary type="html">&lt;p&gt;My experience setting up WSL2 along with problems and solutions&lt;/p&gt;</summary><content type="html">&lt;p&gt;WSL or windows subsystem for linux is way to use linux interface on windows machine.
 WSL2 comes with better support for filesystem and network for linux interface.
 Previous &lt;a href="https://sak96.github.io/wsl1-with-xserver-without-admin.html"&gt;Article&lt;/a&gt; describes wsl1 setup.&lt;/p&gt;
 &lt;p&gt;WSL2 solves the &lt;a href="https://discourse.ubuntu.com/t/ubuntu-20-04-and-wsl-1/15291" title="Ubuntu sleep"&gt;sleep issue&lt;/a&gt; in Ubuntu wsl with updated glibc.
 WSL2 comes with not only comes with pros but also it's own share of issues.
 For WSL2 using Ubuntu 20.04 seemed easy, keeping WSL1 Debian setup as my backup.
 This Article walk through various problem faced and solutions if found.&lt;/p&gt;
-&lt;h1&gt;VPN and MTU&lt;/h1&gt;
+&lt;h2&gt;VPN and MTU&lt;/h2&gt;
 &lt;p&gt;VPN MTU was less that the WSL2 eth0 network interface.
 This caused network connection to hang on large transfers, more detail &lt;a href="https://github.com/microsoft/WSL/issues/5068#issuecomment-683917384" title="MTU VPN issue"&gt;here&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;The VPN MTU can be accessed using following command.&lt;/p&gt;
@@ -21,7 +92,7 @@ This caused network connection to hang on large transfers, more detail &lt;a hre
 &lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nf"&gt;%bash&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;sudo ip link set mtu $($(wslpath &amp;#39;%windir%\system32&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;etsh.exe&amp;#39;) interface ipv4 show subinterface | $(wslpath &amp;#39;%windir%\system32&lt;/span&gt;&lt;span class="se"&gt;\f&lt;/span&gt;&lt;span class="s"&gt;indstr.exe&amp;#39;) /i vpn   | grep -i vpn | sed &amp;#39;s/^\s\+//g&amp;#39;|  cut -f 1 -d &amp;#39; &amp;#39;) dev eth0&amp;quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;h1&gt;Network and GUI&lt;/h1&gt;
+&lt;h2&gt;Network and GUI&lt;/h2&gt;
 &lt;p&gt;Using &lt;a href="https://sourceforge.net/projects/vcxsrv/" title="Visual C++ X server"&gt;vcXsrv&lt;/a&gt; seemed a fair choice for Xserver to use GUI.
 WSL2 restricts on using windows Network (localhost) on WSL2.
 vcXsrv could no longer be assessed by WSL2 for displaying GUI.
@@ -35,7 +106,7 @@ Admin was required to add firewall allow rule to allow such connection.&lt;/p&gt
 &lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;start &lt;span class="s2"&gt;&amp;quot;socat&amp;quot;&lt;/span&gt; /min  ubuntu2004.exe -c &lt;span class="s2"&gt;&amp;quot;socat UNIX-LISTEN:/tmp/.X11-unix/X0,fork exec:\&amp;quot;&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;wslpath &lt;span class="s1"&gt;&amp;#39;%socat%&amp;#39;&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt; - TCP\:localhost\:6000\&amp;quot;&amp;quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;h1&gt;Xserver to Xrdp&lt;/h1&gt;
+&lt;h2&gt;Xserver to Xrdp&lt;/h2&gt;
 &lt;p&gt;The above solution was slow. The other solution was to use ssh tunnel or use Xrdp.
 Install Xrdp and running it was simple, but automating is a challenge to be done.&lt;/p&gt;
 &lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Installation Command&lt;/span&gt;
@@ -65,7 +136,7 @@ You can add this to bat file or add alias to the same.&lt;/p&gt;
 &lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;mstsc.exe /v:&lt;span class="k"&gt;$(&lt;/span&gt;hostname -I&lt;span class="k"&gt;)&lt;/span&gt; &lt;span class="k"&gt;$(&lt;/span&gt;wslpath -w ~/rdp.rdp&lt;span class="k"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;h1&gt;Xrdp and Sound&lt;/h1&gt;
+&lt;h2&gt;Xrdp and Sound&lt;/h2&gt;
 &lt;p&gt;To use sound on Xrdp with pulseaudio, some libraries are required.
 Copying the library from &lt;a href="https://github.com/DesktopECHO/xWSL" title="Xrdp PulseAudio"&gt;here&lt;/a&gt; helped.&lt;/p&gt;
 &lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;adding&lt;/span&gt; &lt;span class="n"&gt;libraries&lt;/span&gt;
@@ -77,7 +148,7 @@ Copying the library from &lt;a href="https://github.com/DesktopECHO/xWSL" title=
 &lt;span class="n"&gt;pulseaudio&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;D&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;h1&gt;Teams and WSL2&lt;/h1&gt;
+&lt;h2&gt;Teams and WSL2&lt;/h2&gt;
 &lt;p&gt;Teams is messaging platform by microsoft whose installation instruction are &lt;a href="https://docs.microsoft.com/en-us/microsoftteams/get-clients" title="Ms Teams Install"&gt;here&lt;/a&gt;.
 To get working in WSL2 required installation of couple of missing dependencies.&lt;/p&gt;
 &lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# install teams&lt;/span&gt;
@@ -88,6 +159,24 @@ sudo apt install teams
 
 &lt;span class="c1"&gt;# install missing dependencies&lt;/span&gt;
 sudo apt install libsecret-1-0 chromium-codecs-ffmpeg
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Automating at Startup&lt;/h2&gt;
+&lt;p&gt;Setting mtu and booting up xrdp every time is annoying.
+For mtu setting least value of vpn and network works without trouble.
+Xrdp startup command needs a small sleep to ensure that command really worked.&lt;/p&gt;
+&lt;p&gt;To make this work open run menu by pressing &lt;code&gt;win&lt;/code&gt; + &lt;code&gt;R&lt;/code&gt;.
+Type &lt;code&gt;shell:startup&lt;/code&gt; to open the startup folder.
+Add the following script in a file &lt;code&gt;wsl.bat&lt;/code&gt; in the folder.
+Replace &lt;code&gt;$least_value&lt;/code&gt; with least value of the mtu.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;wsl sudo ip link &lt;span class="nb"&gt;set&lt;/span&gt; mtu &lt;span class="nv"&gt;$least_value&lt;/span&gt; dev eth0&lt;span class="p"&gt;;&lt;/span&gt;
+wsl sudo service xrdp&lt;span class="p"&gt;;&lt;/span&gt; sleep &lt;span class="m"&gt;5&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Make following &lt;code&gt;rdp.bat&lt;/code&gt; file in your desktop for faster launch of rdp.
+Double clicking on this file will start cmd program which launches rdp.
+The cmd prompt can be closed after some time.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;wsl mstsc.exe /v:&lt;span class="k"&gt;$(&lt;/span&gt;hostname -I&lt;span class="k"&gt;)&lt;/span&gt; &lt;span class="k"&gt;$(&lt;/span&gt;wslpath -w ~/rdp.rdp&lt;span class="k"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="wsl"></category><category term="story"></category><category term="wsl"></category><category term="linux"></category></entry><entry><title>WSL1 with Xserver without Admin</title><link href="https://sak96.github.io/wsl1-with-xserver-without-admin.html" rel="alternate"></link><published>2020-08-20T00:00:00+01:00</published><updated>2020-08-20T00:00:00+01:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2020-08-20:/wsl1-with-xserver-without-admin.html</id><summary type="html">&lt;p&gt;My experience setting up WSL1 along with problems and solutions&lt;/p&gt;</summary><content type="html">&lt;p&gt;WSL or windows subsystem for linux is way to use linux interface on windows machine.
 This post is journey of setup of WSL1 environment and not WSL2. 
 Two parts that are touched are &lt;/p&gt;

@@ -2,14 +2,15 @@
 <html>
 
 <head>
-  <title>Authors</title>
+  <title>ownership</title>
   <link rel="shortcut icon" 
   href="https://sak96.github.io/theme/images/favicon.svg">
   <meta name="viewport" 
   content="width=device-width, initial-scale=1.0" />
   <meta charset="UTF-8">
-    <link rel="alternate" type="application/atom+xml"
+        <link rel="alternate" type="application/atom+xml"
     title="sak96-blog" href="https://sak96.github.io/feeds/all.atom.xml" />
+
   <link rel="stylesheet" href="https://sak96.github.io/theme/syntax/pygment.css">
     <style>
 :root{
@@ -228,17 +229,40 @@ document.querySelector("#theme").onclick = function (e) {
         setCookie("theme", l, 365); 
     }
 } </script>    <div class="content">
-    <!-- article collections are : authors, tags, categories -->
-        <h2>Authors</h2>
+    <!-- article list are articles belonging to authors, tags, categories -->
+        <h2>
+            ownership Articles
+        </h2>
         <div>
-                <span class="item">
-                <a href="https://sak96.github.io/author/sak96.html" >
-                    sak96(9)
-                </a> 
-                <small>
-                </small>
-                </span>
+                <a href="https://sak96.github.io/rust-ownership.html" class="item">
+                    <h4>Rust: Ownership</h4>
+                    <span><p>This article provide my understanding of rust ownership concept.</p></span>
+                    <small>December 20, 2020</small>
+                </a>
         </div>
+    <!-- navigation for paged article groups -->
+    <div class="paginator">
+        <a             class="disabled"
+        href='https://sak96.github.io/tag/ownership.html'>
+        &lt;&lt;<span> First</span>
+        </a>
+        <a             class="disabled"
+        href='https://sak96.github.io/'>
+            &lt;<span > Prev</span>
+        </a>
+
+        <span class="page-item" >&hellip;</span>
+
+        <a             class="disabled"
+        href='https://sak96.github.io/'>
+            <span class="page-item">Next </span>&gt; 
+        </a> 
+        <a             class="disabled"
+ 
+        href='https://sak96.github.io/tag/ownership.html'>
+            <span class="page-item">Last </span>&gt;&gt;
+        </a>
+    </div>
 <hr>
 <div class="footer">
     <span>Powered by:</span>
