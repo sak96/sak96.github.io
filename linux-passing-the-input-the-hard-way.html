@@ -82,6 +82,10 @@ small {
     max-width: 50rem;
     margin: auto;
 }
+article em,
+article strong{
+    color: var(--red);
+}
 .not-found,
 .coming-soon{
     display:block;
@@ -227,10 +231,13 @@ document.querySelector("#theme").onclick = function (e) {
 	<div>
 		<h1>Linux: Passing the input the hard way.</h1>
 		<h5><p>Story of how unix philosophy "everything is a file" saved the day.</p></h5>
+		<h5>Read time: 2 min</h5>
 		<small>Written on July 18, 2020</small>
 		<img class="img-fluid" src="https://sak96.github.io/theme/images/blog.svg">
 	</div>
-	<div> <p>For people familiar with unix philosophy, <a href="https://en.wikipedia.org/wiki/Everything_is_a_file" title="everything is a file">"Everything is a file"</a> is
+	<div> 
+	<article>
+	<p>For people familiar with unix philosophy, <a href="https://en.wikipedia.org/wiki/Everything_is_a_file" title="everything is a file">"Everything is a file"</a> is
 common phrase. Rarely do we get a case to use it in practice. This is one of those cases.</p>
 <h1>Problem</h1>
 <p>At work a pipeline which had to be run by <code>End of Day</code>, got stuck. After checking the
@@ -259,6 +266,7 @@ solution.</p>
 <li>Run <code>cat</code> in a terminal. It wait for input.</li>
 <li>Run <code>echo "Hello World" &gt;&gt; "/proc/$(pidof -s cat)/fd/1"</code> to input to <code>cat</code> program.</li>
 </ol>
+	</article>
 	</div>
 <div class="tags">
     <span>Post Tags:</span>

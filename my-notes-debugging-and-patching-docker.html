@@ -82,6 +82,10 @@ small {
     max-width: 50rem;
     margin: auto;
 }
+article em,
+article strong{
+    color: var(--red);
+}
 .not-found,
 .coming-soon{
     display:block;
@@ -227,10 +231,13 @@ document.querySelector("#theme").onclick = function (e) {
 	<div>
 		<h1>My Notes: Debugging And Patching Docker</h1>
 		<h5><p>This article provide some notes for debugging and patching docker.</p></h5>
+		<h5>Read time: 4 min</h5>
 		<small>Written on February 29, 2020</small>
 		<img class="img-fluid" src="/images/posters/working-with-container.svg">
 	</div>
-	<div> <p>Containerization of software and services allows easy deployment, portability and many other benefits. Docker is one of wide-spread adopted technology used for containerization. I use docker while on work. There are many guide and articles about using and debugging docker. Here is my guide for debugging and patching docker. And link to <a href="#Resources">resources</a>.</p>
+	<div> 
+	<article>
+	<p>Containerization of software and services allows easy deployment, portability and many other benefits. Docker is one of wide-spread adopted technology used for containerization. I use docker while on work. There are many guide and articles about using and debugging docker. Here is my guide for debugging and patching docker. And link to <a href="#Resources">resources</a>.</p>
 <h1>Terminologies.</h1>
 <ul>
 <li>Docker: software used for containerization.</li>
@@ -429,6 +436,7 @@ document.querySelector("#theme").onclick = function (e) {
 <li><a href="https://docs.docker.com/config/formatting/"><code>--format</code></a></li>
 <li><a href="https://docs.docker.com/engine/reference/commandline/cp/"><code>docker cp</code></a></li>
 </ul>
+	</article>
 	</div>
 <div class="tags">
     <span>Post Tags:</span>

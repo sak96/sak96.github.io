@@ -82,6 +82,10 @@ small {
     max-width: 50rem;
     margin: auto;
 }
+article em,
+article strong{
+    color: var(--red);
+}
 .not-found,
 .coming-soon{
     display:block;
@@ -227,10 +231,13 @@ document.querySelector("#theme").onclick = function (e) {
 	<div>
 		<h1>WSL1 with Xserver without Admin</h1>
 		<h5><p>My experience setting up WSL1 along with problems and solutions</p></h5>
+		<h5>Read time: 3 min</h5>
 		<small>Written on August 20, 2020</small>
 		<img class="img-fluid" src="https://sak96.github.io/theme/images/blog.svg">
 	</div>
-	<div> <p>WSL or windows subsystem for linux is way to use linux interface on windows machine.
+	<div> 
+	<article>
+	<p>WSL or windows subsystem for linux is way to use linux interface on windows machine.
 This post is journey of setup of WSL1 environment and not WSL2. 
 Two parts that are touched are </p>
 <ol>
@@ -310,6 +317,7 @@ Simple script crafted by hand is below.</p>
 <span class="k">set</span> <span class="nv">disp</span><span class="p">=</span>localhost:<span class="nv">%dispnum%</span>.0
 <span class="nv">%bash%</span> -c <span class="s2">&quot;export DISPLAY=</span><span class="nv">%disp%</span><span class="s2">; cd $HOME; </span><span class="nv">%command%</span><span class="s2"> &amp; disown&quot;</span> 
 </code></pre></div>
+	</article>
 	</div>
 <div class="tags">
     <span>Post Tags:</span>

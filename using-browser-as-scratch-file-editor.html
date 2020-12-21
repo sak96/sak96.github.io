@@ -82,6 +82,10 @@ small {
     max-width: 50rem;
     margin: auto;
 }
+article em,
+article strong{
+    color: var(--red);
+}
 .not-found,
 .coming-soon{
     display:block;
@@ -227,10 +231,13 @@ document.querySelector("#theme").onclick = function (e) {
 	<div>
 		<h1>Using browser as scratch file editor</h1>
 		<h5><p>Leveraging data urls to use browser as scratch file editor.</p></h5>
+		<h5>Read time: 1 min</h5>
 		<small>Written on July 22, 2020</small>
 		<img class="img-fluid" src="https://sak96.github.io/theme/images/blog.svg">
 	</div>
-	<div> <p>When browsing internet you may find a need to write down some temporary notes. I call it
+	<div> 
+	<article>
+	<p>When browsing internet you may find a need to write down some temporary notes. I call it
 scratch files. Opening text editor for editing these scratch files is too much pain or
 just too much of context swap.</p>
 <h1>In Browser Temporary File Editor</h1>
@@ -255,6 +262,7 @@ editor.</p>
 </ul>
 <p><strong>Note</strong>: The content is lost if you close the tab. Try a extensions if you don't want
 to lose the contents.</p>
+	</article>
 	</div>
 <div class="tags">
     <span>Post Tags:</span>

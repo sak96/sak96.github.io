@@ -82,6 +82,10 @@ small {
     max-width: 50rem;
     margin: auto;
 }
+article em,
+article strong{
+    color: var(--red);
+}
 .not-found,
 .coming-soon{
     display:block;
@@ -227,10 +231,13 @@ document.querySelector("#theme").onclick = function (e) {
 	<div>
 		<h1>WSL2 with GUI without Admin</h1>
 		<h5><p>My experience setting up WSL2 along with problems and solutions</p></h5>
+		<h5>Read time: 3 min</h5>
 		<small>Written on October 14, 2020</small>
 		<img class="img-fluid" src="https://sak96.github.io/theme/images/blog.svg">
 	</div>
-	<div> <p>WSL or windows subsystem for linux is way to use linux interface on windows machine.
+	<div> 
+	<article>
+	<p>WSL or windows subsystem for linux is way to use linux interface on windows machine.
 WSL2 comes with better support for filesystem and network for linux interface.
 Previous <a href="https://sak96.github.io/wsl1-with-xserver-without-admin.html">Article</a> describes wsl1 setup.</p>
 <p>WSL2 solves the <a href="https://discourse.ubuntu.com/t/ubuntu-20-04-and-wsl-1/15291" title="Ubuntu sleep">sleep issue</a> in Ubuntu wsl with updated glibc.
@@ -320,6 +327,7 @@ sudo apt install teams
 <span class="c1"># install missing dependencies</span>
 sudo apt install libsecret-1-0 chromium-codecs-ffmpeg
 </code></pre></div>
+	</article>
 	</div>
 <div class="tags">
     <span>Post Tags:</span>

@@ -82,6 +82,10 @@ small {
     max-width: 50rem;
     margin: auto;
 }
+article em,
+article strong{
+    color: var(--red);
+}
 .not-found,
 .coming-soon{
     display:block;
@@ -227,10 +231,13 @@ document.querySelector("#theme").onclick = function (e) {
 	<div>
 		<h1>Summary: "What nobody tells you about documentation"</h1>
 		<h5><p>This article tries to summaries "What nobody tells you about documentation"</p></h5>
+		<h5>Read time: 2 min</h5>
 		<small>Written on February 22, 2020</small>
 		<img class="img-fluid" src="/images/posters/documentation.svg">
 	</div>
-	<div> <p>The article <a href="https://www.divio.com/blog/documentation">"What nobody tells you about documentation"</a> details on writing manuals for software. It provides details of different it's components, their intent, content, scope and purpose. This simplifies the process by helping writer have right mindset.</p>
+	<div> 
+	<article>
+	<p>The article <a href="https://www.divio.com/blog/documentation">"What nobody tells you about documentation"</a> details on writing manuals for software. It provides details of different it's components, their intent, content, scope and purpose. This simplifies the process by helping writer have right mindset.</p>
 <h2>Types of Documentation.</h2>
 <h3>Tutorial.</h3>
 <ul>
@@ -302,6 +309,7 @@ document.querySelector("#theme").onclick = function (e) {
 <li>States good practices.</li>
 <li>Includes discussion or exploration contents. </li>
 </ul>
+	</article>
 	</div>
 <div class="tags">
     <span>Post Tags:</span>
