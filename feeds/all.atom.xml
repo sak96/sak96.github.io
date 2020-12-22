@@ -1,5 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>sak96-blog</title><link href="https://sak96.github.io/" rel="alternate"></link><link href="https://sak96.github.io/feeds/all.atom.xml" rel="self"></link><id>https://sak96.github.io/</id><updated>2020-10-14T00:00:00+01:00</updated><entry><title>WSL2 with GUI without Admin</title><link href="https://sak96.github.io/wsl2-with-gui-without-admin.html" rel="alternate"></link><published>2020-10-14T00:00:00+01:00</published><updated>2020-10-14T00:00:00+01:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2020-10-14:/wsl2-with-gui-without-admin.html</id><summary type="html">&lt;p&gt;My experience setting up WSL2 along with problems and solutions&lt;/p&gt;</summary><content type="html">&lt;p&gt;WSL or windows subsystem for linux is way to use linux interface on windows machine.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>sak96-blog</title><link href="https://sak96.github.io/" rel="alternate"></link><link href="https://sak96.github.io/feeds/all.atom.xml" rel="self"></link><id>https://sak96.github.io/</id><updated>2020-12-20T00:00:00+00:00</updated><entry><title>Rust: Ownership</title><link href="https://sak96.github.io/rust-ownership.html" rel="alternate"></link><published>2020-12-20T00:00:00+00:00</published><updated>2020-12-20T00:00:00+00:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2020-12-20:/rust-ownership.html</id><summary type="html">&lt;p&gt;This article provide my understanding of rust ownership concept.&lt;/p&gt;</summary><content type="html">&lt;!-- cSpell:ignore sbrk, malloc --&gt;
+
+&lt;p&gt;This article explains my understanding of rust ownership concepts.
+Article will only give rough overview and might not hold water in all cases.&lt;/p&gt;
+&lt;h2&gt;Memory Management&lt;/h2&gt;
+&lt;p&gt;Program (or Software) is set of instruction, followed by machine to solve some problem.
+Some instruction may be based on output some instruction executed in the past.
+So the program needs to store output instruction for use by later instructions.
+The storage is called memory (or state) of program.&lt;/p&gt;
+&lt;p&gt;But typical machines run more than one program simultaneously or interleaving-ly.
+So memory needs to be managed between programs.
+This herculean task is undertaken by the operating system through system calls (brk/sbrk).&lt;/p&gt;
+&lt;p&gt;Programing Language provide abstraction over these memory management calls (sbrk/brk).
+Few Approach are briefed below.&lt;/p&gt;
+&lt;h3&gt;Programmer Specified&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Example: C&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Programer uses &lt;strong&gt;malloc&lt;/strong&gt; to ask for memory and &lt;strong&gt;free&lt;/strong&gt; to free the memory.
+These function are abstraction on top of brk/sbrk system calls.
+This provides greater control which comes with possibility making mistakes.&lt;/p&gt;
+&lt;p&gt;If you free memory when it is in use it is called &lt;strong&gt;use after free&lt;/strong&gt;.
+If you free memory when it is in already freed it is called &lt;strong&gt;double free&lt;/strong&gt;.
+These things can cause program to behave weirdly (could be exploited).&lt;/p&gt;
+&lt;h3&gt;Runtime Assisted&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Example: Python&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Program is run on top of a runtime which manages memory on behalf of the program.&lt;/p&gt;
+&lt;p&gt;The most common way is keep &lt;strong&gt;count of references&lt;/strong&gt; to memory.
+When variable reference a memory it count is incremented.
+When this variable is no longer in use the memory count is decremented.
+When reference count goes to zero that means no one is referencing the memory.
+This means memory can be freed.&lt;/p&gt;
+&lt;p&gt;But there is issue of &lt;strong&gt;cycle&lt;/strong&gt; that is two references referencing each other.
+Which means that there reference count is never going back to zero.
+To resolve this runtime regularly check for such references.&lt;/p&gt;
+&lt;p&gt;This means runtime add negatively to performance.
+Any improvement to performance will require understanding of runtime.
+Most common issues is variable accidentally holding to data which is no longer required
+(&lt;em&gt;closures&lt;/em&gt; which hold references large data, which is kept but never going to executed).&lt;/p&gt;
+&lt;h3&gt;Compiler Assisted&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Example: Rust&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Compiler analyses the code and inserts memory management code at appropriate position.&lt;/p&gt;
+&lt;p&gt;The most common way is to do a &lt;strong&gt;life time analysis&lt;/strong&gt; of variable.
+Compiler checks for usage of variable (usually the reference) in code.
+If the variable is not used after certain point compiler inserts &lt;em&gt;free&lt;/em&gt; logic there.&lt;/p&gt;
+&lt;p&gt;One way to implement this is by creating a copy of variable on each reference.
+This way the chain of reference is linear and can be dropped once variable is dropped.
+But this may lead to large memory consumptions.
+One of the other ways is Rust ownership model.&lt;/p&gt;
+&lt;h2&gt;Ownership&lt;/h2&gt;
+&lt;h3&gt;Why Ownership?&lt;/h3&gt;
+&lt;p&gt;&lt;em&gt;Life time analysis&lt;/em&gt; requires to determine all runtime reference at compile time.
+This is hard problem as you need to analysis all possible runtime outcomes.&lt;/p&gt;
+&lt;p&gt;Having protocol to allow programmer to restrict unwanted outcomes can help the analysis.
+This restricts number of runtime outcomes and hence reduces compiler's work.
+This protocol is the rust ownership model.&lt;/p&gt;
+&lt;h3&gt;What is Ownership?&lt;/h3&gt;
+&lt;p&gt;Ownership is a concept where a memory is linked to a owner (variable).
+This allows compiler to free the memory when owner is no longer in use.
+When a owner is no longer in use we call it is &lt;strong&gt;out of scope&lt;/strong&gt;.
+In short, Ownership is assigning memory's life time to life time of it's owner.&lt;/p&gt;
+&lt;p&gt;This concept seems simple but is very constraining for programmers.
+To provide flexibility concepts like &lt;strong&gt;move&lt;/strong&gt; and &lt;strong&gt;borrow&lt;/strong&gt; are used.&lt;/p&gt;
+&lt;h3&gt;What is Move?&lt;/h3&gt;
+&lt;p&gt;Move is concept of transferring ownership of memory from one owner to other owner.
+This means the memory is not freed when the &lt;em&gt;previous&lt;/em&gt; owner goes &lt;em&gt;out of scope&lt;/em&gt;.
+But the memory is freed when the &lt;em&gt;new&lt;/em&gt; owner goes &lt;em&gt;out of scope&lt;/em&gt;.&lt;/p&gt;
+&lt;h3&gt;What is Borrow?&lt;/h3&gt;
+&lt;p&gt;Most cases in program we may want to share the memory between two variable.
+This means we may want to have &lt;em&gt;two owner&lt;/em&gt; for a memory.
+This makes it confusing for the compiler about when to free the memory.&lt;/p&gt;
+&lt;p&gt;Instead variable are allowed to share by &lt;strong&gt;borrowing&lt;/strong&gt; memory from the owner.
+This means there is only one owner for a given memory.
+The compiler still frees the memory when owner goes out of scope.
+If borrower has access to memory after owner goes out of scope compiler throws error.
+This makes sure all borrower have access to valid memory in compiled program.&lt;/p&gt;
+&lt;p&gt;Compiler treats borrow differently based on weather it is read only or write.
+In &lt;em&gt;read only (immutable)&lt;/em&gt; borrow case there can be multiple borrowers for a memory.
+But for &lt;em&gt;write (mutable)&lt;/em&gt; borrow only single borrower is allowed.
+This means write borrow also disallows read only borrow and vice versa.&lt;/p&gt;
+&lt;p&gt;Reasoning for &lt;em&gt;single mutable borrow&lt;/em&gt; is for safety in case of complex data structures.
+Say for a vector write may free internal memory pointed by other borrower.
+This leads to the other borrower using freed memory.
+Once the mutable borrower goes out of scope the memory is available for re-sharing.&lt;/p&gt;</content><category term="rust"></category><category term="rust"></category><category term="ownership"></category></entry><entry><title>WSL2 with GUI without Admin</title><link href="https://sak96.github.io/wsl2-with-gui-without-admin.html" rel="alternate"></link><published>2020-10-14T00:00:00+01:00</published><updated>2020-10-14T00:00:00+01:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2020-10-14:/wsl2-with-gui-without-admin.html</id><summary type="html">&lt;p&gt;My experience setting up WSL2 along with problems and solutions&lt;/p&gt;</summary><content type="html">&lt;p&gt;WSL or windows subsystem for linux is way to use linux interface on windows machine.
 WSL2 comes with better support for filesystem and network for linux interface.
 Previous &lt;a href="https://sak96.github.io/wsl1-with-xserver-without-admin.html"&gt;Article&lt;/a&gt; describes wsl1 setup.&lt;/p&gt;
 &lt;p&gt;WSL2 solves the &lt;a href="https://discourse.ubuntu.com/t/ubuntu-20-04-and-wsl-1/15291" title="Ubuntu sleep"&gt;sleep issue&lt;/a&gt; in Ubuntu wsl with updated glibc.
