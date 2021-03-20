@@ -11,11 +11,6 @@
 		<h5>{{ article.summary }}</h5>
 		<h5>Read time: {{ -(-article.content.split().__len__() // 228) }} min</h5>
 		<small>Written on {{ article.date.strftime("%B %d, %Y") }}</small>
-		{% if article.poster != _blank %}
-		<img class="img-fluid" src="{{static}}/images/posters/{{article.poster}}">
-		{% else %}
-		<img class="img-fluid" src="{{SITEURL}}/theme/images/blog.svg">
-		{% endif %}
 	</div>
 	<div> 
 	<article>

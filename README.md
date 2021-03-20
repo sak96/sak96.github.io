@@ -5,7 +5,6 @@ Template for github blog hosting.
 Has Features:
 
 1. feed support
-1. poster support
 1. post category support
 1. github comments
 
@@ -43,7 +42,6 @@ GITHUB_OWNER = "github user name"
 ```markdown
 ---
 issue: github-issue-number
-poster: poster-if-in-content/images/posters/-folder 
 status: published-or-unpublished
 summary: summary-of-post 
 tags: comma-separated-tags
