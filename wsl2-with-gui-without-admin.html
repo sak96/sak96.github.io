@@ -12,157 +12,162 @@
     title="sak96-blog" href="https://sak96.github.io/feeds/all.atom.xml" />
   <link rel="stylesheet" href="https://sak96.github.io/theme/syntax/pygment.css">
     <style>
-:root{
-    --bg: #212121;
-    --fg: #eeffff;
-    --gray: #5c6370;
-    --blue: #82aaff;
-    --green: #c3e88d;
-    --red: #f07178;
+:root {
+  --bg: #212121;
+  --fg: #eeffff;
+  --gray: #5c6370;
+  --blue: #82aaff;
+  --green: #c3e88d;
+  --red: #f07178;
 }
-[data-theme="light"]{
-    --bg: #fafafa;
-    --fg: #212121;
-    --gray: #90a4ae;
-    --blue: #6182b8;
-    --green:#91b859;
-    --red: #e53935;
+[data-theme="light"] {
+  --bg: #fafafa;
+  --fg: #212121;
+  --gray: #90a4ae;
+  --blue: #6182b8;
+  --green: #91b859;
+  --red: #e53935;
 }
-.codehilite pre{
-    white-space: pre-wrap;       /* css-3 */
-    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-    white-space: -pre-wrap;      /* Opera 4-6 */
-    white-space: -o-pre-wrap;    /* Opera 7 */
-    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+.linenodiv,
+.codehilite {
+  font-family: monospace;
 }
-.codehilite pre code {
-  white-space: pre-wrap;
+pre code {
+  white-space: pre !important;
 }
-*{
-    box-sizing: border-box;
+.codehilite pre {
+  margin: 0.2rem 1em;
 }
-body{
-    background-color: var(--bg);
-    color: var(--fg);
+* {
+  box-sizing: border-box;
 }
-a{
-    text-decoration: none;
-    color: var(--blue);
+body {
+  background-color: var(--bg);
+  color: var(--fg);
 }
-h1, h2, h3, h4, h5, h6{
-    color: var(--green);
+a {
+  text-decoration: none;
+  color: var(--blue);
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--green);
 }
 small {
-    color: var(--gray);
+  color: var(--gray);
 }
 .navbar {
-    border-bottom: 1px solid var(--green);
+  border-bottom: 1px solid var(--green);
 }
 .navbar div {
-    display: inline-block;
+  display: inline-block;
 }
 .nav-end {
-    position: absolute;
-    right: 0.5rem;
+  position: absolute;
+  right: 0.5rem;
 }
 .navbar a {
-    padding: 0.5rem 0;
+  padding: 0.5rem 0;
 }
-.navbar a:before{
-    content: "["
+.navbar a:before {
+  content: "[";
 }
-.navbar a:after{
-    content: "]"
+.navbar a:after {
+  content: "]";
 }
-#navbar-toggler{
-    display: none;
+#navbar-toggler {
+  display: none;
 }
-.content{
-    width: 80%;
-    max-width: 50rem;
-    margin: auto;
+.content {
+  width: 80%;
+  max-width: 50rem;
+  margin: auto;
 }
 article em,
-article strong{
-    color: var(--red);
+article strong {
+  color: var(--red);
 }
 .not-found,
-.coming-soon{
-    display:block;
-    width: 100%;
-    text-align: center;
+.coming-soon {
+  display: block;
+  width: 100%;
+  text-align: center;
 }
 .item {
-    display: block;
-    margin: 0.5rem 0;
-    padding: 1rem;
-    border-top: 1px dashed var(--red);
-    color: var(--fg);
+  display: block;
+  margin: 0.5rem 0;
+  padding: 1rem;
+  border-top: 1px dashed var(--red);
+  color: var(--fg);
 }
-.item > :first-child{
-    margin-top: 0;
+.item > :first-child {
+  margin-top: 0;
 }
-.img-fluid{
-    width: 100%;
+.img-fluid {
+  width: 100%;
 }
-.paginator{
-    margin: 0.5rem;
-    display: flex;
-    justify-content: space-between;
+.paginator {
+  margin: 0.5rem;
+  display: flex;
+  justify-content: space-between;
 }
 .footer,
 .tags {
-    margin: 0.5rem;
-    display: flex;
-    justify-content: center;
+  margin: 0.5rem;
+  display: flex;
+  justify-content: center;
 }
 .disabled {
-    color: var(--gray);
+  color: var(--gray);
 }
-@media only screen and (max-width: 500px){
-    .navbar {
-        border: none;
-    }
-    .nav-header {
-        border-bottom: 0.025rem solid var(--green);
-    }
-    .navbar div {
-        display: block;
-        position: static;
-    }
-    #navbar-toggler {
-        transform: rotate(90deg);
-        position: absolute;
-        right: 1rem;
-        display: inline;
-        background-color: inherit;
-        border: none;
-        color: inherit;
-    }
-    .navbar a:after,
-    .navbar a:before{
-        content: ""
-    }
-    .navbar a{
-        border-bottom: 0.025rem solid var(--green);
-        display: none;
-    }
-    .nav-header a{
-        display: inline-block;
-        border: none;
-    }
-    .navbar a.show {
-        display: block;
-    }
-    .content {
-        width: 100%;
-    }
-    .footer {
-        display: inline-block;
-    }
-    .paginator span {
-        display: none;
-    }
+@media only screen and (max-width: 500px) {
+  .navbar {
+    border: none;
+  }
+  .nav-header {
+    border-bottom: 0.025rem solid var(--green);
+  }
+  .navbar div {
+    display: block;
+    position: static;
+  }
+  #navbar-toggler {
+    transform: rotate(90deg);
+    position: absolute;
+    right: 1rem;
+    display: inline;
+    background-color: inherit;
+    border: none;
+    color: inherit;
+  }
+  .navbar a:after,
+  .navbar a:before {
+    content: "";
+  }
+  .navbar a {
+    border-bottom: 0.025rem solid var(--green);
+    display: none;
+  }
+  .nav-header a {
+    display: inline-block;
+    border: none;
+  }
+  .navbar a.show {
+    display: block;
+  }
+  .content {
+    width: 100%;
+  }
+  .footer {
+    display: inline-block;
+  }
+  .paginator span {
+    display: none;
+  }
 }    </style>
 </head>
 
@@ -247,17 +252,17 @@ This Article walk through various problem faced and solutions if found.</p>
 <p>VPN MTU was less that the WSL2 eth0 network interface.
 This caused network connection to hang on large transfers, more detail <a href="https://github.com/microsoft/WSL/issues/5068#issuecomment-683917384" title="MTU VPN issue">here</a>.</p>
 <p>The VPN MTU can be accessed using following command.</p>
-<div class="codehilite"><pre><span></span><code>netsh interface ipv4 show subinterface
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>netsh interface ipv4 show subinterface
 </code></pre></div>
-
+</td></tr></table>
 <p>Setting same mtu to eth0 can be done as follows.</p>
-<div class="codehilite"><pre><span></span><code>ip link <span class="nb">set</span> mtu <span class="si">${</span><span class="nv">mtu_vpn</span><span class="si">}</span> dev eth0
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>ip link <span class="nb">set</span> mtu <span class="si">${</span><span class="nv">mtu_vpn</span><span class="si">}</span> dev eth0
 </code></pre></div>
-
+</td></tr></table>
 <p>Single line command will be as follows.</p>
-<div class="codehilite"><pre><span></span><code><span class="nf">%bash</span><span class="o">%</span> <span class="o">-</span><span class="n">c</span> <span class="s">&quot;sudo ip link set mtu $($(wslpath &#39;%windir%\system32</span><span class="se">\n</span><span class="s">etsh.exe&#39;) interface ipv4 show subinterface | $(wslpath &#39;%windir%\system32</span><span class="se">\f</span><span class="s">indstr.exe&#39;) /i vpn   | grep -i vpn | sed &#39;s/^\s\+//g&#39;|  cut -f 1 -d &#39; &#39;) dev eth0&quot;</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="nf">%bash</span><span class="o">%</span> <span class="o">-</span><span class="n">c</span> <span class="s">&quot;sudo ip link set mtu $($(wslpath &#39;%windir%\system32</span><span class="se">\n</span><span class="s">etsh.exe&#39;) interface ipv4 show subinterface | $(wslpath &#39;%windir%\system32</span><span class="se">\f</span><span class="s">indstr.exe&#39;) /i vpn   | grep -i vpn | sed &#39;s/^\s\+//g&#39;|  cut -f 1 -d &#39; &#39;) dev eth0&quot;</span>
 </code></pre></div>
-
+</td></tr></table>
 <h2>Network and GUI</h2>
 <p>Using <a href="https://sourceforge.net/projects/vcxsrv/" title="Visual C++ X server">vcXsrv</a> seemed a fair choice for Xserver to use GUI.
 WSL2 restricts on using windows Network (localhost) on WSL2.
@@ -269,43 +274,53 @@ Admin was required to add firewall allow rule to allow such connection.</p>
 <li>Download socat for window from <a href="https://sourceforge.net/projects/unix-utils/files/socat/" title="Socat for windows">here</a>.</li>
 <li>Set Downloaded socat path in <code>%socat%</code> varrable and run below command in cmd.</li>
 </ol>
-<div class="codehilite"><pre><span></span><code>start <span class="s2">&quot;socat&quot;</span> /min  ubuntu2004.exe -c <span class="s2">&quot;socat UNIX-LISTEN:/tmp/.X11-unix/X0,fork exec:\&quot;</span><span class="k">$(</span>wslpath <span class="s1">&#39;%socat%&#39;</span><span class="k">)</span><span class="s2"> - TCP\:localhost\:6000\&quot;&quot;</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>start <span class="s2">&quot;socat&quot;</span> /min  ubuntu2004.exe -c <span class="s2">&quot;socat UNIX-LISTEN:/tmp/.X11-unix/X0,fork exec:\&quot;</span><span class="k">$(</span>wslpath <span class="s1">&#39;%socat%&#39;</span><span class="k">)</span><span class="s2"> - TCP\:localhost\:6000\&quot;&quot;</span>
 </code></pre></div>
-
+</td></tr></table>
 <h2>Xserver to Xrdp</h2>
 <p>The above solution was slow. The other solution was to use ssh tunnel or use Xrdp.
 Install Xrdp and running it was simple, but automating is a challenge to be done.</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># Installation Command</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="c1"># Installation Command</span>
 sudo apt install --no-install-recommends xrdp
 
 <span class="c1"># Starting Service (Yet to automate)</span>
 service xrdp start
 </code></pre></div>
-
+</td></tr></table>
 <p><strong>EDIT</strong> Found a better way to use run start the service.
 You can open run menu from <code>Win+r</code>.
 Type <code>shell:startup</code> and press <code>enter</code>.
 Add a bat file to start xrdp at startup.
 Note: sleep is required other wise xrdp does not startup</p>
-<div class="codehilite"><pre><span></span><code>wsl sudo service xrdp start<span class="p">;</span> sleep <span class="m">5</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>wsl sudo service xrdp start<span class="p">;</span> sleep <span class="m">5</span>
 </code></pre></div>
-
+</td></tr></table>
 <p>Rdp using the ip address. More details <a href="https://stackoverflow.com/a/26694162" title="Get Ip Address">here</a>.</p>
-<div class="codehilite"><pre><span></span><code>ip -4 addr show eth0 <span class="p">|</span> grep -oP <span class="s1">&#39;(?&lt;=inet\s)\d+(\.\d+){3}&#39;</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>ip -4 addr show eth0 <span class="p">|</span> grep -oP <span class="s1">&#39;(?&lt;=inet\s)\d+(\.\d+){3}&#39;</span>
 </code></pre></div>
-
+</td></tr></table>
 <p><strong>EDIT</strong> 
 Found a better way to use run the above command.
 I had rdp connection file from my last connection say <code>~/rdp.rdp</code>.
 The following command open rdp connection using the above file from wsl.
 You can add this to bat file or add alias to the same.</p>
-<div class="codehilite"><pre><span></span><code>mstsc.exe /v:<span class="k">$(</span>hostname -I<span class="k">)</span> <span class="k">$(</span>wslpath -w ~/rdp.rdp<span class="k">)</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>mstsc.exe /v:<span class="k">$(</span>hostname -I<span class="k">)</span> <span class="k">$(</span>wslpath -w ~/rdp.rdp<span class="k">)</span>
 </code></pre></div>
-
+</td></tr></table>
 <h2>Xrdp and Sound</h2>
 <p>To use sound on Xrdp with pulseaudio, some libraries are required.
 Copying the library from <a href="https://github.com/DesktopECHO/xWSL" title="Xrdp PulseAudio">here</a> helped.</p>
-<div class="codehilite"><pre><span></span><code><span class="o">#</span> <span class="n">adding</span> <span class="n">libraries</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="o">#</span> <span class="n">adding</span> <span class="n">libraries</span>
 <span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">DesktopECHO</span><span class="o">/</span><span class="n">xWSL</span>
 <span class="n">sudo</span> <span class="n">mv</span> <span class="n">xWSL</span><span class="o">/</span><span class="n">dist</span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">xrdp</span><span class="o">-</span><span class="n">pulseaudio</span><span class="o">-</span><span class="n">installer</span> <span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span>
 
@@ -313,11 +328,18 @@ Copying the library from <a href="https://github.com/DesktopECHO/xWSL" title="Xr
 <span class="n">pulseaudio</span> <span class="o">-</span><span class="n">k</span>
 <span class="n">pulseaudio</span> <span class="o">-</span><span class="n">D</span>
 </code></pre></div>
-
+</td></tr></table>
 <h2>Teams and WSL2</h2>
 <p>Teams is messaging platform by microsoft whose installation instruction are <a href="https://docs.microsoft.com/en-us/microsoftteams/get-clients" title="Ms Teams Install">here</a>.
 To get working in WSL2 required installation of couple of missing dependencies.</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># install teams</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="c1"># install teams</span>
 curl https://packages.microsoft.com/keys/microsoft.asc <span class="p">|</span> sudo apt-key add -
 sudo sh -c <span class="s1">&#39;echo &quot;deb [arch=amd64] https://packages.microsoft.com/repos/ms-teams stable main&quot; &gt; /etc/apt/sources.list.d/teams.list&#39;</span>
 sudo apt update
@@ -326,7 +348,7 @@ sudo apt install teams
 <span class="c1"># install missing dependencies</span>
 sudo apt install libsecret-1-0 chromium-codecs-ffmpeg
 </code></pre></div>
-
+</td></tr></table>
 <h2>Automating at Startup</h2>
 <p>Setting mtu and booting up xrdp every time is annoying.
 For mtu setting least value of vpn and network works without trouble.
@@ -335,15 +357,17 @@ Xrdp startup command needs a small sleep to ensure that command really worked.</
 Type <code>shell:startup</code> to open the startup folder.
 Add the following script in a file <code>wsl.bat</code> in the folder.
 Replace <code>$least_value</code> with least value of the mtu.</p>
-<div class="codehilite"><pre><span></span><code>wsl sudo ip link <span class="nb">set</span> mtu <span class="nv">$least_value</span> dev eth0<span class="p">;</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>wsl sudo ip link <span class="nb">set</span> mtu <span class="nv">$least_value</span> dev eth0<span class="p">;</span>
 wsl sudo service xrdp<span class="p">;</span> sleep <span class="m">5</span><span class="p">;</span>
 </code></pre></div>
-
+</td></tr></table>
 <p>Make following <code>rdp.bat</code> file in your desktop for faster launch of rdp.
 Double clicking on this file will start cmd program which launches rdp.
 The cmd prompt can be closed after some time.</p>
-<div class="codehilite"><pre><span></span><code>wsl mstsc.exe /v:<span class="k">$(</span>hostname -I<span class="k">)</span> <span class="k">$(</span>wslpath -w ~/rdp.rdp<span class="k">)</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>wsl mstsc.exe /v:<span class="k">$(</span>hostname -I<span class="k">)</span> <span class="k">$(</span>wslpath -w ~/rdp.rdp<span class="k">)</span>
 </code></pre></div>
+</td></tr></table>
 	</article>
 	</div>
 <div class="tags">

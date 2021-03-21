@@ -17,22 +17,16 @@
 &lt;h3&gt;Directed Acyclic Graph&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;Example: &lt;code&gt;child -&amp;gt; parent -&amp;gt; grandparent&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Graph&lt;/code&gt; is structure which represents relation between objects using connection.&lt;ul&gt;
-&lt;li&gt;The object in this case is &lt;code&gt;commits&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;The relationship in this case is &lt;code&gt;parent-child&lt;/code&gt; relationship.&lt;/li&gt;
-&lt;li&gt;Multiple child can share single parent.&lt;/li&gt;
-&lt;li&gt;Single child may be created by Multiple parents.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Directed&lt;/code&gt; refers to the fact that these relationships have a direction.&lt;ul&gt;
-&lt;li&gt;The direction in this case is from child to parent.&lt;/li&gt;
-&lt;li&gt;The arrow head points to the direction.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Acyclic&lt;/code&gt; means the graph does not have cycles or loops.&lt;ul&gt;
-&lt;li&gt;A commit or its parents (recursively) cannot point back to the commit itself.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Graph&lt;/code&gt; is structure which represents relation between objects using connection.
+    -   The object in this case is &lt;code&gt;commits&lt;/code&gt;.
+    -   The relationship in this case is &lt;code&gt;parent-child&lt;/code&gt; relationship.
+    -   Multiple child can share single parent.
+    -   Single child may be created by Multiple parents.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Directed&lt;/code&gt; refers to the fact that these relationships have a direction.
+    -   The direction in this case is from child to parent.
+    -   The arrow head points to the direction.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Acyclic&lt;/code&gt; means the graph does not have cycles or loops.
+    -   A commit or its parents (recursively) cannot point back to the commit itself.&lt;/li&gt;
 &lt;li&gt;Better explained by &lt;a href="https://en.wikipedia.org/wiki/Directed_acyclic_graph" title="Wikipedia: DAG"&gt;wiki&lt;/a&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3&gt;Hash&lt;/h3&gt;

@@ -12,157 +12,162 @@
     title="sak96-blog" href="https://sak96.github.io/feeds/all.atom.xml" />
   <link rel="stylesheet" href="https://sak96.github.io/theme/syntax/pygment.css">
     <style>
-:root{
-    --bg: #212121;
-    --fg: #eeffff;
-    --gray: #5c6370;
-    --blue: #82aaff;
-    --green: #c3e88d;
-    --red: #f07178;
+:root {
+  --bg: #212121;
+  --fg: #eeffff;
+  --gray: #5c6370;
+  --blue: #82aaff;
+  --green: #c3e88d;
+  --red: #f07178;
 }
-[data-theme="light"]{
-    --bg: #fafafa;
-    --fg: #212121;
-    --gray: #90a4ae;
-    --blue: #6182b8;
-    --green:#91b859;
-    --red: #e53935;
+[data-theme="light"] {
+  --bg: #fafafa;
+  --fg: #212121;
+  --gray: #90a4ae;
+  --blue: #6182b8;
+  --green: #91b859;
+  --red: #e53935;
 }
-.codehilite pre{
-    white-space: pre-wrap;       /* css-3 */
-    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-    white-space: -pre-wrap;      /* Opera 4-6 */
-    white-space: -o-pre-wrap;    /* Opera 7 */
-    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+.linenodiv,
+.codehilite {
+  font-family: monospace;
 }
-.codehilite pre code {
-  white-space: pre-wrap;
+pre code {
+  white-space: pre !important;
 }
-*{
-    box-sizing: border-box;
+.codehilite pre {
+  margin: 0.2rem 1em;
 }
-body{
-    background-color: var(--bg);
-    color: var(--fg);
+* {
+  box-sizing: border-box;
 }
-a{
-    text-decoration: none;
-    color: var(--blue);
+body {
+  background-color: var(--bg);
+  color: var(--fg);
 }
-h1, h2, h3, h4, h5, h6{
-    color: var(--green);
+a {
+  text-decoration: none;
+  color: var(--blue);
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--green);
 }
 small {
-    color: var(--gray);
+  color: var(--gray);
 }
 .navbar {
-    border-bottom: 1px solid var(--green);
+  border-bottom: 1px solid var(--green);
 }
 .navbar div {
-    display: inline-block;
+  display: inline-block;
 }
 .nav-end {
-    position: absolute;
-    right: 0.5rem;
+  position: absolute;
+  right: 0.5rem;
 }
 .navbar a {
-    padding: 0.5rem 0;
+  padding: 0.5rem 0;
 }
-.navbar a:before{
-    content: "["
+.navbar a:before {
+  content: "[";
 }
-.navbar a:after{
-    content: "]"
+.navbar a:after {
+  content: "]";
 }
-#navbar-toggler{
-    display: none;
+#navbar-toggler {
+  display: none;
 }
-.content{
-    width: 80%;
-    max-width: 50rem;
-    margin: auto;
+.content {
+  width: 80%;
+  max-width: 50rem;
+  margin: auto;
 }
 article em,
-article strong{
-    color: var(--red);
+article strong {
+  color: var(--red);
 }
 .not-found,
-.coming-soon{
-    display:block;
-    width: 100%;
-    text-align: center;
+.coming-soon {
+  display: block;
+  width: 100%;
+  text-align: center;
 }
 .item {
-    display: block;
-    margin: 0.5rem 0;
-    padding: 1rem;
-    border-top: 1px dashed var(--red);
-    color: var(--fg);
+  display: block;
+  margin: 0.5rem 0;
+  padding: 1rem;
+  border-top: 1px dashed var(--red);
+  color: var(--fg);
 }
-.item > :first-child{
-    margin-top: 0;
+.item > :first-child {
+  margin-top: 0;
 }
-.img-fluid{
-    width: 100%;
+.img-fluid {
+  width: 100%;
 }
-.paginator{
-    margin: 0.5rem;
-    display: flex;
-    justify-content: space-between;
+.paginator {
+  margin: 0.5rem;
+  display: flex;
+  justify-content: space-between;
 }
 .footer,
 .tags {
-    margin: 0.5rem;
-    display: flex;
-    justify-content: center;
+  margin: 0.5rem;
+  display: flex;
+  justify-content: center;
 }
 .disabled {
-    color: var(--gray);
+  color: var(--gray);
 }
-@media only screen and (max-width: 500px){
-    .navbar {
-        border: none;
-    }
-    .nav-header {
-        border-bottom: 0.025rem solid var(--green);
-    }
-    .navbar div {
-        display: block;
-        position: static;
-    }
-    #navbar-toggler {
-        transform: rotate(90deg);
-        position: absolute;
-        right: 1rem;
-        display: inline;
-        background-color: inherit;
-        border: none;
-        color: inherit;
-    }
-    .navbar a:after,
-    .navbar a:before{
-        content: ""
-    }
-    .navbar a{
-        border-bottom: 0.025rem solid var(--green);
-        display: none;
-    }
-    .nav-header a{
-        display: inline-block;
-        border: none;
-    }
-    .navbar a.show {
-        display: block;
-    }
-    .content {
-        width: 100%;
-    }
-    .footer {
-        display: inline-block;
-    }
-    .paginator span {
-        display: none;
-    }
+@media only screen and (max-width: 500px) {
+  .navbar {
+    border: none;
+  }
+  .nav-header {
+    border-bottom: 0.025rem solid var(--green);
+  }
+  .navbar div {
+    display: block;
+    position: static;
+  }
+  #navbar-toggler {
+    transform: rotate(90deg);
+    position: absolute;
+    right: 1rem;
+    display: inline;
+    background-color: inherit;
+    border: none;
+    color: inherit;
+  }
+  .navbar a:after,
+  .navbar a:before {
+    content: "";
+  }
+  .navbar a {
+    border-bottom: 0.025rem solid var(--green);
+    display: none;
+  }
+  .nav-header a {
+    display: inline-block;
+    border: none;
+  }
+  .navbar a.show {
+    display: block;
+  }
+  .content {
+    width: 100%;
+  }
+  .footer {
+    display: inline-block;
+  }
+  .paginator span {
+    display: none;
+  }
 }    </style>
 </head>
 
@@ -260,23 +265,30 @@ Sleep work fine with this version of glibc in WSL1.</p>
 <p>One of the main reason of not using Ubuntu 18.04 is it comes with python2.
 Debian 10.5 did not come with python2 hence no major headache on this part.</p>
 <p>Though you could set your /bin/python to python3 (and pip) as follows</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># For Ubuntu</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="c1"># For Ubuntu</span>
 sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 <span class="m">2</span>
 sudo update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 <span class="m">2</span>
 </code></pre></div>
-
+</td></tr></table>
 <h2>Firefox</h2>
 <p>In Debian WSL installing and installing firefox-esr worked without issue.
 There were few issue in case of Ubuntu 20.04 but not sure of Ubuntu 18.04.
 Also Ubuntu requires you to add repository to use firefox-esr.</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># For Ubuntu</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="c1"># For Ubuntu</span>
 sudo apt install --no-install-recommends software-properties-common
 sudo add-apt-repository ppa:mozillateam/ppa
 sudo apt update
 sudo apt install --no-install-recommends firefox-esr 
 sudo update-alternatives --install /usr/bin/firefox firefox /usr/bin/firefox-esr <span class="m">2</span>
 </code></pre></div>
-
+</td></tr></table>
 <h2>Downside</h2>
 <p>Debian 10.5 contains vim and neo vim version do not play well with popup handling.
 Also i3status used to fail continuously with segmentation violation. 
@@ -297,16 +309,29 @@ The extracted path used here is <code>%userprofile%\AppData\Local\VcXsrv\</code>
 Simple script crafted by hand is below.</p>
 <p>Note: First run after boot will fail. Kill vcXsrv and retry.</p>
 <p>Setting up variables.</p>
-<div class="codehilite"><pre><span></span><code><span class="p">@</span><span class="k">echo</span> off
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="p">@</span><span class="k">echo</span> off
 <span class="k">set</span> <span class="s2">&quot;command=nohup /usr/bin/i3 &gt;/dev/null 2&gt;&amp;1&quot;</span>
 <span class="k">set</span> <span class="nv">windowmode</span><span class="p">=</span>nodecoration
 <span class="k">set</span> <span class="nv">dispnum</span><span class="p">=</span>1
 <span class="k">set</span> <span class="nv">bash</span><span class="p">=</span><span class="nv">%userprofile%</span>\AppData\Local\Microsoft\WindowsApps\debian.exe
 <span class="k">set</span> <span class="nv">vcxsrvexec</span><span class="p">=</span><span class="nv">%userprofile%</span>\appdata\local\vcxsrv\vcxsrv.exe
 </code></pre></div>
-
+</td></tr></table>
 <p>Running the shortcut.</p>
-<div class="codehilite"><pre><span></span><code><span class="k">start</span> <span class="s2">&quot;Xserver&quot;</span> /D <span class="s2">&quot;</span><span class="nv">%userprofile%</span><span class="s2">\AppData\Local\VcXsrv\&quot;</span> <span class="nv">%vcxsrvexec%</span> <span class="se">^</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">start</span> <span class="s2">&quot;Xserver&quot;</span> /D <span class="s2">&quot;</span><span class="nv">%userprofile%</span><span class="s2">\AppData\Local\VcXsrv\&quot;</span> <span class="nv">%vcxsrvexec%</span> <span class="se">^</span>
 <span class="se">:</span><span class="nv">%dispnum%</span> -ac -terminate -lesspointer -<span class="nv">%windowmode%</span> -clipboard -wgl <span class="se">^</span>
 <span class="se">-</span>logfile <span class="nv">%userprofile%</span>\appdata\local\vcxsrv\vcxsrv.log
 
@@ -316,6 +341,7 @@ Simple script crafted by hand is below.</p>
 <span class="k">set</span> <span class="nv">disp</span><span class="p">=</span>localhost:<span class="nv">%dispnum%</span>.0
 <span class="nv">%bash%</span> -c <span class="s2">&quot;export DISPLAY=</span><span class="nv">%disp%</span><span class="s2">; cd $HOME; </span><span class="nv">%command%</span><span class="s2"> &amp; disown&quot;</span> 
 </code></pre></div>
+</td></tr></table>
 	</article>
 	</div>
 <div class="tags">

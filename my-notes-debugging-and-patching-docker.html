@@ -12,157 +12,162 @@
     title="sak96-blog" href="https://sak96.github.io/feeds/all.atom.xml" />
   <link rel="stylesheet" href="https://sak96.github.io/theme/syntax/pygment.css">
     <style>
-:root{
-    --bg: #212121;
-    --fg: #eeffff;
-    --gray: #5c6370;
-    --blue: #82aaff;
-    --green: #c3e88d;
-    --red: #f07178;
+:root {
+  --bg: #212121;
+  --fg: #eeffff;
+  --gray: #5c6370;
+  --blue: #82aaff;
+  --green: #c3e88d;
+  --red: #f07178;
 }
-[data-theme="light"]{
-    --bg: #fafafa;
-    --fg: #212121;
-    --gray: #90a4ae;
-    --blue: #6182b8;
-    --green:#91b859;
-    --red: #e53935;
+[data-theme="light"] {
+  --bg: #fafafa;
+  --fg: #212121;
+  --gray: #90a4ae;
+  --blue: #6182b8;
+  --green: #91b859;
+  --red: #e53935;
 }
-.codehilite pre{
-    white-space: pre-wrap;       /* css-3 */
-    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-    white-space: -pre-wrap;      /* Opera 4-6 */
-    white-space: -o-pre-wrap;    /* Opera 7 */
-    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+.linenodiv,
+.codehilite {
+  font-family: monospace;
 }
-.codehilite pre code {
-  white-space: pre-wrap;
+pre code {
+  white-space: pre !important;
 }
-*{
-    box-sizing: border-box;
+.codehilite pre {
+  margin: 0.2rem 1em;
 }
-body{
-    background-color: var(--bg);
-    color: var(--fg);
+* {
+  box-sizing: border-box;
 }
-a{
-    text-decoration: none;
-    color: var(--blue);
+body {
+  background-color: var(--bg);
+  color: var(--fg);
 }
-h1, h2, h3, h4, h5, h6{
-    color: var(--green);
+a {
+  text-decoration: none;
+  color: var(--blue);
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--green);
 }
 small {
-    color: var(--gray);
+  color: var(--gray);
 }
 .navbar {
-    border-bottom: 1px solid var(--green);
+  border-bottom: 1px solid var(--green);
 }
 .navbar div {
-    display: inline-block;
+  display: inline-block;
 }
 .nav-end {
-    position: absolute;
-    right: 0.5rem;
+  position: absolute;
+  right: 0.5rem;
 }
 .navbar a {
-    padding: 0.5rem 0;
+  padding: 0.5rem 0;
 }
-.navbar a:before{
-    content: "["
+.navbar a:before {
+  content: "[";
 }
-.navbar a:after{
-    content: "]"
+.navbar a:after {
+  content: "]";
 }
-#navbar-toggler{
-    display: none;
+#navbar-toggler {
+  display: none;
 }
-.content{
-    width: 80%;
-    max-width: 50rem;
-    margin: auto;
+.content {
+  width: 80%;
+  max-width: 50rem;
+  margin: auto;
 }
 article em,
-article strong{
-    color: var(--red);
+article strong {
+  color: var(--red);
 }
 .not-found,
-.coming-soon{
-    display:block;
-    width: 100%;
-    text-align: center;
+.coming-soon {
+  display: block;
+  width: 100%;
+  text-align: center;
 }
 .item {
-    display: block;
-    margin: 0.5rem 0;
-    padding: 1rem;
-    border-top: 1px dashed var(--red);
-    color: var(--fg);
+  display: block;
+  margin: 0.5rem 0;
+  padding: 1rem;
+  border-top: 1px dashed var(--red);
+  color: var(--fg);
 }
-.item > :first-child{
-    margin-top: 0;
+.item > :first-child {
+  margin-top: 0;
 }
-.img-fluid{
-    width: 100%;
+.img-fluid {
+  width: 100%;
 }
-.paginator{
-    margin: 0.5rem;
-    display: flex;
-    justify-content: space-between;
+.paginator {
+  margin: 0.5rem;
+  display: flex;
+  justify-content: space-between;
 }
 .footer,
 .tags {
-    margin: 0.5rem;
-    display: flex;
-    justify-content: center;
+  margin: 0.5rem;
+  display: flex;
+  justify-content: center;
 }
 .disabled {
-    color: var(--gray);
+  color: var(--gray);
 }
-@media only screen and (max-width: 500px){
-    .navbar {
-        border: none;
-    }
-    .nav-header {
-        border-bottom: 0.025rem solid var(--green);
-    }
-    .navbar div {
-        display: block;
-        position: static;
-    }
-    #navbar-toggler {
-        transform: rotate(90deg);
-        position: absolute;
-        right: 1rem;
-        display: inline;
-        background-color: inherit;
-        border: none;
-        color: inherit;
-    }
-    .navbar a:after,
-    .navbar a:before{
-        content: ""
-    }
-    .navbar a{
-        border-bottom: 0.025rem solid var(--green);
-        display: none;
-    }
-    .nav-header a{
-        display: inline-block;
-        border: none;
-    }
-    .navbar a.show {
-        display: block;
-    }
-    .content {
-        width: 100%;
-    }
-    .footer {
-        display: inline-block;
-    }
-    .paginator span {
-        display: none;
-    }
+@media only screen and (max-width: 500px) {
+  .navbar {
+    border: none;
+  }
+  .nav-header {
+    border-bottom: 0.025rem solid var(--green);
+  }
+  .navbar div {
+    display: block;
+    position: static;
+  }
+  #navbar-toggler {
+    transform: rotate(90deg);
+    position: absolute;
+    right: 1rem;
+    display: inline;
+    background-color: inherit;
+    border: none;
+    color: inherit;
+  }
+  .navbar a:after,
+  .navbar a:before {
+    content: "";
+  }
+  .navbar a {
+    border-bottom: 0.025rem solid var(--green);
+    display: none;
+  }
+  .nav-header a {
+    display: inline-block;
+    border: none;
+  }
+  .navbar a.show {
+    display: block;
+  }
+  .content {
+    width: 100%;
+  }
+  .footer {
+    display: inline-block;
+  }
+  .paginator span {
+    display: none;
+  }
 }    </style>
 </head>
 
@@ -231,7 +236,7 @@ document.querySelector("#theme").onclick = function (e) {
 	<div>
 		<h1>My Notes: Debugging And Patching Docker</h1>
 		<h5><p>This article provide some notes for debugging and patching docker.</p></h5>
-		<h5>Read time: 4 min</h5>
+		<h5>Read time: 5 min</h5>
 		<small>Written on February 29, 2020</small>
 	</div>
 	<div> 
@@ -249,117 +254,117 @@ document.querySelector("#theme").onclick = function (e) {
 <ul>
 <li>Get all running container.</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker ps
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker ps
 </code></pre></div>
-
+</td></tr></table>
 <ul>
 <li>List all containers (running, created, exited, ...).</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker ps -a
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker ps -a
 </code></pre></div>
-
+</td></tr></table>
 <ul>
 <li>Filter container list (say status=exited).</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker ps -a -f <span class="s2">&quot;status=exited&quot;</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker ps -a -f <span class="s2">&quot;status=exited&quot;</span>
 </code></pre></div>
-
+</td></tr></table>
 <ul>
 <li>Get container logs.</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker logs <span class="s2">&quot;</span><span class="nv">$container_name</span><span class="s2">&quot;</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker logs <span class="s2">&quot;</span><span class="nv">$container_name</span><span class="s2">&quot;</span>
 </code></pre></div>
-
+</td></tr></table>
 <ul>
 <li>Get more information on the container.</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker container inspect <span class="s2">&quot;</span><span class="nv">$container_name</span><span class="s2">&quot;</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker container inspect <span class="s2">&quot;</span><span class="nv">$container_name</span><span class="s2">&quot;</span>
 </code></pre></div>
-
+</td></tr></table>
 <h2>Images inspection.</h2>
 <ul>
 <li>List all docker images.</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker images
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker images
 </code></pre></div>
-
+</td></tr></table>
 <ul>
 <li>Get more information on the image.</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker image inspect <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:<span class="s2">&quot;</span><span class="nv">$image_tag</span><span class="s2">&quot;</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker image inspect <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:<span class="s2">&quot;</span><span class="nv">$image_tag</span><span class="s2">&quot;</span>
 </code></pre></div>
-
+</td></tr></table>
 <h2>Format output into JSON.</h2>
 <ul>
 <li>Get names of exited container.</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker ps -a -f <span class="s2">&quot;status=exited&quot;</span> --format <span class="s2">&quot;{{json .Names}}&quot;</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker ps -a -f <span class="s2">&quot;status=exited&quot;</span> --format <span class="s2">&quot;{{json .Names}}&quot;</span>
 </code></pre></div>
-
+</td></tr></table>
 <h1>Live Debugging.</h1>
 <p>Once information is gathered, we may need to tweak the container or live-debug. Most of these cases may require us to get a shell on the docker. The method of getting a shell may differ based on weather docker is running or docker has exited.</p>
 <h2>Docker is running.</h2>
 <ul>
 <li>Exec into the shell (bash or sh or other shell).</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker <span class="nb">exec</span> -it <span class="s2">&quot;</span><span class="nv">$container_name</span><span class="s2">&quot;</span> /bin/sh
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker <span class="nb">exec</span> -it <span class="s2">&quot;</span><span class="nv">$container_name</span><span class="s2">&quot;</span> /bin/sh
 </code></pre></div>
-
+</td></tr></table>
 <ul>
 <li>Run command <code>ls ./</code>.</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker <span class="nb">exec</span> -t <span class="s2">&quot;</span><span class="nv">$container_name</span><span class="s2">&quot;</span> ls ./
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker <span class="nb">exec</span> -t <span class="s2">&quot;</span><span class="nv">$container_name</span><span class="s2">&quot;</span> ls ./
 </code></pre></div>
-
+</td></tr></table>
 <h2>Docker has exited.</h2>
 <ul>
 <li>Get image, tag pair for exited container.</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker ps -f <span class="s2">&quot;name=</span><span class="nv">$container_name</span><span class="s2">&quot;</span> --format <span class="s2">&quot;{{json .Image}}&quot;</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker ps -f <span class="s2">&quot;name=</span><span class="nv">$container_name</span><span class="s2">&quot;</span> --format <span class="s2">&quot;{{json .Image}}&quot;</span>
 </code></pre></div>
-
+</td></tr></table>
 <ul>
 <li>Run image to get shell.</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker run -it --entrypoint sh <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:<span class="s2">&quot;</span><span class="nv">$image_tag</span><span class="s2">&quot;</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker run -it --entrypoint sh <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:<span class="s2">&quot;</span><span class="nv">$image_tag</span><span class="s2">&quot;</span>
 </code></pre></div>
-
+</td></tr></table>
 <ul>
 <li>Run command <code>ls ./</code>.</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker run -it --entrypoint ls <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:<span class="s2">&quot;</span><span class="nv">$image_tag</span><span class="s2">&quot;</span> ./
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker run -it --entrypoint ls <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:<span class="s2">&quot;</span><span class="nv">$image_tag</span><span class="s2">&quot;</span> ./
 </code></pre></div>
-
+</td></tr></table>
 <h1>Post Debugging.</h1>
 <p>After figuring out the issue, You may want to patch the environment or rollback and also do some basic cleanup. Rollback would be to tag previous tag to latest. In case previous tag is not available (as it is first deployment) or the version has some specific changes which cannot be reverted and patch release may take time, then docker needs to be patched.</p>
 <h2>Rollback.</h2>
 <ul>
 <li>Tag latest to previous version</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker tag <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:<span class="s2">&quot;</span><span class="nv">$image_previous_tag</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:latest
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker tag <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:<span class="s2">&quot;</span><span class="nv">$image_previous_tag</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:latest
 </code></pre></div>
-
+</td></tr></table>
 <h2>Patch.</h2>
 <p>Patching depends on the method used for debugging. In case of running container you can just commit it. For exited container which was run using custom entry point, entry point is overwritten. So the patching required to revert the entry point.</p>
 <h3>Docker was exec-ed.</h3>
 <ul>
 <li>Commit the live-debugging container.</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker container commit <span class="s2">&quot;</span><span class="nv">$container_name</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:<span class="s2">&quot;</span><span class="nv">$image_tag</span><span class="s2">&quot;</span>-patched
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker container commit <span class="s2">&quot;</span><span class="nv">$container_name</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:<span class="s2">&quot;</span><span class="nv">$image_tag</span><span class="s2">&quot;</span>-patched
 </code></pre></div>
-
+</td></tr></table>
 <ul>
 <li>Kill the live-debugging container</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker container <span class="nb">kill</span> <span class="s2">&quot;</span><span class="nv">$container_name</span><span class="s2">&quot;</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker container <span class="nb">kill</span> <span class="s2">&quot;</span><span class="nv">$container_name</span><span class="s2">&quot;</span>
 </code></pre></div>
-
+</td></tr></table>
 <ul>
 <li>Tag the patched version to latest.</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker tag <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:<span class="s2">&quot;</span><span class="nv">$image_tag</span><span class="s2">&quot;</span>-patched <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:latest
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker tag <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:<span class="s2">&quot;</span><span class="nv">$image_tag</span><span class="s2">&quot;</span>-patched <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:latest
 </code></pre></div>
-
+</td></tr></table>
 <ul>
 <li>Bring the latest service docker up.</li>
 </ul>
@@ -367,33 +372,33 @@ document.querySelector("#theme").onclick = function (e) {
 <ul>
 <li>Find the old entry point</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker image inspect <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:<span class="s2">&quot;</span><span class="nv">$image_tag</span><span class="s2">&quot;</span> --format <span class="s2">&quot;Entrypoint {{json .Config.Entrypoint}}&quot;</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker image inspect <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:<span class="s2">&quot;</span><span class="nv">$image_tag</span><span class="s2">&quot;</span> --format <span class="s2">&quot;Entrypoint {{json .Config.Entrypoint}}&quot;</span>
 </code></pre></div>
-
+</td></tr></table>
 <ul>
 <li>Find the old cmd</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker image inspect <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:<span class="s2">&quot;</span><span class="nv">$image_tag</span><span class="s2">&quot;</span> --format <span class="s2">&quot;CMD {{json .Config.Cmd}}&quot;</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker image inspect <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:<span class="s2">&quot;</span><span class="nv">$image_tag</span><span class="s2">&quot;</span> --format <span class="s2">&quot;CMD {{json .Config.Cmd}}&quot;</span>
 </code></pre></div>
-
+</td></tr></table>
 <ul>
 <li>Commit the docker with the old entry point and cmd</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker container commit -change<span class="o">=</span><span class="s2">&quot;</span><span class="nv">$old_entrypoint</span><span class="s2">&quot;</span> --change<span class="o">=</span><span class="s2">&quot;</span><span class="nv">$old_cmd</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$container_name</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:<span class="s2">&quot;</span><span class="nv">$image_tag</span><span class="s2">&quot;</span>-patched
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker container commit -change<span class="o">=</span><span class="s2">&quot;</span><span class="nv">$old_entrypoint</span><span class="s2">&quot;</span> --change<span class="o">=</span><span class="s2">&quot;</span><span class="nv">$old_cmd</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$container_name</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:<span class="s2">&quot;</span><span class="nv">$image_tag</span><span class="s2">&quot;</span>-patched
 </code></pre></div>
-
+</td></tr></table>
 <ul>
 <li>Kill the live-debugging container</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker container <span class="nb">kill</span> <span class="s2">&quot;</span><span class="nv">$container_name</span><span class="s2">&quot;</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker container <span class="nb">kill</span> <span class="s2">&quot;</span><span class="nv">$container_name</span><span class="s2">&quot;</span>
 </code></pre></div>
-
+</td></tr></table>
 <ul>
 <li>Tag the patched version to latest.</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker tag <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:<span class="s2">&quot;</span><span class="nv">$image_tag</span><span class="s2">&quot;</span>-patched <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:latest
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker tag <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:<span class="s2">&quot;</span><span class="nv">$image_tag</span><span class="s2">&quot;</span>-patched <span class="s2">&quot;</span><span class="nv">$image_name</span><span class="s2">&quot;</span>:latest
 </code></pre></div>
-
+</td></tr></table>
 <ul>
 <li>Bring the latest service docker up.</li>
 </ul>
@@ -401,25 +406,23 @@ document.querySelector("#theme").onclick = function (e) {
 <ul>
 <li>Delete exited container. You can use -q instead of --format flag part for getting only ids.</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker ps -a -f <span class="s2">&quot;status=exited&quot;</span> --format <span class="s2">&quot;{{json .Names}}&quot;</span> <span class="p">|</span> xargs -r docker rm
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker ps -a -f <span class="s2">&quot;status=exited&quot;</span> --format <span class="s2">&quot;{{json .Names}}&quot;</span> <span class="p">|</span> xargs -r docker rm
 </code></pre></div>
-
+</td></tr></table>
 <ul>
 <li>Delete untagged images.</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker images prune
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="gp">user@host$</span> docker images prune
 </code></pre></div>
-
+</td></tr></table>
 <h1>Tips.</h1>
 <ul>
 <li>Using <code>-q</code> for quiet mode on command provides only image ids or container ids. </li>
-<li>Using <code>docker cp</code> can help in file transfer to and from container.<ul>
-<li><code>docker cp  "$container_name":"$container_file_path" "local_file_path"</code> -&gt; from
-    container.</li>
-<li><code>docker cp  "local_file_path" "$container_name":"$container_file_path"</code> -&gt; to 
-    container.</li>
-</ul>
-</li>
+<li>Using <code>docker cp</code> can help in file transfer to and from container.
+    - <code>docker cp  "$container_name":"$container_file_path" "local_file_path"</code> -&gt; from
+        container.
+    - <code>docker cp  "local_file_path" "$container_name":"$container_file_path"</code> -&gt; to 
+        container.</li>
 </ul>
 <h1>Resources.</h1>
 <ul>

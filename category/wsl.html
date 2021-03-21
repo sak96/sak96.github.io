@@ -14,157 +14,162 @@
         <link rel="alternate" type="application/atom+xml" title="wsl" href='https://sak96.github.io/feeds/wsl.atom.xml'>
   <link rel="stylesheet" href="https://sak96.github.io/theme/syntax/pygment.css">
     <style>
-:root{
-    --bg: #212121;
-    --fg: #eeffff;
-    --gray: #5c6370;
-    --blue: #82aaff;
-    --green: #c3e88d;
-    --red: #f07178;
+:root {
+  --bg: #212121;
+  --fg: #eeffff;
+  --gray: #5c6370;
+  --blue: #82aaff;
+  --green: #c3e88d;
+  --red: #f07178;
 }
-[data-theme="light"]{
-    --bg: #fafafa;
-    --fg: #212121;
-    --gray: #90a4ae;
-    --blue: #6182b8;
-    --green:#91b859;
-    --red: #e53935;
+[data-theme="light"] {
+  --bg: #fafafa;
+  --fg: #212121;
+  --gray: #90a4ae;
+  --blue: #6182b8;
+  --green: #91b859;
+  --red: #e53935;
 }
-.codehilite pre{
-    white-space: pre-wrap;       /* css-3 */
-    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-    white-space: -pre-wrap;      /* Opera 4-6 */
-    white-space: -o-pre-wrap;    /* Opera 7 */
-    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+.linenodiv,
+.codehilite {
+  font-family: monospace;
 }
-.codehilite pre code {
-  white-space: pre-wrap;
+pre code {
+  white-space: pre !important;
 }
-*{
-    box-sizing: border-box;
+.codehilite pre {
+  margin: 0.2rem 1em;
 }
-body{
-    background-color: var(--bg);
-    color: var(--fg);
+* {
+  box-sizing: border-box;
 }
-a{
-    text-decoration: none;
-    color: var(--blue);
+body {
+  background-color: var(--bg);
+  color: var(--fg);
 }
-h1, h2, h3, h4, h5, h6{
-    color: var(--green);
+a {
+  text-decoration: none;
+  color: var(--blue);
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--green);
 }
 small {
-    color: var(--gray);
+  color: var(--gray);
 }
 .navbar {
-    border-bottom: 1px solid var(--green);
+  border-bottom: 1px solid var(--green);
 }
 .navbar div {
-    display: inline-block;
+  display: inline-block;
 }
 .nav-end {
-    position: absolute;
-    right: 0.5rem;
+  position: absolute;
+  right: 0.5rem;
 }
 .navbar a {
-    padding: 0.5rem 0;
+  padding: 0.5rem 0;
 }
-.navbar a:before{
-    content: "["
+.navbar a:before {
+  content: "[";
 }
-.navbar a:after{
-    content: "]"
+.navbar a:after {
+  content: "]";
 }
-#navbar-toggler{
-    display: none;
+#navbar-toggler {
+  display: none;
 }
-.content{
-    width: 80%;
-    max-width: 50rem;
-    margin: auto;
+.content {
+  width: 80%;
+  max-width: 50rem;
+  margin: auto;
 }
 article em,
-article strong{
-    color: var(--red);
+article strong {
+  color: var(--red);
 }
 .not-found,
-.coming-soon{
-    display:block;
-    width: 100%;
-    text-align: center;
+.coming-soon {
+  display: block;
+  width: 100%;
+  text-align: center;
 }
 .item {
-    display: block;
-    margin: 0.5rem 0;
-    padding: 1rem;
-    border-top: 1px dashed var(--red);
-    color: var(--fg);
+  display: block;
+  margin: 0.5rem 0;
+  padding: 1rem;
+  border-top: 1px dashed var(--red);
+  color: var(--fg);
 }
-.item > :first-child{
-    margin-top: 0;
+.item > :first-child {
+  margin-top: 0;
 }
-.img-fluid{
-    width: 100%;
+.img-fluid {
+  width: 100%;
 }
-.paginator{
-    margin: 0.5rem;
-    display: flex;
-    justify-content: space-between;
+.paginator {
+  margin: 0.5rem;
+  display: flex;
+  justify-content: space-between;
 }
 .footer,
 .tags {
-    margin: 0.5rem;
-    display: flex;
-    justify-content: center;
+  margin: 0.5rem;
+  display: flex;
+  justify-content: center;
 }
 .disabled {
-    color: var(--gray);
+  color: var(--gray);
 }
-@media only screen and (max-width: 500px){
-    .navbar {
-        border: none;
-    }
-    .nav-header {
-        border-bottom: 0.025rem solid var(--green);
-    }
-    .navbar div {
-        display: block;
-        position: static;
-    }
-    #navbar-toggler {
-        transform: rotate(90deg);
-        position: absolute;
-        right: 1rem;
-        display: inline;
-        background-color: inherit;
-        border: none;
-        color: inherit;
-    }
-    .navbar a:after,
-    .navbar a:before{
-        content: ""
-    }
-    .navbar a{
-        border-bottom: 0.025rem solid var(--green);
-        display: none;
-    }
-    .nav-header a{
-        display: inline-block;
-        border: none;
-    }
-    .navbar a.show {
-        display: block;
-    }
-    .content {
-        width: 100%;
-    }
-    .footer {
-        display: inline-block;
-    }
-    .paginator span {
-        display: none;
-    }
+@media only screen and (max-width: 500px) {
+  .navbar {
+    border: none;
+  }
+  .nav-header {
+    border-bottom: 0.025rem solid var(--green);
+  }
+  .navbar div {
+    display: block;
+    position: static;
+  }
+  #navbar-toggler {
+    transform: rotate(90deg);
+    position: absolute;
+    right: 1rem;
+    display: inline;
+    background-color: inherit;
+    border: none;
+    color: inherit;
+  }
+  .navbar a:after,
+  .navbar a:before {
+    content: "";
+  }
+  .navbar a {
+    border-bottom: 0.025rem solid var(--green);
+    display: none;
+  }
+  .nav-header a {
+    display: inline-block;
+    border: none;
+  }
+  .navbar a.show {
+    display: block;
+  }
+  .content {
+    width: 100%;
+  }
+  .footer {
+    display: inline-block;
+  }
+  .paginator span {
+    display: none;
+  }
 }    </style>
 </head>
 
