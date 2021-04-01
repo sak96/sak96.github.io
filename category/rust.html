@@ -14,34 +14,34 @@
         <link rel="alternate" type="application/atom+xml" title="rust" href='https://sak96.github.io/feeds/rust.atom.xml'>
   <link rel="stylesheet" href="https://sak96.github.io/theme/syntax/pygment.css">
     <style>
-:root {
-  --bg: #212121;
-  --fg: #eeffff;
-  --gray: #5c6370;
-  --blue: #82aaff;
-  --green: #c3e88d;
-  --red: #f07178;
-}
-[data-theme="light"] {
-  --bg: #fafafa;
-  --fg: #212121;
-  --gray: #90a4ae;
-  --blue: #6182b8;
-  --green: #91b859;
-  --red: #e53935;
-}
-.linenodiv,
-.codehilite {
-  font-family: monospace;
-}
-pre code {
-  white-space: pre !important;
-}
-.codehilite pre {
-  margin: 0.2rem 1em;
-}
 * {
   box-sizing: border-box;
+}
+:root {
+  --bg: #1d2021;
+  --fg: #d4be98;
+  --gray: #928374;
+  --blue: #7daea3;
+  --green: #a9b665;
+  --red: #ea6962;
+}
+[data-theme="light"] {
+  --bg: #f9f5d7;
+  --fg: #654735;
+  --gray: #928374;
+  --blue: #45707a;
+  --green: #6c782e;
+  --red: #c14a4a;
+}
+.codehilitetable,
+.codehilitetable td {
+  border: 2px solid var(--blue);
+  border-radius: 4px;
+  border-collapse: collapse;
+  font-family: monospace;
+}
+.code {
+  width: 100%;
 }
 body {
   background-color: var(--bg);

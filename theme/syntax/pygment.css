@@ -156,6 +156,6 @@
 .codehilite .vm { color: #45707a; background-color: #f9f5d7 } /* Name.Variable.Magic */
 .codehilite .il { color: #945e80; background-color: #f9f5d7 } /* Literal.Number.Integer.Long */
 
-/* use linenos same theme as codehilite class */
-[data-theme="light"] .linenodiv { background: #1d2021; color: #d4be98; background-color: #1d2021 }
-.linenodiv  { background: #f9f5d7; color: #654735; background-color: #f9f5d7 }
+/* use same theme as codehilitetable for uniform background class */
+[data-theme="light"] .codehilitetable { background: #1d2021; color: #d4be98; background-color: #1d2021 }
+.codehilitetable  { background: #f9f5d7; color: #654735; background-color: #f9f5d7 }
