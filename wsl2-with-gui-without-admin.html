@@ -1,17 +1,4 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-  <title>WSL2 with GUI without Admin</title>
-  <link rel="shortcut icon" 
-  href="https://sak96.github.io/theme/images/favicon.svg">
-  <meta name="viewport" 
-  content="width=device-width, initial-scale=1.0" />
-  <meta charset="UTF-8">
-    <link rel="alternate" type="application/atom+xml"
-    title="sak96-blog" href="https://sak96.github.io/feeds/all.atom.xml" />
-  <link rel="stylesheet" href="https://sak96.github.io/theme/syntax/pygment.css">
-    <style>
+<!DOCTYPE html><html><head><title>WSL2 with GUI without Admin</title><link rel="shortcut icon" href="https://sak96.github.io/theme/images/favicon.svg"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta charset="UTF-8"><link rel="alternate" type="application/atom+xml" title="sak96-blog" href="https://sak96.github.io/feeds/all.atom.xml"><link rel="stylesheet" href="https://sak96.github.io/theme/syntax/pygment.css"><style>
 * {
   box-sizing: border-box;
 }
@@ -179,26 +166,7 @@ article strong {
   .paginator span {
     display: none;
   }
-}    </style>
-</head>
-
-<body>
-<div class="navbar">
-    <div class="nav-header"/>
-        <a href="https://sak96.github.io/index.html">sak96-blog</a>
-        <a id="navbar-toggler">|||</a>
-    </div>
-    <div class="nav-start">
-        <a href="https://sak96.github.io/authors.html">Authors</a>
-        <a href="https://sak96.github.io/categories.html">Categories</a>
-        <a href="https://sak96.github.io/tags.html">Tags</a>
-    </div>
-    <div class="nav-end">
-        <a href="https://sak96.github.io/feeds/all.atom.xml">Atom</a>
-        <a id="theme">Theme</a>
-    </div>
-</div>
-<script>
+}    </style></head><body><div class="navbar"><div class="nav-header"/><a href="https://sak96.github.io/index.html">sak96-blog</a><a id="navbar-toggler">|||</a></div><div class="nav-start"><a href="https://sak96.github.io/authors.html">Authors</a><a href="https://sak96.github.io/categories.html">Categories</a><a href="https://sak96.github.io/tags.html">Tags</a></div><div class="nav-end"><a href="https://sak96.github.io/feeds/all.atom.xml">Atom</a><a id="theme">Theme</a></div></div><script>
 function getCookie(cname) {
     var name = cname + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
@@ -243,55 +211,11 @@ document.querySelector("#theme").onclick = function (e) {
         document.documentElement.setAttribute('data-theme', l); 
         setCookie("theme", l, 365); 
     }
-} </script>    <div class="content">
-	<div>
-		<h1>WSL2 with GUI without Admin</h1>
-		<h5><p>My experience setting up WSL2 along with problems and solutions</p></h5>
-		<h5>Read time: 4 min</h5>
-		<small>Written on October 14, 2020</small>
-	</div>
-	<div> 
-	<article>
-	<p>WSL or windows subsystem for linux is way to use linux interface on windows machine.
-WSL2 comes with better support for filesystem and network for linux interface.
-Previous <a href="https://sak96.github.io/wsl1-with-xserver-without-admin.html">Article</a> describes wsl1 setup.</p>
-<p>WSL2 solves the <a href="https://discourse.ubuntu.com/t/ubuntu-20-04-and-wsl-1/15291" title="Ubuntu sleep">sleep issue</a> in Ubuntu wsl with updated glibc.
-WSL2 comes with not only comes with pros but also it's own share of issues.
-For WSL2 using Ubuntu 20.04 seemed easy, keeping WSL1 Debian setup as my backup.
-This Article walk through various problem faced and solutions if found.</p>
-<h2>VPN and MTU</h2>
-<p>VPN MTU was less that the WSL2 eth0 network interface.
-This caused network connection to hang on large transfers, more detail <a href="https://github.com/microsoft/WSL/issues/5068#issuecomment-683917384" title="MTU VPN issue">here</a>.</p>
-<p>The VPN MTU can be accessed using following command.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>netsh interface ipv4 show subinterface
-</code></pre></div>
-</td></tr></table>
-<p>Setting same mtu to eth0 can be done as follows.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>ip link <span class="nb">set</span> mtu <span class="si">${</span><span class="nv">mtu_vpn</span><span class="si">}</span> dev eth0
-</code></pre></div>
-</td></tr></table>
-<p>Single line command will be as follows.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="nf">%bash</span><span class="o">%</span> <span class="o">-</span><span class="n">c</span> <span class="s">&quot;sudo ip link set mtu $($(wslpath &#39;%windir%\system32</span><span class="se">\n</span><span class="s">etsh.exe&#39;) interface ipv4 show subinterface | $(wslpath &#39;%windir%\system32</span><span class="se">\f</span><span class="s">indstr.exe&#39;) /i vpn   | grep -i vpn | sed &#39;s/^\s\+//g&#39;|  cut -f 1 -d &#39; &#39;) dev eth0&quot;</span>
-</code></pre></div>
-</td></tr></table>
-<h2>Network and GUI</h2>
-<p>Using <a href="https://sourceforge.net/projects/vcxsrv/" title="Visual C++ X server">vcXsrv</a> seemed a fair choice for Xserver to use GUI.
-WSL2 restricts on using windows Network (localhost) on WSL2.
-vcXsrv could no longer be assessed by WSL2 for displaying GUI.
-Admin was required to add firewall allow rule to allow such connection.</p>
-<p>Solution was to use <code>socat</code> to connect from WSL2 to Windows as mentioned <a href="https://github.com/microsoft/WSL/issues/4619#issuecomment-678652118" title="Socat WSL2 to Windows">here</a>.</p>
-<ol>
-<li>Install socat in ubuntu using <code>apt</code>.</li>
-<li>Download socat for window from <a href="https://sourceforge.net/projects/unix-utils/files/socat/" title="Socat for windows">here</a>.</li>
-<li>Set Downloaded socat path in <code>%socat%</code> varrable and run below command in cmd.</li>
-</ol>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>start <span class="s2">&quot;socat&quot;</span> /min  ubuntu2004.exe -c <span class="s2">&quot;socat UNIX-LISTEN:/tmp/.X11-unix/X0,fork exec:\&quot;</span><span class="k">$(</span>wslpath <span class="s1">&#39;%socat%&#39;</span><span class="k">)</span><span class="s2"> - TCP\:localhost\:6000\&quot;&quot;</span>
-</code></pre></div>
-</td></tr></table>
-<h2>Xserver to Xrdp</h2>
-<p>The above solution was slow. The other solution was to use ssh tunnel or use Xrdp.
-Install Xrdp and running it was simple, but automating is a challenge to be done.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+} </script><div class="content"><div><h1>WSL2 with GUI without Admin</h1><h5><p>My experience setting up WSL2 along with problems and solutions</p></h5><h5>Read time: 4 min</h5><small>Written on October 14, 2020</small></div><div><article><p>WSL or windows subsystem for linux is way to use linux interface on windows machine. WSL2 comes with better support for filesystem and network for linux interface. Previous <a href="https://sak96.github.io/wsl1-with-xserver-without-admin.html">Article</a> describes wsl1 setup.</p><p>WSL2 solves the <a href="https://discourse.ubuntu.com/t/ubuntu-20-04-and-wsl-1/15291" title="Ubuntu sleep">sleep issue</a> in Ubuntu wsl with updated glibc. WSL2 comes with not only comes with pros but also it's own share of issues. For WSL2 using Ubuntu 20.04 seemed easy, keeping WSL1 Debian setup as my backup. This Article walk through various problem faced and solutions if found.</p><h2>VPN and MTU</h2><p>VPN MTU was less that the WSL2 eth0 network interface. This caused network connection to hang on large transfers, more detail <a href="https://github.com/microsoft/WSL/issues/5068#issuecomment-683917384" title="MTU VPN issue">here</a>.</p><p>The VPN MTU can be accessed using following command.</p><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>netsh interface ipv4 show subinterface
+</code></pre></div></td></tr></table><p>Setting same mtu to eth0 can be done as follows.</p><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>ip link <span class="nb">set</span> mtu <span class="si">${</span><span class="nv">mtu_vpn</span><span class="si">}</span> dev eth0
+</code></pre></div></td></tr></table><p>Single line command will be as follows.</p><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="nf">%bash</span><span class="o">%</span> <span class="o">-</span><span class="n">c</span> <span class="s">&quot;sudo ip link set mtu $($(wslpath &#39;%windir%\system32</span><span class="se">\n</span><span class="s">etsh.exe&#39;) interface ipv4 show subinterface | $(wslpath &#39;%windir%\system32</span><span class="se">\f</span><span class="s">indstr.exe&#39;) /i vpn   | grep -i vpn | sed &#39;s/^\s\+//g&#39;|  cut -f 1 -d &#39; &#39;) dev eth0&quot;</span>
+</code></pre></div></td></tr></table><h2>Network and GUI</h2><p>Using <a href="https://sourceforge.net/projects/vcxsrv/" title="Visual C++ X server">vcXsrv</a> seemed a fair choice for Xserver to use GUI. WSL2 restricts on using windows Network (localhost) on WSL2. vcXsrv could no longer be assessed by WSL2 for displaying GUI. Admin was required to add firewall allow rule to allow such connection.</p><p>Solution was to use <code>socat</code> to connect from WSL2 to Windows as mentioned <a href="https://github.com/microsoft/WSL/issues/4619#issuecomment-678652118" title="Socat WSL2 to Windows">here</a>.</p><ol><li>Install socat in ubuntu using <code>apt</code>.</li><li>Download socat for window from <a href="https://sourceforge.net/projects/unix-utils/files/socat/" title="Socat for windows">here</a>.</li><li>Set Downloaded socat path in <code>%socat%</code> varrable and run below command in cmd.</li></ol><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>start <span class="s2">&quot;socat&quot;</span> /min  ubuntu2004.exe -c <span class="s2">&quot;socat UNIX-LISTEN:/tmp/.X11-unix/X0,fork exec:\&quot;</span><span class="k">$(</span>wslpath <span class="s1">&#39;%socat%&#39;</span><span class="k">)</span><span class="s2"> - TCP\:localhost\:6000\&quot;&quot;</span>
+</code></pre></div></td></tr></table><h2>Xserver to Xrdp</h2><p>The above solution was slow. The other solution was to use ssh tunnel or use Xrdp. Install Xrdp and running it was simple, but automating is a challenge to be done.</p><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
 4
@@ -300,32 +224,10 @@ sudo apt install --no-install-recommends xrdp
 
 <span class="c1"># Starting Service (Yet to automate)</span>
 service xrdp start
-</code></pre></div>
-</td></tr></table>
-<p><strong>EDIT</strong> Found a better way to use run start the service.
-You can open run menu from <code>Win+r</code>.
-Type <code>shell:startup</code> and press <code>enter</code>.
-Add a bat file to start xrdp at startup.
-Note: sleep is required other wise xrdp does not startup</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>wsl sudo service xrdp start<span class="p">;</span> sleep <span class="m">5</span>
-</code></pre></div>
-</td></tr></table>
-<p>Rdp using the ip address. More details <a href="https://stackoverflow.com/a/26694162" title="Get Ip Address">here</a>.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>ip -4 addr show eth0 <span class="p">|</span> grep -oP <span class="s1">&#39;(?&lt;=inet\s)\d+(\.\d+){3}&#39;</span>
-</code></pre></div>
-</td></tr></table>
-<p><strong>EDIT</strong>
-Found a better way to use run the above command.
-I had rdp connection file from my last connection say <code>~/rdp.rdp</code>.
-The following command open rdp connection using the above file from wsl.
-You can add this to bat file or add alias to the same.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>mstsc.exe /v:<span class="k">$(</span>hostname -I<span class="k">)</span> <span class="k">$(</span>wslpath -w ~/rdp.rdp<span class="k">)</span>
-</code></pre></div>
-</td></tr></table>
-<h2>Xrdp and Sound</h2>
-<p>To use sound on Xrdp with pulseaudio, some libraries are required.
-Copying the library from <a href="https://github.com/DesktopECHO/xWSL" title="Xrdp PulseAudio">here</a> helped.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+</code></pre></div></td></tr></table><p><strong>EDIT</strong> Found a better way to use run start the service. You can open run menu from <code>Win+r</code>. Type <code>shell:startup</code> and press <code>enter</code>. Add a bat file to start xrdp at startup. Note: sleep is required other wise xrdp does not startup</p><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>wsl sudo service xrdp start<span class="p">;</span> sleep <span class="m">5</span>
+</code></pre></div></td></tr></table><p>Rdp using the ip address. More details <a href="https://stackoverflow.com/a/26694162" title="Get Ip Address">here</a>.</p><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>ip -4 addr show eth0 <span class="p">|</span> grep -oP <span class="s1">&#39;(?&lt;=inet\s)\d+(\.\d+){3}&#39;</span>
+</code></pre></div></td></tr></table><p><strong>EDIT</strong> Found a better way to use run the above command. I had rdp connection file from my last connection say <code>~/rdp.rdp</code>. The following command open rdp connection using the above file from wsl. You can add this to bat file or add alias to the same.</p><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>mstsc.exe /v:<span class="k">$(</span>hostname -I<span class="k">)</span> <span class="k">$(</span>wslpath -w ~/rdp.rdp<span class="k">)</span>
+</code></pre></div></td></tr></table><h2>Xrdp and Sound</h2><p>To use sound on Xrdp with pulseaudio, some libraries are required. Copying the library from <a href="https://github.com/DesktopECHO/xWSL" title="Xrdp PulseAudio">here</a> helped.</p><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
 4
@@ -338,12 +240,7 @@ Copying the library from <a href="https://github.com/DesktopECHO/xWSL" title="Xr
 <span class="o">#</span> <span class="n">restarting</span> <span class="n">pulseaudio</span>
 <span class="n">pulseaudio</span> <span class="o">-</span><span class="n">k</span>
 <span class="n">pulseaudio</span> <span class="o">-</span><span class="n">D</span>
-</code></pre></div>
-</td></tr></table>
-<h2>Teams and WSL2</h2>
-<p>Teams is messaging platform by microsoft whose installation instruction are <a href="https://docs.microsoft.com/en-us/microsoftteams/get-clients" title="Ms Teams Install">here</a>.
-To get working in WSL2 required installation of couple of missing dependencies.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+</code></pre></div></td></tr></table><h2>Teams and WSL2</h2><p>Teams is messaging platform by microsoft whose installation instruction are <a href="https://docs.microsoft.com/en-us/microsoftteams/get-clients" title="Ms Teams Install">here</a>. To get working in WSL2 required installation of couple of missing dependencies.</p><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
 4
@@ -358,37 +255,11 @@ sudo apt install teams
 
 <span class="c1"># install missing dependencies</span>
 sudo apt install libsecret-1-0 chromium-codecs-ffmpeg
-</code></pre></div>
-</td></tr></table>
-<h2>Automating at Startup</h2>
-<p>Setting mtu and booting up xrdp every time is annoying.
-For mtu setting least value of vpn and network works without trouble.
-Xrdp startup command needs a small sleep to ensure that command really worked.</p>
-<p>To make this work open run menu by pressing <code>win</code> + <code>R</code>.
-Type <code>shell:startup</code> to open the startup folder.
-Add the following script in a file <code>wsl.bat</code> in the folder.
-Replace <code>$least_value</code> with least value of the mtu.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+</code></pre></div></td></tr></table><h2>Automating at Startup</h2><p>Setting mtu and booting up xrdp every time is annoying. For mtu setting least value of vpn and network works without trouble. Xrdp startup command needs a small sleep to ensure that command really worked.</p><p>To make this work open run menu by pressing <code>win</code> + <code>R</code>. Type <code>shell:startup</code> to open the startup folder. Add the following script in a file <code>wsl.bat</code> in the folder. Replace <code>$least_value</code> with least value of the mtu.</p><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>wsl sudo ip link <span class="nb">set</span> mtu <span class="nv">$least_value</span> dev eth0<span class="p">;</span>
 wsl sudo service xrdp<span class="p">;</span> sleep <span class="m">5</span><span class="p">;</span>
-</code></pre></div>
-</td></tr></table>
-<p>Make following <code>rdp.bat</code> file in your desktop for faster launch of rdp.
-Double clicking on this file will start cmd program which launches rdp.
-The cmd prompt can be closed after some time.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>wsl mstsc.exe /v:<span class="k">$(</span>hostname -I<span class="k">)</span> <span class="k">$(</span>wslpath -w ~/rdp.rdp<span class="k">)</span>
-</code></pre></div>
-</td></tr></table>
-	</article>
-	</div>
-<div class="tags">
-    <span>Post Tags:</span>
-    <a href="tag/story.html">&nbsp;#story,</a>
-    <a href="tag/wsl.html">&nbsp;#wsl,</a>
-    <a href="tag/linux.html">&nbsp;#linux</a>
-</div><hr class="my-3">
-<div id="comments"></div>
-<script>
+</code></pre></div></td></tr></table><p>Make following <code>rdp.bat</code> file in your desktop for faster launch of rdp. Double clicking on this file will start cmd program which launches rdp. The cmd prompt can be closed after some time.</p><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>wsl mstsc.exe /v:<span class="k">$(</span>hostname -I<span class="k">)</span> <span class="k">$(</span>wslpath -w ~/rdp.rdp<span class="k">)</span>
+</code></pre></div></td></tr></table></article></div><div class="tags"><span>Post Tags:</span><a href="tag/story.html">&nbsp;#story,</a><a href="tag/wsl.html">&nbsp;#wsl,</a><a href="tag/linux.html">&nbsp;#linux</a></div><hr class="my-3"><div id="comments"></div><script>
   let commentUrl = "https://api.github.com/repos/sak96/sak96.github.io/issues/9/comments"
   let issueUrl = "https://github.com/sak96/sak96.github.io/issues/9"
   function PopulateComment(comments) {
@@ -451,13 +322,4 @@ The cmd prompt can be closed after some time.</p>
     }
   };
   xhr.send();
-</script>
-<hr>
-<div class="footer">
-    <span>Powered by:</span>
-    <a href="http://getpelican.com/">Pelican,</a>
-    <a href="https://github.com/pygments/pygments">Pygments,</a>
-    <a href="https://github.com/rakr/vim-one">Vim-One</a>
-</div>  </div>
-</body>
-</html>
+</script><hr><div class="footer"><span>Powered by:</span><a href="http://getpelican.com/">Pelican,</a><a href="https://github.com/pygments/pygments">Pygments,</a><a href="https://github.com/rakr/vim-one">Vim-One</a></div></div></body></html>
