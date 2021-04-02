@@ -279,7 +279,7 @@ This caused network connection to hang on large transfers, more detail <a href="
 WSL2 restricts on using windows Network (localhost) on WSL2.
 vcXsrv could no longer be assessed by WSL2 for displaying GUI.
 Admin was required to add firewall allow rule to allow such connection.</p>
-<p>Solution was to use <code>socat</code> to connect from WSL2 to Windows as mentioned [here][wsocat_wsl2_issues].</p>
+<p>Solution was to use <code>socat</code> to connect from WSL2 to Windows as mentioned <a href="https://github.com/microsoft/WSL/issues/4619#issuecomment-678652118" title="Socat WSL2 to Windows">here</a>.</p>
 <ol>
 <li>Install socat in ubuntu using <code>apt</code>.</li>
 <li>Download socat for window from <a href="https://sourceforge.net/projects/unix-utils/files/socat/" title="Socat for windows">here</a>.</li>
@@ -314,7 +314,7 @@ Note: sleep is required other wise xrdp does not startup</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>ip -4 addr show eth0 <span class="p">|</span> grep -oP <span class="s1">&#39;(?&lt;=inet\s)\d+(\.\d+){3}&#39;</span>
 </code></pre></div>
 </td></tr></table>
-<p><strong>EDIT</strong> 
+<p><strong>EDIT</strong>
 Found a better way to use run the above command.
 I had rdp connection file from my last connection say <code>~/rdp.rdp</code>.
 The following command open rdp connection using the above file from wsl.

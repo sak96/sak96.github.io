@@ -115,7 +115,7 @@ This caused network connection to hang on large transfers, more detail &lt;a hre
 WSL2 restricts on using windows Network (localhost) on WSL2.
 vcXsrv could no longer be assessed by WSL2 for displaying GUI.
 Admin was required to add firewall allow rule to allow such connection.&lt;/p&gt;
-&lt;p&gt;Solution was to use &lt;code&gt;socat&lt;/code&gt; to connect from WSL2 to Windows as mentioned [here][wsocat_wsl2_issues].&lt;/p&gt;
+&lt;p&gt;Solution was to use &lt;code&gt;socat&lt;/code&gt; to connect from WSL2 to Windows as mentioned &lt;a href="https://github.com/microsoft/WSL/issues/4619#issuecomment-678652118" title="Socat WSL2 to Windows"&gt;here&lt;/a&gt;.&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;Install socat in ubuntu using &lt;code&gt;apt&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;Download socat for window from &lt;a href="https://sourceforge.net/projects/unix-utils/files/socat/" title="Socat for windows"&gt;here&lt;/a&gt;.&lt;/li&gt;
@@ -150,7 +150,7 @@ Note: sleep is required other wise xrdp does not startup&lt;/p&gt;
 &lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ip -4 addr show eth0 &lt;span class="p"&gt;|&lt;/span&gt; grep -oP &lt;span class="s1"&gt;&amp;#39;(?&amp;lt;=inet\s)\d+(\.\d+){3}&amp;#39;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;p&gt;&lt;strong&gt;EDIT&lt;/strong&gt; 
+&lt;p&gt;&lt;strong&gt;EDIT&lt;/strong&gt;
 Found a better way to use run the above command.
 I had rdp connection file from my last connection say &lt;code&gt;~/rdp.rdp&lt;/code&gt;.
 The following command open rdp connection using the above file from wsl.
