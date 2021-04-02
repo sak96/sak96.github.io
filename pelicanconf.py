@@ -23,7 +23,7 @@ AUTHOR_FEED_RSS = None
 LINKS = (
     ("Pelican", "http://getpelican.com/"),
     ("Pygments", "https://github.com/pygments/pygments"),
-    ("Vim-One", "https://github.com/rakr/vim-one"),
+    ("Gruvbox", "https://github.com/morhetz/gruvbox-contrib"),
 )
 
 
@@ -33,4 +33,10 @@ DEFAULT_PAGINATION = 10
 # RELATIVE_URLS = True
 THEME = "./theme"
 TEMPLATE_PAGES = {"404.html": "404.html"}
-MARKDOWN = {"extensions": ["fenced_code", "codehilite"]}
+MARKDOWN = {
+    "extension_configs": {
+        "fenced_code": {},
+        "codehilite": {"linenums": True},
+    },
+    "tab_length": 2,
+}
