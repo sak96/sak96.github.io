@@ -83,7 +83,6 @@ small {
 #theme:before {
   content: "[🌞:"
 }
-
 #navbar-toggler {
   display: none;
 }
@@ -173,49 +172,37 @@ article strong {
   .paginator span {
     display: none;
   }
+  [data-theme="light"] #theme:before {
+    content: "🌚:"
+  }
+  #theme:before {
+    content: "🌞:"
+  }
 }    </style></head><body><div class=navbar><div class=nav-header /><a href=https://sak96.github.io/index.html>sak96-blog</a><a id=navbar-toggler>|||</a></div><div class=nav-start><a href=https://sak96.github.io/authors.html>Authors</a><a href=https://sak96.github.io/categories.html>Categories</a><a href=https://sak96.github.io/tags.html>Tags</a></div><div class=nav-end><a href=https://sak96.github.io/feeds/all.atom.xml>Atom</a><a id=theme>Theme</a></div></div><script>
-function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(";");
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == " ") {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-}
-function setCookie(cname, cvalue, exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-    var expires = "expires=" + d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + (";path=" + "https://sak96.github.io" + "/") + ";SameSite=Lax";
-}
 document.querySelector("#navbar-toggler").onclick = function (e) {
-    document.querySelectorAll(".nav-start a,.nav-end a").forEach(
-        (e) => e.classList.toggle("show")
-    )
-}
+  document
+    .querySelectorAll(".nav-start a,.nav-end a")
+    .forEach((e) => e.classList.toggle("show"));
+};
 {
-    let theme = getCookie("theme");
-    if (theme !== "light"){
-        document.documentElement.setAttribute('data-theme', ''); 
-        setCookie("theme", "", -1); 
-    }else{
-        document.documentElement.setAttribute('data-theme', theme);
-    }
+  let theme = localStorage.getItem("theme");
+  if (
+    theme === "light" ||
+    window.matchMedia("(prefers-color-scheme: light)").matches
+  ) {
+    document.documentElement.setAttribute("data-theme", "light");
+    localStorage.setItem("theme", "light");
+  } else {
+    document.documentElement.setAttribute("data-theme", "dark");
+    localStorage.setItem("theme", "dark");
+  }
 }
 document.querySelector("#theme").onclick = function (e) {
-    if (document.documentElement.getAttribute('data-theme')){
-        document.documentElement.setAttribute('data-theme', ''); 
-        setCookie("theme", "", -1); 
-    }else{
-        let l = "light";
-        document.documentElement.setAttribute('data-theme', l); 
-        setCookie("theme", l, 365); 
-    }
-} </script><div class=content><h2>Tags</h2><div><span class=item><a href=https://sak96.github.io/tag/rust.html> rust(1) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/ownership.html> ownership(1) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/story.html> story(4) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/wsl.html> wsl(2) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/linux.html> linux(3) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/browser.html> browser(1) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/file.html> file(2) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/version.html> version(1) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/git.html> git(1) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/information.html> information(1) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/patching.html> patching(1) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/debugging.html> debugging(1) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/docker.html> docker(1) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/writing.html> writing(2) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/documentation.html> documentation(1) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/programming.html> programming(2) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/articles.html> articles(1) </a><small></small></span></div><hr><div class=footer><span>Powered by:</span><a href=http://getpelican.com/ >Pelican,</a><a href=https://github.com/pygments/pygments>Pygments,</a><a href=https://github.com/morhetz/gruvbox-contrib>Gruvbox</a></div></div></body></html>
+  if (document.documentElement.getAttribute("data-theme")) {
+    document.documentElement.setAttribute("data-theme", "");
+    localStorage.setItem("theme", "dark");
+  } else {
+    document.documentElement.setAttribute("data-theme", "light");
+    localStorage.setItem("theme", "light");
+  }
+};</script><div class=content><h2>Tags</h2><div><span class=item><a href=https://sak96.github.io/tag/rust.html> rust(1) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/ownership.html> ownership(1) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/story.html> story(4) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/wsl.html> wsl(2) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/linux.html> linux(3) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/browser.html> browser(1) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/file.html> file(2) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/version.html> version(1) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/git.html> git(1) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/information.html> information(1) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/patching.html> patching(1) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/debugging.html> debugging(1) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/docker.html> docker(1) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/writing.html> writing(2) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/documentation.html> documentation(1) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/programming.html> programming(2) </a><small></small></span><span class=item><a href=https://sak96.github.io/tag/articles.html> articles(1) </a><small></small></span></div><hr><div class=footer><span>Powered by:</span><a href=http://getpelican.com/ >Pelican,</a><a href=https://github.com/pygments/pygments>Pygments,</a><a href=https://github.com/morhetz/gruvbox-contrib>Gruvbox</a></div></div></body></html>

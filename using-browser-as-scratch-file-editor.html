@@ -83,7 +83,6 @@ small {
 #theme:before {
   content: "[🌞:"
 }
-
 #navbar-toggler {
   display: none;
 }
@@ -173,52 +172,40 @@ article strong {
   .paginator span {
     display: none;
   }
+  [data-theme="light"] #theme:before {
+    content: "🌚:"
+  }
+  #theme:before {
+    content: "🌞:"
+  }
 }    </style></head><body><div class=navbar><div class=nav-header /><a href=https://sak96.github.io/index.html>sak96-blog</a><a id=navbar-toggler>|||</a></div><div class=nav-start><a href=https://sak96.github.io/authors.html>Authors</a><a href=https://sak96.github.io/categories.html>Categories</a><a href=https://sak96.github.io/tags.html>Tags</a></div><div class=nav-end><a href=https://sak96.github.io/feeds/all.atom.xml>Atom</a><a id=theme>Theme</a></div></div><script>
-function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(";");
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == " ") {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-}
-function setCookie(cname, cvalue, exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-    var expires = "expires=" + d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + (";path=" + "https://sak96.github.io" + "/") + ";SameSite=Lax";
-}
 document.querySelector("#navbar-toggler").onclick = function (e) {
-    document.querySelectorAll(".nav-start a,.nav-end a").forEach(
-        (e) => e.classList.toggle("show")
-    )
-}
+  document
+    .querySelectorAll(".nav-start a,.nav-end a")
+    .forEach((e) => e.classList.toggle("show"));
+};
 {
-    let theme = getCookie("theme");
-    if (theme !== "light"){
-        document.documentElement.setAttribute('data-theme', ''); 
-        setCookie("theme", "", -1); 
-    }else{
-        document.documentElement.setAttribute('data-theme', theme);
-    }
+  let theme = localStorage.getItem("theme");
+  if (
+    theme === "light" ||
+    window.matchMedia("(prefers-color-scheme: light)").matches
+  ) {
+    document.documentElement.setAttribute("data-theme", "light");
+    localStorage.setItem("theme", "light");
+  } else {
+    document.documentElement.setAttribute("data-theme", "dark");
+    localStorage.setItem("theme", "dark");
+  }
 }
 document.querySelector("#theme").onclick = function (e) {
-    if (document.documentElement.getAttribute('data-theme')){
-        document.documentElement.setAttribute('data-theme', ''); 
-        setCookie("theme", "", -1); 
-    }else{
-        let l = "light";
-        document.documentElement.setAttribute('data-theme', l); 
-        setCookie("theme", l, 365); 
-    }
-} </script><div class=content><div><h1>Using browser as scratch file editor</h1><h5><p>Leveraging data urls to use browser as scratch file editor.</p></h5><h5>Read time: 1 min</h5><small>Written on July 22, 2020</small></div><div><article><p>When browsing internet you may find a need to write down some temporary notes. I call it scratch files. Opening text editor for editing these scratch files is too much pain or just too much of context swap.</p><h1>In Browser Temporary File Editor</h1><p>Here is the in-browser scratch file editor.</p><p><code>data:text/html,&lt;html contenteditable&gt;</code></p><p>Go ahead copy paste it to url bar. Bookmark it, if required.</p><h1>The Details</h1><p>To use browser as text editor, I leverage <a href=https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs title="data url">data urls</a>. Data url are used to embed small documents into the url. The above url embedded html page which acts as editor.</p><p>The format is <code>data:[&lt;mediatype&gt;][;base64],&lt;data&gt;</code>.</p><ul><li>Media type specifies the mime type of file.</li><li>Base 64 is optional and added if data is base64 encoded</li><li>followed by the content of file.</li></ul><p>Our url is <code>data:text/html,&lt;html contenteditable&gt;</code>.</p><ul><li>Mime type is <code>text/html</code>. We are embedding html page.</li><li>data is html page. The html tag is <code>contenteditable</code>.</li><li>No need to close the html tag as it is corrected by browser.</li></ul><p><strong>Note</strong>: The content is lost if you close the tab. Try a extensions if you don't want to lose the contents.</p></article></div><div class=tags><span>Post Tags:</span><a href=tag/story.html>&nbsp;#story,</a><a href=tag/browser.html>&nbsp;#browser,</a><a href=tag/file.html>&nbsp;#file</a></div><hr class=my-3><div id=comments></div><script>
+  if (document.documentElement.getAttribute("data-theme")) {
+    document.documentElement.setAttribute("data-theme", "");
+    localStorage.setItem("theme", "dark");
+  } else {
+    document.documentElement.setAttribute("data-theme", "light");
+    localStorage.setItem("theme", "light");
+  }
+};</script><div class=content><div><h1>Using browser as scratch file editor</h1><h5><p>Leveraging data urls to use browser as scratch file editor.</p></h5><h5>Read time: 1 min</h5><small>Written on July 22, 2020</small></div><div><article><p>When browsing internet you may find a need to write down some temporary notes. I call it scratch files. Opening text editor for editing these scratch files is too much pain or just too much of context swap.</p><h1>In Browser Temporary File Editor</h1><p>Here is the in-browser scratch file editor.</p><p><code>data:text/html,&lt;html contenteditable&gt;</code></p><p>Go ahead copy paste it to url bar. Bookmark it, if required.</p><h1>The Details</h1><p>To use browser as text editor, I leverage <a href=https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs title="data url">data urls</a>. Data url are used to embed small documents into the url. The above url embedded html page which acts as editor.</p><p>The format is <code>data:[&lt;mediatype&gt;][;base64],&lt;data&gt;</code>.</p><ul><li>Media type specifies the mime type of file.</li><li>Base 64 is optional and added if data is base64 encoded</li><li>followed by the content of file.</li></ul><p>Our url is <code>data:text/html,&lt;html contenteditable&gt;</code>.</p><ul><li>Mime type is <code>text/html</code>. We are embedding html page.</li><li>data is html page. The html tag is <code>contenteditable</code>.</li><li>No need to close the html tag as it is corrected by browser.</li></ul><p><strong>Note</strong>: The content is lost if you close the tab. Try a extensions if you don't want to lose the contents.</p></article></div><div class=tags><span>Post Tags:</span><a href=tag/story.html>&nbsp;#story,</a><a href=tag/browser.html>&nbsp;#browser,</a><a href=tag/file.html>&nbsp;#file</a></div><hr class=my-3><div id=comments></div><script>
   let commentUrl = "https://api.github.com/repos/sak96/sak96.github.io/issues/7/comments"
   let issueUrl = "https://github.com/sak96/sak96.github.io/issues/7"
   function PopulateComment(comments) {

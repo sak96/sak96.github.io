@@ -83,7 +83,6 @@ small {
 #theme:before {
   content: "[🌞:"
 }
-
 #navbar-toggler {
   display: none;
 }
@@ -173,52 +172,40 @@ article strong {
   .paginator span {
     display: none;
   }
+  [data-theme="light"] #theme:before {
+    content: "🌚:"
+  }
+  #theme:before {
+    content: "🌞:"
+  }
 }    </style></head><body><div class=navbar><div class=nav-header /><a href=https://sak96.github.io/index.html>sak96-blog</a><a id=navbar-toggler>|||</a></div><div class=nav-start><a href=https://sak96.github.io/authors.html>Authors</a><a href=https://sak96.github.io/categories.html>Categories</a><a href=https://sak96.github.io/tags.html>Tags</a></div><div class=nav-end><a href=https://sak96.github.io/feeds/all.atom.xml>Atom</a><a id=theme>Theme</a></div></div><script>
-function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(";");
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == " ") {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-}
-function setCookie(cname, cvalue, exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-    var expires = "expires=" + d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + (";path=" + "https://sak96.github.io" + "/") + ";SameSite=Lax";
-}
 document.querySelector("#navbar-toggler").onclick = function (e) {
-    document.querySelectorAll(".nav-start a,.nav-end a").forEach(
-        (e) => e.classList.toggle("show")
-    )
-}
+  document
+    .querySelectorAll(".nav-start a,.nav-end a")
+    .forEach((e) => e.classList.toggle("show"));
+};
 {
-    let theme = getCookie("theme");
-    if (theme !== "light"){
-        document.documentElement.setAttribute('data-theme', ''); 
-        setCookie("theme", "", -1); 
-    }else{
-        document.documentElement.setAttribute('data-theme', theme);
-    }
+  let theme = localStorage.getItem("theme");
+  if (
+    theme === "light" ||
+    window.matchMedia("(prefers-color-scheme: light)").matches
+  ) {
+    document.documentElement.setAttribute("data-theme", "light");
+    localStorage.setItem("theme", "light");
+  } else {
+    document.documentElement.setAttribute("data-theme", "dark");
+    localStorage.setItem("theme", "dark");
+  }
 }
 document.querySelector("#theme").onclick = function (e) {
-    if (document.documentElement.getAttribute('data-theme')){
-        document.documentElement.setAttribute('data-theme', ''); 
-        setCookie("theme", "", -1); 
-    }else{
-        let l = "light";
-        document.documentElement.setAttribute('data-theme', l); 
-        setCookie("theme", l, 365); 
-    }
-} </script><div class=content><div><h1>Summary: "What nobody tells you about documentation"</h1><h5><p>This article tries to summaries "What nobody tells you about documentation"</p></h5><h5>Read time: 2 min</h5><small>Written on February 22, 2020</small></div><div><article><p>The article <a href=https://www.divio.com/blog/documentation>"What nobody tells you about documentation"</a> details on writing manuals for software. It provides details of different it's components, their intent, content, scope and purpose. This simplifies the process by helping writer have right mindset.</p><h2>Types of Documentation.</h2><h3>Tutorial.</h3><ul><li>Example: README.</li><li>Level: beginner.</li><li>Orientation: to learn.</li><li>Purpose: practical + to study.</li></ul><h4>* Apply:</h4><ul><li>Doorway to your software for any user (setup/installation should be included).</li><li>Multiple tasks (task: short set of steps).</li><li>Contains simple tasks.</li><li>Rewards user with knowledge.</li><li>Must work 100% (makes user confident).</li></ul><h4>* Avoid:</h4><ul><li>Need not use best practice if not required (complicates process).</li><li>Do not explain beyond what is required (makes tutorial long).</li></ul><h3>How to guides.</h3><ul><li>Example: how to print integer.</li><li>Level: intermediate.</li><li>Orientation: goal.</li><li>Purpose: practical + for work.</li></ul><h4>* Apply:</h4><ul><li>Must be working (can be part of test-cases).</li><li>Contains good heading (possible search phrase).</li><li>Should be flexible (include small variation).</li></ul><h4>* Avoid:</h4><ul><li>Should not explain more (link to API documentation).</li><li>Need not have set up or installation steps (intermediate level).</li></ul><h3>Explanation.</h3><ul><li>Example: API docs.</li><li>Level: experienced.</li><li>Orientation: technical details.</li><li>Purpose: theory + to study.</li></ul><h4>* Apply:</h4><ul><li>Should be code based (auto generate is better).</li><li>Example if required (for edge case which is difficult to describe).</li><li>Consistent structure (improves readability).</li></ul><h4>* Avoid:</h4><ul><li>Should not explain about design decision (explain what code does, not why).</li><li>Should not be goal oriented (put it in how to guide).</li></ul><h3>Reference.</h3><ul><li>Example: white paper.</li><li>Level: advanced expert.</li><li>Orientation: to inform.</li><li>Purpose: theory + working.</li></ul><h4>* Apply:</h4><ul><li>Contains design decision (including alternatives).</li><li>Provides historical reasons.</li><li>States good practices.</li><li>Includes discussion or exploration contents. </li></ul></article></div><div class=tags><span>Post Tags:</span><a href=tag/writing.html>&nbsp;#writing,</a><a href=tag/documentation.html>&nbsp;#documentation,</a><a href=tag/programming.html>&nbsp;#programming</a></div><hr class=my-3><div id=comments></div><script>
+  if (document.documentElement.getAttribute("data-theme")) {
+    document.documentElement.setAttribute("data-theme", "");
+    localStorage.setItem("theme", "dark");
+  } else {
+    document.documentElement.setAttribute("data-theme", "light");
+    localStorage.setItem("theme", "light");
+  }
+};</script><div class=content><div><h1>Summary: "What nobody tells you about documentation"</h1><h5><p>This article tries to summaries "What nobody tells you about documentation"</p></h5><h5>Read time: 2 min</h5><small>Written on February 22, 2020</small></div><div><article><p>The article <a href=https://www.divio.com/blog/documentation>"What nobody tells you about documentation"</a> details on writing manuals for software. It provides details of different it's components, their intent, content, scope and purpose. This simplifies the process by helping writer have right mindset.</p><h2>Types of Documentation.</h2><h3>Tutorial.</h3><ul><li>Example: README.</li><li>Level: beginner.</li><li>Orientation: to learn.</li><li>Purpose: practical + to study.</li></ul><h4>* Apply:</h4><ul><li>Doorway to your software for any user (setup/installation should be included).</li><li>Multiple tasks (task: short set of steps).</li><li>Contains simple tasks.</li><li>Rewards user with knowledge.</li><li>Must work 100% (makes user confident).</li></ul><h4>* Avoid:</h4><ul><li>Need not use best practice if not required (complicates process).</li><li>Do not explain beyond what is required (makes tutorial long).</li></ul><h3>How to guides.</h3><ul><li>Example: how to print integer.</li><li>Level: intermediate.</li><li>Orientation: goal.</li><li>Purpose: practical + for work.</li></ul><h4>* Apply:</h4><ul><li>Must be working (can be part of test-cases).</li><li>Contains good heading (possible search phrase).</li><li>Should be flexible (include small variation).</li></ul><h4>* Avoid:</h4><ul><li>Should not explain more (link to API documentation).</li><li>Need not have set up or installation steps (intermediate level).</li></ul><h3>Explanation.</h3><ul><li>Example: API docs.</li><li>Level: experienced.</li><li>Orientation: technical details.</li><li>Purpose: theory + to study.</li></ul><h4>* Apply:</h4><ul><li>Should be code based (auto generate is better).</li><li>Example if required (for edge case which is difficult to describe).</li><li>Consistent structure (improves readability).</li></ul><h4>* Avoid:</h4><ul><li>Should not explain about design decision (explain what code does, not why).</li><li>Should not be goal oriented (put it in how to guide).</li></ul><h3>Reference.</h3><ul><li>Example: white paper.</li><li>Level: advanced expert.</li><li>Orientation: to inform.</li><li>Purpose: theory + working.</li></ul><h4>* Apply:</h4><ul><li>Contains design decision (including alternatives).</li><li>Provides historical reasons.</li><li>States good practices.</li><li>Includes discussion or exploration contents. </li></ul></article></div><div class=tags><span>Post Tags:</span><a href=tag/writing.html>&nbsp;#writing,</a><a href=tag/documentation.html>&nbsp;#documentation,</a><a href=tag/programming.html>&nbsp;#programming</a></div><hr class=my-3><div id=comments></div><script>
   let commentUrl = "https://api.github.com/repos/sak96/sak96.github.io/issues/2/comments"
   let issueUrl = "https://github.com/sak96/sak96.github.io/issues/2"
   function PopulateComment(comments) {

@@ -83,7 +83,6 @@ small {
 #theme:before {
   content: "[🌞:"
 }
-
 #navbar-toggler {
   display: none;
 }
@@ -173,52 +172,40 @@ article strong {
   .paginator span {
     display: none;
   }
+  [data-theme="light"] #theme:before {
+    content: "🌚:"
+  }
+  #theme:before {
+    content: "🌞:"
+  }
 }    </style></head><body><div class=navbar><div class=nav-header /><a href=https://sak96.github.io/index.html>sak96-blog</a><a id=navbar-toggler>|||</a></div><div class=nav-start><a href=https://sak96.github.io/authors.html>Authors</a><a href=https://sak96.github.io/categories.html>Categories</a><a href=https://sak96.github.io/tags.html>Tags</a></div><div class=nav-end><a href=https://sak96.github.io/feeds/all.atom.xml>Atom</a><a id=theme>Theme</a></div></div><script>
-function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(";");
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == " ") {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-}
-function setCookie(cname, cvalue, exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-    var expires = "expires=" + d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + (";path=" + "https://sak96.github.io" + "/") + ";SameSite=Lax";
-}
 document.querySelector("#navbar-toggler").onclick = function (e) {
-    document.querySelectorAll(".nav-start a,.nav-end a").forEach(
-        (e) => e.classList.toggle("show")
-    )
-}
+  document
+    .querySelectorAll(".nav-start a,.nav-end a")
+    .forEach((e) => e.classList.toggle("show"));
+};
 {
-    let theme = getCookie("theme");
-    if (theme !== "light"){
-        document.documentElement.setAttribute('data-theme', ''); 
-        setCookie("theme", "", -1); 
-    }else{
-        document.documentElement.setAttribute('data-theme', theme);
-    }
+  let theme = localStorage.getItem("theme");
+  if (
+    theme === "light" ||
+    window.matchMedia("(prefers-color-scheme: light)").matches
+  ) {
+    document.documentElement.setAttribute("data-theme", "light");
+    localStorage.setItem("theme", "light");
+  } else {
+    document.documentElement.setAttribute("data-theme", "dark");
+    localStorage.setItem("theme", "dark");
+  }
 }
 document.querySelector("#theme").onclick = function (e) {
-    if (document.documentElement.getAttribute('data-theme')){
-        document.documentElement.setAttribute('data-theme', ''); 
-        setCookie("theme", "", -1); 
-    }else{
-        let l = "light";
-        document.documentElement.setAttribute('data-theme', l); 
-        setCookie("theme", l, 365); 
-    }
-} </script><div class=content><div><h1>My Notes: Debugging And Patching Docker</h1><h5><p>This article provide some notes for debugging and patching docker.</p></h5><h5>Read time: 5 min</h5><small>Written on February 29, 2020</small></div><div><article><p>Containerization of software and services allows easy deployment, portability and many other benefits. Docker is one of wide-spread adopted technology used for containerization. I use docker while on work. There are many guide and articles about using and debugging docker. Here is my guide for debugging and patching docker. And link to <a href=#Resources>resources</a>.</p><h1>Terminologies.</h1><ul><li>Docker: software used for containerization.</li><li>Image: snapshot of container.</li><li>Container: running instance of image.</li></ul><h1>Information Gathering.</h1><p>The first stage of any debugging session is gathering information. Skipping this steps may lead to spending hours on issue which may have been resolved in minutes.</p><h2>Container inspection.</h2><ul><li>Get all running container.</li></ul><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre><span class=normal>1</span></pre></div></td><td class=code><div class=codehilite><pre><span></span><code><span class=gp>user@host$ </span>docker ps
+  if (document.documentElement.getAttribute("data-theme")) {
+    document.documentElement.setAttribute("data-theme", "");
+    localStorage.setItem("theme", "dark");
+  } else {
+    document.documentElement.setAttribute("data-theme", "light");
+    localStorage.setItem("theme", "light");
+  }
+};</script><div class=content><div><h1>My Notes: Debugging And Patching Docker</h1><h5><p>This article provide some notes for debugging and patching docker.</p></h5><h5>Read time: 5 min</h5><small>Written on February 29, 2020</small></div><div><article><p>Containerization of software and services allows easy deployment, portability and many other benefits. Docker is one of wide-spread adopted technology used for containerization. I use docker while on work. There are many guide and articles about using and debugging docker. Here is my guide for debugging and patching docker. And link to <a href=#Resources>resources</a>.</p><h1>Terminologies.</h1><ul><li>Docker: software used for containerization.</li><li>Image: snapshot of container.</li><li>Container: running instance of image.</li></ul><h1>Information Gathering.</h1><p>The first stage of any debugging session is gathering information. Skipping this steps may lead to spending hours on issue which may have been resolved in minutes.</p><h2>Container inspection.</h2><ul><li>Get all running container.</li></ul><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre><span class=normal>1</span></pre></div></td><td class=code><div class=codehilite><pre><span></span><code><span class=gp>user@host$ </span>docker ps
 </code></pre></div></td></tr></table><ul><li>List all containers (running, created, exited, ...).</li></ul><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre><span class=normal>1</span></pre></div></td><td class=code><div class=codehilite><pre><span></span><code><span class=gp>user@host$ </span>docker ps -a
 </code></pre></div></td></tr></table><ul><li>Filter container list (say status=exited).</li></ul><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre><span class=normal>1</span></pre></div></td><td class=code><div class=codehilite><pre><span></span><code><span class=gp>user@host$ </span>docker ps -a -f <span class=s2>&quot;status=exited&quot;</span>
 </code></pre></div></td></tr></table><ul><li>Get container logs.</li></ul><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre><span class=normal>1</span></pre></div></td><td class=code><div class=codehilite><pre><span></span><code><span class=gp>user@host$ </span>docker logs <span class=s2>&quot;</span><span class=nv>$container_name</span><span class=s2>&quot;</span>
