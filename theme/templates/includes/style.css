@@ -76,6 +76,12 @@ small {
 .navbar a:after {
   content: "]";
 }
+[data-theme="light"] #theme:before {
+  content: "[🌚:"
+}
+#theme:before {
+  content: "[🌞:"
+}
 #navbar-toggler {
   display: none;
 }
@@ -164,5 +170,11 @@ article strong {
   }
   .paginator span {
     display: none;
+  }
+  [data-theme="light"] #theme:before {
+    content: "🌚:"
+  }
+  #theme:before {
+    content: "🌞:"
   }
 }
