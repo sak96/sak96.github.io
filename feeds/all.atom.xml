@@ -366,49 +366,60 @@ solution.&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;Run &lt;code&gt;cat&lt;/code&gt; in a terminal. It wait for input.&lt;/li&gt;
 &lt;li&gt;Run &lt;code&gt;echo "Hello World" &amp;gt;&amp;gt; "/proc/$(pidof -s cat)/fd/1"&lt;/code&gt; to input to &lt;code&gt;cat&lt;/code&gt; program.&lt;/li&gt;
-&lt;/ol&gt;</content><category term="stories"></category><category term="story"></category><category term="linux"></category><category term="file"></category></entry><entry><title>Git Simplified (Part 1): Introduction</title><link href="https://sak96.github.io/git-simplified-part-1-introduction.html" rel="alternate"></link><published>2020-04-29T00:00:00+01:00</published><updated>2020-04-29T00:00:00+01:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2020-04-29:/git-simplified-part-1-introduction.html</id><summary type="html">&lt;p&gt;This article provides introduction to git internals.&lt;/p&gt;</summary><content type="html">&lt;p&gt;Git is the stupid &lt;code&gt;content tracker&lt;/code&gt; (as per it's &lt;a href="https://linux.die.net/man/1/git" title="git man page"&gt;man page&lt;/a&gt;). It lets you keep track of modification done to content. This gives a timeline of how content developed over time. Content is not tracked at file level, More explained in &lt;a href="https://www.youtube.com/watch?v=4XpnKHJAok8" title="Torvalds on git"&gt;Linus Torvalds talk on git&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Content tracking may be required for various reasons.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Track Ownership of changes.&lt;/li&gt;
-&lt;li&gt;Backup and Restore to certain older point.&lt;/li&gt;
-&lt;li&gt;Synchronization between different sources (by agreeing on common point to sync with).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;To learn how to use Git, you mostly likely will find guides explaining about git command line usage. Once you are good with command line usage, you may find it helpful to know about "how git works". This series of articles aim to familiarize reader with high level over view of git working. Series combines articles describing independent topic. This article introduction to git internals.&lt;/p&gt;
-&lt;h2&gt;Articles&lt;/h2&gt;
-&lt;p&gt;Links To other articles of this series are here.&lt;/p&gt;
+&lt;/ol&gt;</content><category term="stories"></category><category term="story"></category><category term="linux"></category><category term="file"></category></entry><entry><title>Git Simplified (Part 1): Introduction</title><link href="https://sak96.github.io/git-simplified-part-1-introduction.html" rel="alternate"></link><published>2020-04-29T00:00:00+01:00</published><updated>2020-04-29T00:00:00+01:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2020-04-29:/git-simplified-part-1-introduction.html</id><summary type="html">&lt;p&gt;This article provides introduction to git internals.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Articles&lt;/h2&gt;
+&lt;p&gt;This article is part of series which provides introduction to git internals.&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;a href="https://sak96.github.io/git-simplified-part-1-introduction.html"&gt;Git: Introduction&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;h2&gt;Introduction&lt;/h2&gt;
-&lt;p&gt;Git like other content tracking system functions by recording state of content at given time. Each such state are called as &lt;code&gt;commits&lt;/code&gt;. The whole tracking system is &lt;code&gt;Directed Acyclic Graph&lt;/code&gt; of commits. Each commit is identified by a &lt;code&gt;hash&lt;/code&gt;.&lt;/p&gt;
-&lt;h3&gt;Directed Acyclic Graph&lt;/h3&gt;
+&lt;p&gt;Git is the stupid &lt;code&gt;content tracker&lt;/code&gt; (as per it's &lt;a href="https://linux.die.net/man/1/git" title="git man page"&gt;man page&lt;/a&gt;).
+As a content tracker it tracks the modification of done to content.
+It acts like a diary for how/when/where content got modified.&lt;/p&gt;
+&lt;p&gt;This help to enabled the following:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;Example: &lt;code&gt;child -&amp;gt; parent -&amp;gt; grandparent&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Graph&lt;/code&gt; is structure which represents relation between objects using connection.
-    -   The object in this case is &lt;code&gt;commits&lt;/code&gt;.
-    -   The relationship in this case is &lt;code&gt;parent-child&lt;/code&gt; relationship.
-    -   Multiple child can share single parent.
-    -   Single child may be created by Multiple parents.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Directed&lt;/code&gt; refers to the fact that these relationships have a direction.
-    -   The direction in this case is from child to parent.
-    -   The arrow head points to the direction.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Acyclic&lt;/code&gt; means the graph does not have cycles or loops.
-    -   A commit or its parents (recursively) cannot point back to the commit itself.&lt;/li&gt;
-&lt;li&gt;Better explained by &lt;a href="https://en.wikipedia.org/wiki/Directed_acyclic_graph" title="Wikipedia: DAG"&gt;wiki&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Track Ownership of changes.&lt;/li&gt;
+&lt;li&gt;Backup and Restore to certain older point.&lt;/li&gt;
+&lt;li&gt;Synchronization changes between multiple contents.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3&gt;Hash&lt;/h3&gt;
+&lt;p&gt;Git keeps track of the whole system as &lt;strong&gt;Directed Acyclic Graph of Hashes of commits&lt;/strong&gt;.
+Each hash represents a commit or state of content at given time.
+Lets dig bit deeper about the graph part.&lt;/p&gt;
+&lt;h2&gt;Directed Acyclic Graph&lt;/h2&gt;
+&lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;child&lt;/span&gt; &lt;span class="n"&gt;commit&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;parent&lt;/span&gt; &lt;span class="n"&gt;commit&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;grandparent&lt;/span&gt; &lt;span class="n"&gt;commit&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;p&gt;&lt;em&gt;Graph&lt;/em&gt; is structure which represents relation between objects using connection.&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;Hash function are function whose input is variable size and output is fixed size.&lt;/li&gt;
-&lt;li&gt;Hash of data is output of hash function with the data as input.&lt;/li&gt;
-&lt;li&gt;Cryptographic hashes are hash functions which are hard to reverse. In simple terms, for given hash(output) the input is hard to determine.&lt;/li&gt;
-&lt;li&gt;Hashing function used in git is &lt;code&gt;sha-1&lt;/code&gt; (or &lt;code&gt;sha-256&lt;/code&gt; in recent versions. Check &lt;a href="https://git-scm.com/docs/hash-function-transition/2.18.0" title="Hashes"&gt;hash function transition&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;The object in this case is &lt;em&gt;commits&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;The relationship in this case is &lt;em&gt;parent-child&lt;/em&gt; relationship.&lt;/li&gt;
+&lt;li&gt;There relation can be many to many.&lt;/li&gt;
+&lt;li&gt;Multiple child can share single parent.&lt;/li&gt;
+&lt;li&gt;Single child may be created by Multiple parents.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2&gt;Data Model&lt;/h2&gt;
-&lt;p&gt;Git data model can be at high level categorized into two variations.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Directed&lt;/em&gt; refers to the fact that these relationships have a direction.&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;Object store: Map of hash to objects. Ex: commit&lt;/li&gt;
-&lt;li&gt;References: Maps human-readable strings to hashes. Ex: branches&lt;/li&gt;
+&lt;li&gt;The direction in this case is from child to parent.&lt;/li&gt;
+&lt;li&gt;The arrow head points to the direction.&lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;Acyclic&lt;/em&gt; means the graph does not have cycles or loops.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;More information at &lt;a href="https://en.wikipedia.org/wiki/Directed_acyclic_graph" title="Wikipedia: DAG"&gt;wiki&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Hash&lt;/h2&gt;
+&lt;p&gt;The Directed Acyclic Graph is made of Hashes.
+Hash function map variable size input to fixed size output.
+Here each content has different size, you hash them you to get fixed sized output.
+The fixed sized output is the hash of the input.&lt;/p&gt;
+&lt;p&gt;Cryptographic Hashes are hash which are hard to reverse.
+You cannot guess input from getting output of the hash.
+In case of git &lt;em&gt;sha-1&lt;/em&gt; is used for hashing.
+In recent version &lt;em&gt;sha-256&lt;/em&gt; is used as per &lt;a href="https://git-scm.com/docs/hash-function-transition/2.18.0" title="Hashes"&gt;hash function transition article&lt;/a&gt;).&lt;/p&gt;
+&lt;h2&gt;Commit&lt;/h2&gt;
+&lt;p&gt;The snapshot of content at any point of time is called commit.
+Even though content refers to folder level of content.
+The changes are maintained at file level.
+So the commit contains details of these changes.
+More about commit will be covered in next chapter.&lt;/p&gt;
 &lt;h2&gt;Resources&lt;/h2&gt;
 &lt;ol&gt;
 &lt;li&gt;Git: &lt;a href="https://linux.die.net/man/1/git" title="git man page"&gt;Stupid Content Tracker&lt;/a&gt;.&lt;/li&gt;
