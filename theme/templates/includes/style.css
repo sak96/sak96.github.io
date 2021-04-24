@@ -77,10 +77,10 @@ small {
   content: "]";
 }
 [data-theme="light"] #theme:before {
-  content: "[🌚:"
+  content: "[🌚:";
 }
 #theme:before {
-  content: "[🌞:"
+  content: "[🌞:";
 }
 #navbar-toggler {
   display: none;
@@ -125,6 +125,7 @@ article strong {
   justify-content: center;
 }
 .disabled {
+  pointer-events: none;
   color: var(--gray);
 }
 @media only screen and (max-width: 500px) {
@@ -172,9 +173,9 @@ article strong {
     display: none;
   }
   [data-theme="light"] #theme:before {
-    content: "🌚:"
+    content: "🌚:";
   }
   #theme:before {
-    content: "🌞:"
+    content: "🌞:";
   }
 }
