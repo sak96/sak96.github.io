@@ -78,10 +78,10 @@ small {
   content: "]";
 }
 [data-theme="light"] #theme:before {
-  content: "[🌚:"
+  content: "[🌚:";
 }
 #theme:before {
-  content: "[🌞:"
+  content: "[🌞:";
 }
 #navbar-toggler {
   display: none;
@@ -126,6 +126,7 @@ article strong {
   justify-content: center;
 }
 .disabled {
+  pointer-events: none;
   color: var(--gray);
 }
 @media only screen and (max-width: 500px) {
@@ -173,10 +174,10 @@ article strong {
     display: none;
   }
   [data-theme="light"] #theme:before {
-    content: "🌚:"
+    content: "🌚:";
   }
   #theme:before {
-    content: "🌞:"
+    content: "🌞:";
   }
 }    </style></head><body><div class=navbar><div class=nav-header /><a href=https://sak96.github.io/index.html>sak96-blog</a><a id=navbar-toggler>|||</a></div><div class=nav-start><a href=https://sak96.github.io/authors.html>Authors</a><a href=https://sak96.github.io/categories.html>Categories</a><a href=https://sak96.github.io/tags.html>Tags</a></div><div class=nav-end><a href=https://sak96.github.io/feeds/all.atom.xml>Atom</a><a id=theme>Theme</a></div></div><script>
 document.querySelector("#navbar-toggler").onclick = function (e) {
