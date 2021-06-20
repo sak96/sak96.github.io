@@ -18,7 +18,15 @@
   --green: #6c782e;
   --red: #c14a4a;
 }
+table,
+th,
+td {
+  padding: 10px;
+  border: 1px solid var(--fg);
+  border-collapse: collapse;
+}
 .codehilitetable {
+  padding: 0px;
   display: block;
   overflow-x: auto;
   border: 2px solid var(--blue);
@@ -31,6 +39,7 @@
 }
 .linenos {
   text-align: right;
+  border: 0px;
   border-right: 2px solid var(--blue);
   padding: 0em 0.5em;
   -webkit-user-select: none;
@@ -38,6 +47,9 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+.code {
+  border: 0px;
 }
 body {
   background-color: var(--bg);
