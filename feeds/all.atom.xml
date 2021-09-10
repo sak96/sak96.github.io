@@ -1,5 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>sak96-blog</title><link href="https://sak96.github.io/" rel="alternate"></link><link href="https://sak96.github.io/feeds/all.atom.xml" rel="self"></link><id>https://sak96.github.io/</id><updated>2020-12-20T00:00:00+00:00</updated><entry><title>Rust: Ownership</title><link href="https://sak96.github.io/rust-ownership.html" rel="alternate"></link><published>2020-12-20T00:00:00+00:00</published><updated>2020-12-20T00:00:00+00:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2020-12-20:/rust-ownership.html</id><summary type="html">&lt;p&gt;This article provide my understanding of rust ownership concept.&lt;/p&gt;</summary><content type="html">&lt;!-- cSpell:ignore sbrk, malloc --&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>sak96-blog</title><link href="https://sak96.github.io/" rel="alternate"></link><link href="https://sak96.github.io/feeds/all.atom.xml" rel="self"></link><id>https://sak96.github.io/</id><updated>2021-06-20T00:00:00+01:00</updated><subtitle></subtitle><entry><title>Weirdness of S3 List Permission</title><link href="https://sak96.github.io/weirdness-of-s3-list-permission.html" rel="alternate"></link><published>2021-06-20T00:00:00+01:00</published><updated>2021-06-20T00:00:00+01:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2021-06-20:/weirdness-of-s3-list-permission.html</id><summary type="html">&lt;p&gt;Understand Weirdness in S3 List permission model.&lt;/p&gt;</summary><content type="html">&lt;!-- cspell:ignore googlefu,duckduckgo --&gt;
+
+&lt;h2&gt;S3 is flat&lt;/h2&gt;
+&lt;p&gt;S3 is one of the file storage service available in the "Cloud".
+The common way the file are stored is using folder hierarchies.
+But S3 does not use hierarchies to store files.
+Instead all files are stored in flat structure.
+There are no folders, only key value pairs of path and content of file.&lt;/p&gt;
+&lt;p&gt;Most interface designs try to maintain consistency with folder hierarchies.
+This is done by using &lt;code&gt;/&lt;/code&gt; as delimiter for folder names.
+This allows user to carry on his life, as if, he was using folder hierarchies.
+But interestingly, forgetting that S3 is flat may not be entirely good.&lt;/p&gt;
+&lt;h2&gt;S3 List Operation&lt;/h2&gt;
+&lt;p&gt;Listing file in normal folder hierarchy is trivial to imagine.
+List all the file and folder children of given folder.&lt;/p&gt;
+&lt;p&gt;But in case of flat hierarchy it becomes interesting.
+There are no folder to list, so what constitutes a list operation?
+The ideal answer would be, to map to what would have happened it were folder hierarchy.&lt;/p&gt;
+&lt;p&gt;So List operation would show all files/folder starting with certain prefix.
+Where files would start with the prefix and does not contain a '/'.
+Where as folders would start with the prefix and end with a '/'.
+This seems to match what we would have expected from folder hierarchy.&lt;/p&gt;
+&lt;h2&gt;S3 List Permission&lt;/h2&gt;
+&lt;p&gt;Consider a case where you are storing home directories of user to s3.
+You would want the user to only able to read,write and &lt;strong&gt;list&lt;/strong&gt; his own home.
+Also the home folder name is same as user name.&lt;/p&gt;
+&lt;p&gt;If you googlefu is strong enough you may end up &lt;a href="https://web.archive.org/web/20201112042023/https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_s3_home-directory-console.html"&gt;here&lt;/a&gt;.
+I prefer duckduckgo so, I typed &lt;code&gt;!aws IAM users S3 home&lt;/code&gt; and picked the first result.
+&lt;code&gt;!aws&lt;/code&gt; searches for aws docs, this is bang search from duckduckgo, more &lt;a href="https://duckduckgo.com/bang"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;You might feel that computer security gods and smiling on you.
+And yes, they are!
+But not in the way you would hope, not for you happiness.
+They are, in fact, laughing (not just smiling) at you as you walk into the pit.&lt;/p&gt;
+&lt;p&gt;This article is interested in list operation, So, let ignore all other operation.
+Below is the json permission for managing list operation from &lt;a href="https://web.archive.org/web/20201112042023/https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_s3_home-directory-console.html"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt; 1&lt;/span&gt;
+&lt;span class="normal"&gt; 2&lt;/span&gt;
+&lt;span class="normal"&gt; 3&lt;/span&gt;
+&lt;span class="normal"&gt; 4&lt;/span&gt;
+&lt;span class="normal"&gt; 5&lt;/span&gt;
+&lt;span class="normal"&gt; 6&lt;/span&gt;
+&lt;span class="normal"&gt; 7&lt;/span&gt;
+&lt;span class="normal"&gt; 8&lt;/span&gt;
+&lt;span class="normal"&gt; 9&lt;/span&gt;
+&lt;span class="normal"&gt;10&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;quot;Effect&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Allow&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;quot;Action&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;s3:ListBucket&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;quot;Resource&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;arn:aws:s3:::bucket-name&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;quot;Condition&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;quot;StringLike&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+      &lt;span class="nt"&gt;&amp;quot;s3:prefix&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;home/&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;home/${aws:username}/*&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;p&gt;So the recommended way to restrict list operation is to use &lt;code&gt;s3:prefix&lt;/code&gt; condition.
+This means restriction is entirely based on prefixes.&lt;/p&gt;
+&lt;p&gt;Now let us analyze each prefix one by one.&lt;/p&gt;
+&lt;p&gt;| prefix                    | use                               |
+| ------------------------- | --------------------------------- |
+| ""                        | to list root directory            |
+| "home/"                   | to list all directory in home     |
+| "home/${aws:username}/*" | list any thing is user's own home |&lt;/p&gt;
+&lt;p&gt;Note: &lt;code&gt;${aws:username}&lt;/code&gt; is to map every user's home directory name to user name.&lt;/p&gt;
+&lt;p&gt;Now let go back to what exactly list does.
+&lt;strong&gt;List operation would show all files/folder starting with certain prefix&lt;/strong&gt;.
+So everything is fine, correct ?
+There should be no issue with this.&lt;/p&gt;
+&lt;p&gt;No, Interface just hides flat structure of the storage.
+But we also have recursive listing in folder structure.
+Imagine, What happens if you use the same here, but on &lt;strong&gt;prefix&lt;/strong&gt; ?
+In particular with &lt;strong&gt;home/&lt;/strong&gt; or &lt;strong&gt;""&lt;/strong&gt; ?&lt;/p&gt;
+&lt;p&gt;You should be able to see all file beginning with "home/" or "".
+This means you should also be able to see "home/some_other_user/..." in the list.
+This is exactly what happens, meaning you can see all files in other's home directory.
+This may not be a issue as they cannot still read or write the files.&lt;/p&gt;
+&lt;h2&gt;My Story with List Permission&lt;/h2&gt;
+&lt;p&gt;The above issue was something I had already in my mind when I was framing the policy.
+We decided to go with following list permission in the policy.&lt;/p&gt;
+&lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt; 1&lt;/span&gt;
+&lt;span class="normal"&gt; 2&lt;/span&gt;
+&lt;span class="normal"&gt; 3&lt;/span&gt;
+&lt;span class="normal"&gt; 4&lt;/span&gt;
+&lt;span class="normal"&gt; 5&lt;/span&gt;
+&lt;span class="normal"&gt; 6&lt;/span&gt;
+&lt;span class="normal"&gt; 7&lt;/span&gt;
+&lt;span class="normal"&gt; 8&lt;/span&gt;
+&lt;span class="normal"&gt; 9&lt;/span&gt;
+&lt;span class="normal"&gt;10&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;quot;Effect&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Allow&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;quot;Action&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;s3:ListBucket&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;quot;Resource&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;arn:aws:s3:::bucket-name&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;quot;Condition&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;quot;StringLike&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+      &lt;span class="nt"&gt;&amp;quot;s3:prefix&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;home/${aws:username}/*&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;p&gt;When the policy was used and there were issue, Some of list operation failed.
+Many user were using &lt;code&gt;home/${aws:username}&lt;/code&gt;, without trailing &lt;code&gt;/&lt;/code&gt;.
+This means a lot changes had to be done to comply with this policy.
+So we decided to allow the path without trailing &lt;code&gt;/&lt;/code&gt;.&lt;/p&gt;
+&lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt; 1&lt;/span&gt;
+&lt;span class="normal"&gt; 2&lt;/span&gt;
+&lt;span class="normal"&gt; 3&lt;/span&gt;
+&lt;span class="normal"&gt; 4&lt;/span&gt;
+&lt;span class="normal"&gt; 5&lt;/span&gt;
+&lt;span class="normal"&gt; 6&lt;/span&gt;
+&lt;span class="normal"&gt; 7&lt;/span&gt;
+&lt;span class="normal"&gt; 8&lt;/span&gt;
+&lt;span class="normal"&gt; 9&lt;/span&gt;
+&lt;span class="normal"&gt;10&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;quot;Effect&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Allow&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;quot;Action&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;s3:ListBucket&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;quot;Resource&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;arn:aws:s3:::bucket-name&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;quot;Condition&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;quot;StringLike&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+      &lt;span class="nt"&gt;&amp;quot;s3:prefix&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;home/${aws:username}&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;home/${aws:username}/*&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;p&gt;Seems ok, there should be no issues, right?
+It did seem to work well, when we tested again.
+All scripts worked as expected.
+But, it had a serious security draw back.&lt;/p&gt;
+&lt;p&gt;Just imagine if you had two user &lt;code&gt;user&lt;/code&gt; and &lt;code&gt;user_with_user_prefix&lt;/code&gt;.
+And now what happens if &lt;code&gt;user&lt;/code&gt; list for his home without &lt;code&gt;/&lt;/code&gt;.
+And yeah user can do it recursively.
+This list &lt;code&gt;user_with_user_prefix&lt;/code&gt;'s home contents as well.&lt;/p&gt;
+&lt;p&gt;Note, This might not be problem if you have constant length strings for username.
+For example in this &lt;a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_s3_cognito-bucket.html"&gt;aws docs&lt;/a&gt;, similar policy is shown.
+By my understanding, these &lt;code&gt;${cognito-identity.amazonaws.com:sub}&lt;/code&gt; are all same length.
+Which means there cannot be sub-string of one another.
+In other words, sanitize user input, even user names.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Never hurry, especially a security related activity. It's ok to be slow.&lt;/li&gt;
+&lt;li&gt;Some times, Concentrate concepts may be better then abstract interface.&lt;/li&gt;
+&lt;li&gt;Repeat, Thinking in terms of flat structure &lt;code&gt;&amp;gt;&lt;/code&gt; folder hierarchy interface.&lt;/li&gt;
+&lt;li&gt;Sanitize user input may be a good idea.&lt;/li&gt;
+&lt;li&gt;Use &lt;a href="https://duckduckgo.com/bang"&gt;bang&lt;/a&gt; to search faster.&lt;/li&gt;
+&lt;/ol&gt;</content><category term="stories"></category><category term="story"></category><category term="s3"></category><category term="security"></category></entry><entry><title>Rust: Ownership</title><link href="https://sak96.github.io/rust-ownership.html" rel="alternate"></link><published>2020-12-20T00:00:00+00:00</published><updated>2020-12-20T00:00:00+00:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2020-12-20:/rust-ownership.html</id><summary type="html">&lt;p&gt;This article provide my understanding of rust ownership concept.&lt;/p&gt;</summary><content type="html">&lt;!-- cSpell:ignore sbrk, malloc --&gt;
 
 &lt;p&gt;This article explains my understanding of rust ownership concepts.
 Article will only give simplistic overview and might not hold water in all cases.&lt;/p&gt;
@@ -107,7 +253,7 @@ This caused network connection to hang on large transfers, more detail &lt;a hre
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;p&gt;Single line command will be as follows.&lt;/p&gt;
-&lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nf"&gt;%bash&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;sudo ip link set mtu $($(wslpath &amp;#39;%windir%\system32&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;etsh.exe&amp;#39;) interface ipv4 show subinterface | $(wslpath &amp;#39;%windir%\system32&lt;/span&gt;&lt;span class="se"&gt;\f&lt;/span&gt;&lt;span class="s"&gt;indstr.exe&amp;#39;) /i vpn   | grep -i vpn | sed &amp;#39;s/^\s\+//g&amp;#39;|  cut -f 1 -d &amp;#39; &amp;#39;) dev eth0&amp;quot;&lt;/span&gt;
+&lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nf"&gt;%bash&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;sudo ip link set mtu $($(wslpath &amp;#39;%windir%\system32&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;etsh.exe&amp;#39;) interface ipv4 show subinterface | $(wslpath &amp;#39;%windir%\system32&lt;/span&gt;&lt;span class="se"&gt;\f&lt;/span&gt;&lt;span class="s"&gt;indstr.exe&amp;#39;) /i vpn   | grep -i vpn | sed &amp;#39;s/^\s\+//g&amp;#39;|  cut -f 1 -d &amp;#39; &amp;#39;) dev eth0&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;h2&gt;Network and GUI&lt;/h2&gt;
