@@ -58,11 +58,28 @@ Below is the json permission for managing list operation from &lt;a href="https:
 &lt;p&gt;So the recommended way to restrict list operation is to use &lt;code&gt;s3:prefix&lt;/code&gt; condition.
 This means restriction is entirely based on prefixes.&lt;/p&gt;
 &lt;p&gt;Now let us analyze each prefix one by one.&lt;/p&gt;
-&lt;p&gt;| prefix                    | use                               |
-| ------------------------- | --------------------------------- |
-| ""                        | to list root directory            |
-| "home/"                   | to list all directory in home     |
-| "home/${aws:username}/*" | list any thing is user's own home |&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;prefix&lt;/th&gt;
+&lt;th&gt;use&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;""&lt;/td&gt;
+&lt;td&gt;to list root directory&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;"home/"&lt;/td&gt;
+&lt;td&gt;to list all directory in home&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;"home/${aws:username}/*"&lt;/td&gt;
+&lt;td&gt;list any thing is user's own home&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 &lt;p&gt;Note: &lt;code&gt;${aws:username}&lt;/code&gt; is to map every user's home directory name to user name.&lt;/p&gt;
 &lt;p&gt;Now let go back to what exactly list does.
 &lt;strong&gt;List operation would show all files/folder starting with certain prefix&lt;/strong&gt;.
