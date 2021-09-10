@@ -1,5 +1,180 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>sak96-blog</title><link href="https://sak96.github.io/" rel="alternate"></link><link href="https://sak96.github.io/feeds/all.atom.xml" rel="self"></link><id>https://sak96.github.io/</id><updated>2021-06-20T00:00:00+01:00</updated><subtitle></subtitle><entry><title>Weirdness of S3 List Permission</title><link href="https://sak96.github.io/weirdness-of-s3-list-permission.html" rel="alternate"></link><published>2021-06-20T00:00:00+01:00</published><updated>2021-06-20T00:00:00+01:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2021-06-20:/weirdness-of-s3-list-permission.html</id><summary type="html">&lt;p&gt;Understand Weirdness in S3 List permission model.&lt;/p&gt;</summary><content type="html">&lt;!-- cspell:ignore googlefu,duckduckgo --&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>sak96-blog</title><link href="https://sak96.github.io/" rel="alternate"></link><link href="https://sak96.github.io/feeds/all.atom.xml" rel="self"></link><id>https://sak96.github.io/</id><updated>2021-11-09T00:00:00+00:00</updated><subtitle></subtitle><entry><title>Vim Wiki Setup</title><link href="https://sak96.github.io/vim-wiki-setup.html" rel="alternate"></link><published>2021-11-09T00:00:00+00:00</published><updated>2021-11-09T00:00:00+00:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2021-11-09:/vim-wiki-setup.html</id><summary type="html">&lt;p&gt;This article explains my vim wiki setup.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Why Keep Notes?&lt;/h2&gt;
+&lt;p&gt;Note taking helps in process of learning new material.
+The process of writing notes forces you to summarise what you learned.
+The notes may be used later to revise or recollect facts.
+It also helps to organise thoughts.&lt;/p&gt;
+&lt;p&gt;My reasoning of using notes was only to force me to summarise materials.
+I never wrote my notes for the purpose of recollection.
+This usually happened due to my laziness to write legibly or maintaining notes.&lt;/p&gt;
+&lt;p&gt;As my interaction with computer increased, typing became second nature.
+This also meant I could easily transfer data around devices.
+Thus I stared using Joplin as a tool for storing my notes.&lt;/p&gt;
+&lt;h2&gt;Vim Wiki&lt;/h2&gt;
+&lt;p&gt;Joplin worked fine for taking notes.
+It could sync between android and my laptop.
+It also had vim key binding integration.
+It also had a command line interface.&lt;/p&gt;
+&lt;p&gt;I still decided to move to vim wiki.
+It was simple setup and the data was versioned.
+And I could parse the data as and when required.
+Installation was also simple via &lt;code&gt;vim-plug&lt;/code&gt;.&lt;/p&gt;
+&lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;Plug &lt;span class="s1"&gt;&amp;#39;vimwiki/vimwiki&amp;#39;&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;h2&gt;Markdown format&lt;/h2&gt;
+&lt;h3&gt;Enabling markdown&lt;/h3&gt;
+&lt;p&gt;By default vim wiki has it own format of data.
+But it also support markdown syntax by setting following.&lt;/p&gt;
+&lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="k"&gt;g&lt;/span&gt;:vimwiki_syntax &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;markdown&amp;#39;&lt;/span&gt;
+&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="k"&gt;g&lt;/span&gt;:vimwiki_ext &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;.md&amp;#39;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;h3&gt;Generating Html From Markdown&lt;/h3&gt;
+&lt;p&gt;Vim wiki support conversion of notes to html artifacts.
+But markdown syntax is not supported for this feature.
+The only way to make it work is to use custom program like &lt;code&gt;vimwiki_markdown&lt;/code&gt;.&lt;/p&gt;
+&lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;
+&lt;span class="normal"&gt;3&lt;/span&gt;
+&lt;span class="normal"&gt;4&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;if&lt;/span&gt; executable&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;vimwiki_markdown&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="k"&gt;g&lt;/span&gt;:vimwiki_custom_wiki2html &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;vimwiki_markdown&amp;#39;&lt;/span&gt;
+  &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="k"&gt;g&lt;/span&gt;:vimwiki_template_path &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;~/.wiki_template/&amp;#39;&lt;/span&gt;
+&lt;span class="k"&gt;endif&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;p&gt;The above code sets up &lt;code&gt;vimwiki_markdown&lt;/code&gt; as html generator.
+Custom template can be provided which is placed in &lt;code&gt;~/.wiki_template/default.tpl&lt;/code&gt;.&lt;/p&gt;
+&lt;h3&gt;syntax highlight&lt;/h3&gt;
+&lt;p&gt;Syntax highlighting is not enabled by default.
+It can be set explicitly.&lt;/p&gt;
+&lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="k"&gt;g&lt;/span&gt;:vimwiki_automatic_nested_syntaxes &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;p&gt;Only certain language can also be set.
+This also can be used to map syntax highlight as you please.&lt;/p&gt;
+&lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="k"&gt;g&lt;/span&gt;:vimwiki_nested_syntaxes &lt;span class="p"&gt;=&lt;/span&gt; {&lt;span class="s1"&gt;&amp;#39;python&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;python&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;c++&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;cpp&amp;#39;&lt;/span&gt;}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;h2&gt;Folder Hierarchy&lt;/h2&gt;
+&lt;p&gt;Organizing notes into folder hierarchy can be helpful.
+This might help classifying notes into broad categories.&lt;/p&gt;
+&lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;
+&lt;span class="normal"&gt;3&lt;/span&gt;
+&lt;span class="normal"&gt;4&lt;/span&gt;
+&lt;span class="normal"&gt;5&lt;/span&gt;
+&lt;span class="normal"&gt;6&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="k"&gt;g&lt;/span&gt;:vimwiki_list &lt;span class="p"&gt;=&lt;/span&gt; [
+      \ {&lt;span class="s1"&gt;&amp;#39;name&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;path&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;}&lt;span class="p"&gt;,&lt;/span&gt;
+      \ {&lt;span class="s1"&gt;&amp;#39;name&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;python&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;path&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;language/py/&amp;#39;&lt;/span&gt;}&lt;span class="p"&gt;,&lt;/span&gt;
+      \ {&lt;span class="s1"&gt;&amp;#39;name&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;rust&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;path&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;language/rs/&amp;#39;&lt;/span&gt;}&lt;span class="p"&gt;,&lt;/span&gt;
+      \ {&lt;span class="s1"&gt;&amp;#39;name&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;software&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;path&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;software/&amp;#39;&lt;/span&gt;}&lt;span class="p"&gt;,&lt;/span&gt;
+      \ ]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;h3&gt;Better links&lt;/h3&gt;
+&lt;p&gt;Using spaces in link might some time cause issues.
+Underscores can be used instead.&lt;/p&gt;
+&lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="k"&gt;g&lt;/span&gt;:vimwiki_links_space_char &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;_&amp;#39;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;h3&gt;Better Indexes For Vim Wiki&lt;/h3&gt;
+&lt;p&gt;Vim wiki allows generating of link and creating of wiki for that file.
+But in case you use &lt;code&gt;/&lt;/code&gt; at the it does opens directory but not index file.
+Index file can be made default for directory.&lt;/p&gt;
+&lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="k"&gt;g&lt;/span&gt;:vimwiki_dir_link &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;index&amp;#39;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;h2&gt;Diary Usage&lt;/h2&gt;
+&lt;p&gt;Vim wiki also allows diary creation.
+To have different diary for different machine we can use host name.&lt;/p&gt;
+&lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="k"&gt;g&lt;/span&gt;:vimwiki_diary_rel_path &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;dairy_&amp;#39;&lt;/span&gt;.hostname&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;h2&gt;Android sync&lt;/h2&gt;
+&lt;p&gt;Notes can be synced using GitHub.
+To sync GitHub repo, &lt;a href="https://github.com/maks/MGit" title="Mgit"&gt;Mgit&lt;/a&gt; can be used.
+For markdown viewer, using &lt;a href="https://github.com/gsantner/markor" title="Markor"&gt;Markor&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Better Indexes For Vim Wiki&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;Settings&lt;/li&gt;
+&lt;li&gt;View Mode&lt;/li&gt;
+&lt;li&gt;Inject -&amp;gt; body&lt;/li&gt;
+&lt;/ol&gt;
+&lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt; 1&lt;/span&gt;
+&lt;span class="normal"&gt; 2&lt;/span&gt;
+&lt;span class="normal"&gt; 3&lt;/span&gt;
+&lt;span class="normal"&gt; 4&lt;/span&gt;
+&lt;span class="normal"&gt; 5&lt;/span&gt;
+&lt;span class="normal"&gt; 6&lt;/span&gt;
+&lt;span class="normal"&gt; 7&lt;/span&gt;
+&lt;span class="normal"&gt; 8&lt;/span&gt;
+&lt;span class="normal"&gt; 9&lt;/span&gt;
+&lt;span class="normal"&gt;10&lt;/span&gt;
+&lt;span class="normal"&gt;11&lt;/span&gt;
+&lt;span class="normal"&gt;12&lt;/span&gt;
+&lt;span class="normal"&gt;13&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;script&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class="nb"&gt;window&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;onload&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nb"&gt;Array&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="kr"&gt;from&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+      &lt;span class="nb"&gt;document&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;getElementsByTagName&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;forEach&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;a&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+          &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;a&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;href&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;endsWith&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="nx"&gt;a&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;href&lt;/span&gt;&lt;span class="o"&gt;+=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;index&amp;#39;&lt;/span&gt;
+          &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;script&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;h2&gt;Vim Configuration&lt;/h2&gt;
+&lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt; 1&lt;/span&gt;
+&lt;span class="normal"&gt; 2&lt;/span&gt;
+&lt;span class="normal"&gt; 3&lt;/span&gt;
+&lt;span class="normal"&gt; 4&lt;/span&gt;
+&lt;span class="normal"&gt; 5&lt;/span&gt;
+&lt;span class="normal"&gt; 6&lt;/span&gt;
+&lt;span class="normal"&gt; 7&lt;/span&gt;
+&lt;span class="normal"&gt; 8&lt;/span&gt;
+&lt;span class="normal"&gt; 9&lt;/span&gt;
+&lt;span class="normal"&gt;10&lt;/span&gt;
+&lt;span class="normal"&gt;11&lt;/span&gt;
+&lt;span class="normal"&gt;12&lt;/span&gt;
+&lt;span class="normal"&gt;13&lt;/span&gt;
+&lt;span class="normal"&gt;14&lt;/span&gt;
+&lt;span class="normal"&gt;15&lt;/span&gt;
+&lt;span class="normal"&gt;16&lt;/span&gt;
+&lt;span class="normal"&gt;17&lt;/span&gt;
+&lt;span class="normal"&gt;18&lt;/span&gt;
+&lt;span class="normal"&gt;19&lt;/span&gt;
+&lt;span class="normal"&gt;20&lt;/span&gt;
+&lt;span class="normal"&gt;21&lt;/span&gt;
+&lt;span class="normal"&gt;22&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;Plug &lt;span class="s1"&gt;&amp;#39;vimwiki/vimwiki&amp;#39;&lt;/span&gt; 
+
+&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="k"&gt;g&lt;/span&gt;:vimwiki_syntax &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;markdown&amp;#39;&lt;/span&gt;
+&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="k"&gt;g&lt;/span&gt;:vimwiki_ext &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;.md&amp;#39;&lt;/span&gt;
+
+&lt;span class="k"&gt;if&lt;/span&gt; executable&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;vimwiki_markdown&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="k"&gt;g&lt;/span&gt;:vimwiki_custom_wiki2html &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;vimwiki_markdown&amp;#39;&lt;/span&gt;
+  &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="k"&gt;g&lt;/span&gt;:vimwiki_template_path &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;~/project/wiki/template/&amp;#39;&lt;/span&gt;
+&lt;span class="k"&gt;endif&lt;/span&gt;
+
+&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="k"&gt;g&lt;/span&gt;:vimwiki_automatic_nested_syntaxes &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;
+
+&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="k"&gt;g&lt;/span&gt;:vimwiki_list &lt;span class="p"&gt;=&lt;/span&gt; [
+      \ {&lt;span class="s1"&gt;&amp;#39;name&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;path&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;}&lt;span class="p"&gt;,&lt;/span&gt;
+      \ {&lt;span class="s1"&gt;&amp;#39;name&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;python&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;path&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;language/py/&amp;#39;&lt;/span&gt;}&lt;span class="p"&gt;,&lt;/span&gt;
+      \ {&lt;span class="s1"&gt;&amp;#39;name&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;rust&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;path&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;language/rs/&amp;#39;&lt;/span&gt;}&lt;span class="p"&gt;,&lt;/span&gt;
+      \ {&lt;span class="s1"&gt;&amp;#39;name&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;software&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;path&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;software/&amp;#39;&lt;/span&gt;}&lt;span class="p"&gt;,&lt;/span&gt;
+      \ ]
+&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="k"&gt;g&lt;/span&gt;:vimwiki_links_space_char &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;_&amp;#39;&lt;/span&gt;
+&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="k"&gt;g&lt;/span&gt;:vimwiki_dir_link &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;index&amp;#39;&lt;/span&gt;
+
+&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="k"&gt;g&lt;/span&gt;:vimwiki_diary_rel_path &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;dairy_&amp;#39;&lt;/span&gt;.hostname&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</content><category term="vim"></category><category term="vim"></category><category term="plugin"></category></entry><entry><title>Weirdness of S3 List Permission</title><link href="https://sak96.github.io/weirdness-of-s3-list-permission.html" rel="alternate"></link><published>2021-06-20T00:00:00+01:00</published><updated>2021-06-20T00:00:00+01:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2021-06-20:/weirdness-of-s3-list-permission.html</id><summary type="html">&lt;p&gt;Understand Weirdness in S3 List permission model.&lt;/p&gt;</summary><content type="html">&lt;!-- cspell:ignore googlefu,duckduckgo --&gt;
 
 &lt;h2&gt;S3 is flat&lt;/h2&gt;
 &lt;p&gt;S3 is one of the file storage service available in the "Cloud".
