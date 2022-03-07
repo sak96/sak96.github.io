@@ -230,7 +230,7 @@ document.querySelector("#theme").onclick = function (e) {
 <span class=normal>3</span>
 <span class=normal>4</span>
 <span class=normal>5</span></pre></div></td><td class=code><div class=codehilite><pre><span></span><code><span class=c1># Installation Command</span>
-sudo apt install --no-install-recommends xrdp
+sudo apt install --no-install-recommends xrdp xrdp-xorg
 
 <span class=c1># Starting Service (Yet to automate)</span>
 service xrdp start
@@ -243,13 +243,13 @@ service xrdp start
 <span class=normal>4</span>
 <span class=normal>5</span>
 <span class=normal>6</span>
-<span class=normal>7</span></pre></div></td><td class=code><div class=codehilite><pre><span></span><code><span class=c1># adding libraries</span>
-<span class=n>git</span> <span class=n>clone</span> <span class=n>https</span><span class=p>:</span><span class=o>//</span><span class=n>github</span><span class=o>.</span><span class=n>com</span><span class=o>/</span><span class=n>DesktopECHO</span><span class=o>/</span><span class=n>xWSL</span>
-<span class=n>sudo</span> <span class=n>mv</span> <span class=n>xWSL</span><span class=o>/</span><span class=n>dist</span><span class=o>/</span><span class=k>var</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=n>xrdp</span><span class=o>-</span><span class=n>pulseaudio</span><span class=o>-</span><span class=n>installer</span> <span class=k>var</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span>
+<span class=normal>7</span></pre></div></td><td class=code><div class=codehilite><pre><span></span><code><span class=c1># adding libraries</span><span class=w></span>
+<span class=n>git</span><span class=w> </span><span class=n>clone</span><span class=w> </span><span class=n>https</span><span class=p>:</span><span class=o>//</span><span class=n>github</span><span class=o>.</span><span class=n>com</span><span class=o>/</span><span class=n>DesktopECHO</span><span class=o>/</span><span class=n>xWSL</span><span class=w></span>
+<span class=n>sudo</span><span class=w> </span><span class=n>mv</span><span class=w> </span><span class=n>xWSL</span><span class=o>/</span><span class=n>dist</span><span class=o>/</span><span class=k>var</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=n>xrdp</span><span class=o>-</span><span class=n>pulseaudio</span><span class=o>-</span><span class=n>installer</span><span class=w> </span><span class=k>var</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=w></span>
 
-<span class=c1># restarting pulseaudio</span>
-<span class=n>pulseaudio</span> <span class=o>-</span><span class=n>k</span>
-<span class=n>pulseaudio</span> <span class=o>-</span><span class=n>D</span>
+<span class=c1># restarting pulseaudio</span><span class=w></span>
+<span class=n>pulseaudio</span><span class=w> </span><span class=o>-</span><span class=n>k</span><span class=w></span>
+<span class=n>pulseaudio</span><span class=w> </span><span class=o>-</span><span class=n>D</span><span class=w></span>
 </code></pre></div></td></tr></table><h2>Teams and WSL2</h2><p>Teams is messaging platform by microsoft whose installation instruction are <a href=https://docs.microsoft.com/en-us/microsoftteams/get-clients title="Ms Teams Install">here</a>. To get working in WSL2 required installation of couple of missing dependencies.</p><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre><span class=normal>1</span>
 <span class=normal>2</span>
 <span class=normal>3</span>

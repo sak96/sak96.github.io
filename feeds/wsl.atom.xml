@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>sak96-blog - wsl</title><link href="https://sak96.github.io/" rel="alternate"></link><link href="https://sak96.github.io/feeds/wsl.atom.xml" rel="self"></link><id>https://sak96.github.io/</id><updated>2020-10-14T00:00:00+01:00</updated><subtitle></subtitle><entry><title>WSL2 with GUI without Admin</title><link href="https://sak96.github.io/wsl2-with-gui-without-admin.html" rel="alternate"></link><published>2020-10-14T00:00:00+01:00</published><updated>2020-10-14T00:00:00+01:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2020-10-14:/wsl2-with-gui-without-admin.html</id><summary type="html">&lt;p&gt;My experience setting up WSL2 along with problems and solutions&lt;/p&gt;</summary><content type="html">&lt;p&gt;WSL or windows subsystem for linux is way to use linux interface on windows machine.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>sak96-blog - wsl</title><link href="https://sak96.github.io/" rel="alternate"></link><link href="https://sak96.github.io/feeds/wsl.atom.xml" rel="self"></link><id>https://sak96.github.io/</id><updated>2020-10-14T00:00:00+01:00</updated><entry><title>WSL2 with GUI without Admin</title><link href="https://sak96.github.io/wsl2-with-gui-without-admin.html" rel="alternate"></link><published>2020-10-14T00:00:00+01:00</published><updated>2020-10-14T00:00:00+01:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2020-10-14:/wsl2-with-gui-without-admin.html</id><summary type="html">&lt;p&gt;My experience setting up WSL2 along with problems and solutions&lt;/p&gt;</summary><content type="html">&lt;p&gt;WSL or windows subsystem for linux is way to use linux interface on windows machine.
 WSL2 comes with better support for filesystem and network for linux interface.
 Previous &lt;a href="https://sak96.github.io/wsl1-with-xserver-without-admin.html"&gt;Article&lt;/a&gt; describes wsl1 setup.&lt;/p&gt;
 &lt;p&gt;WSL2 solves the &lt;a href="https://discourse.ubuntu.com/t/ubuntu-20-04-and-wsl-1/15291" title="Ubuntu sleep"&gt;sleep issue&lt;/a&gt; in Ubuntu wsl with updated glibc.
@@ -43,7 +43,7 @@ Install Xrdp and running it was simple, but automating is a challenge to be done
 &lt;span class="normal"&gt;3&lt;/span&gt;
 &lt;span class="normal"&gt;4&lt;/span&gt;
 &lt;span class="normal"&gt;5&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Installation Command&lt;/span&gt;
-sudo apt install --no-install-recommends xrdp
+sudo apt install --no-install-recommends xrdp xrdp-xorg
 
 &lt;span class="c1"&gt;# Starting Service (Yet to automate)&lt;/span&gt;
 service xrdp start
@@ -78,13 +78,13 @@ Copying the library from &lt;a href="https://github.com/DesktopECHO/xWSL" title=
 &lt;span class="normal"&gt;4&lt;/span&gt;
 &lt;span class="normal"&gt;5&lt;/span&gt;
 &lt;span class="normal"&gt;6&lt;/span&gt;
-&lt;span class="normal"&gt;7&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# adding libraries&lt;/span&gt;
-&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;clone&lt;/span&gt; &lt;span class="n"&gt;https&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;DesktopECHO&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;xWSL&lt;/span&gt;
-&lt;span class="n"&gt;sudo&lt;/span&gt; &lt;span class="n"&gt;mv&lt;/span&gt; &lt;span class="n"&gt;xWSL&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dist&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="k"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;lib&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;xrdp&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;pulseaudio&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;installer&lt;/span&gt; &lt;span class="k"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;lib&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
+&lt;span class="normal"&gt;7&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# adding libraries&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="n"&gt;git&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;clone&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;https&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;DesktopECHO&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;xWSL&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="n"&gt;sudo&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;mv&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;xWSL&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dist&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="k"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;lib&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;xrdp&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;pulseaudio&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;installer&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;lib&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
-&lt;span class="c1"&gt;# restarting pulseaudio&lt;/span&gt;
-&lt;span class="n"&gt;pulseaudio&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt;
-&lt;span class="n"&gt;pulseaudio&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;D&lt;/span&gt;
+&lt;span class="c1"&gt;# restarting pulseaudio&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="n"&gt;pulseaudio&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="n"&gt;pulseaudio&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;D&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;h2&gt;Teams and WSL2&lt;/h2&gt;
