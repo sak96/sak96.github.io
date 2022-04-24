@@ -37,12 +37,8 @@ MARKDOWN = {
     "extension_configs": {
         "fenced_code": {},
         "codehilite": {"linenums": True},
+        "markdown.extensions.extra": {},
+        "md_mermaid": {},
     },
     "tab_length": 2,
-}
-PLUGINS = ["minify"]
-MINIFY = {
-    "remove_comments": True,
-    "remove_all_empty_space": True,
-    "remove_optional_attribute_quotes": True,
 }
