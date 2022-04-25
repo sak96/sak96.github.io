@@ -1,4 +1,17 @@
-<!DOCTYPE html><html><head><title>WSL1 with Xserver without Admin</title><link rel="shortcut icon" href=https://sak96.github.io/theme/images/favicon.svg><meta name=viewport content="width=device-width, initial-scale=1.0"><meta charset=UTF-8><link rel=alternate type=application/atom+xml title=sak96-blog href=https://sak96.github.io/feeds/all.atom.xml><link rel=stylesheet href=https://sak96.github.io/theme/syntax/pygment.css><style>
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>WSL1 with Xserver without Admin</title>
+  <link rel="shortcut icon" 
+  href="https://sak96.github.io/theme/images/favicon.svg">
+  <meta name="viewport" 
+  content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+    <link rel="alternate" type="application/atom+xml"
+    title="sak96-blog" href="https://sak96.github.io/feeds/all.atom.xml" />
+  <link rel="stylesheet" href="https://sak96.github.io/theme/syntax/pygment.css">
+    <style>
 * {
   box-sizing: border-box;
 }
@@ -194,7 +207,26 @@ article strong {
   #theme:before {
     content: "🌞:";
   }
-}    </style></head><body><div class=navbar><div class=nav-header /><a href=https://sak96.github.io/index.html>sak96-blog</a><a id=navbar-toggler>|||</a></div><div class=nav-start><a href=https://sak96.github.io/authors.html>Authors</a><a href=https://sak96.github.io/categories.html>Categories</a><a href=https://sak96.github.io/tags.html>Tags</a></div><div class=nav-end><a href=https://sak96.github.io/feeds/all.atom.xml>Atom</a><a id=theme>Theme</a></div></div><script>
+}    </style>
+</head>
+
+<body>
+<div class="navbar">
+    <div class="nav-header"/>
+        <a href="https://sak96.github.io/index.html">sak96-blog</a>
+        <a id="navbar-toggler">|||</a>
+    </div>
+    <div class="nav-start">
+        <a href="https://sak96.github.io/authors.html">Authors</a>
+        <a href="https://sak96.github.io/categories.html">Categories</a>
+        <a href="https://sak96.github.io/tags.html">Tags</a>
+    </div>
+    <div class="nav-end">
+        <a href="https://sak96.github.io/feeds/all.atom.xml">Atom</a>
+        <a id="theme">Theme</a>
+    </div>
+</div>
+<script>
 document.querySelector("#navbar-toggler").onclick = function (e) {
   document
     .querySelectorAll(".nav-start a,.nav-end a")
@@ -221,51 +253,126 @@ document.querySelector("#theme").onclick = function (e) {
     document.documentElement.setAttribute("data-theme", "light");
     localStorage.setItem("theme", "light");
   }
-};</script><div class=content><div><h1>WSL1 with Xserver without Admin</h1><h5><p>My experience setting up WSL1 along with problems and solutions</p></h5><h5>Read time: 3 min</h5><small>Written on August 20, 2020</small></div><div><article><p>WSL or windows subsystem for linux is way to use linux interface on windows machine. This post is journey of setup of WSL1 environment and not WSL2. Two parts that are touched are </p><ol><li>Debian over Ubuntu </li><li>GUI setup</li></ol><h1>Debian over Ubuntu</h1><p>Ubuntu 20.04 had few bugs when on WSL1. Ubuntu 18.04 came with python2. Debian 10.5 was slim, was easy to install firefox-esr.</p><h2>Size</h2><p>Debian was slimmer than both version of Ubuntu.</p><h2>Cannot Sleep</h2><p>In Ubuntu 20.04, glibc version is 2.31 which breaks sleep. Error which shows up is <code>sleep: cannot read realtime clock: Invalid argument</code>. According to <a href=https://discourse.ubuntu.com/t/ubuntu-20-04-and-wsl-1/15291 title="Ubuntu sleep">thread</a> the fix wait for microsoft wsl patch. It mentions that Ubuntu 18.04 in WSL1 or using WSL2 will avoid this.</p><p>In Debian 10.5 WSL in microsoft store the glibc version is older. Sleep work fine with this version of glibc in WSL1.</p><h2>Python3</h2><p>One of the main reason of not using Ubuntu 18.04 is it comes with python2. Debian 10.5 did not come with python2 hence no major headache on this part.</p><p>Though you could set your /bin/python to python3 (and pip) as follows</p><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre><span class=normal>1</span>
-<span class=normal>2</span>
-<span class=normal>3</span></pre></div></td><td class=code><div class=codehilite><pre><span></span><code><span class=c1># For Ubuntu</span>
-sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 <span class=m>2</span>
-sudo update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 <span class=m>2</span>
-</code></pre></div></td></tr></table><h2>Firefox</h2><p>In Debian WSL installing and installing firefox-esr worked without issue. There were few issue in case of Ubuntu 20.04 but not sure of Ubuntu 18.04. Also Ubuntu requires you to add repository to use firefox-esr.</p><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre><span class=normal>1</span>
-<span class=normal>2</span>
-<span class=normal>3</span>
-<span class=normal>4</span>
-<span class=normal>5</span>
-<span class=normal>6</span></pre></div></td><td class=code><div class=codehilite><pre><span></span><code><span class=c1># For Ubuntu</span>
+};</script>    <div class="content">
+	<div>
+		<h1>WSL1 with Xserver without Admin</h1>
+		<h5><p>My experience setting up WSL1 along with problems and solutions</p></h5>
+		<h5>Read time: 3 min</h5>
+		<small>Written on August 20, 2020</small>
+	</div>
+	<div> 
+	<article>
+	<p>WSL or windows subsystem for linux is way to use linux interface on windows machine.
+This post is journey of setup of WSL1 environment and not WSL2. 
+Two parts that are touched are </p>
+<ol>
+<li>Debian over Ubuntu </li>
+<li>GUI setup</li>
+</ol>
+<h1>Debian over Ubuntu</h1>
+<p>Ubuntu 20.04 had few bugs when on WSL1.
+Ubuntu 18.04 came with python2.
+Debian 10.5 was slim, was easy to install firefox-esr.</p>
+<h2>Size</h2>
+<p>Debian was slimmer than both version of Ubuntu.</p>
+<h2>Cannot Sleep</h2>
+<p>In Ubuntu 20.04, glibc version is 2.31 which breaks sleep.
+Error which shows up is <code>sleep: cannot read realtime clock: Invalid argument</code>.
+According to <a href="https://discourse.ubuntu.com/t/ubuntu-20-04-and-wsl-1/15291" title="Ubuntu sleep">thread</a> the fix wait for microsoft wsl patch.
+It mentions that Ubuntu 18.04 in WSL1 or using WSL2 will avoid this.</p>
+<p>In Debian 10.5 WSL in microsoft store the glibc version is older.
+Sleep work fine with this version of glibc in WSL1.</p>
+<h2>Python3</h2>
+<p>One of the main reason of not using Ubuntu 18.04 is it comes with python2.
+Debian 10.5 did not come with python2 hence no major headache on this part.</p>
+<p>Though you could set your /bin/python to python3 (and pip) as follows</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="c1"># For Ubuntu</span>
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 <span class="m">2</span>
+sudo update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 <span class="m">2</span>
+</code></pre></div>
+</td></tr></table>
+<h2>Firefox</h2>
+<p>In Debian WSL installing and installing firefox-esr worked without issue.
+There were few issue in case of Ubuntu 20.04 but not sure of Ubuntu 18.04.
+Also Ubuntu requires you to add repository to use firefox-esr.</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="c1"># For Ubuntu</span>
 sudo apt install --no-install-recommends software-properties-common
 sudo add-apt-repository ppa:mozillateam/ppa
 sudo apt update
 sudo apt install --no-install-recommends firefox-esr 
-sudo update-alternatives --install /usr/bin/firefox firefox /usr/bin/firefox-esr <span class=m>2</span>
-</code></pre></div></td></tr></table><h2>Downside</h2><p>Debian 10.5 contains vim and neo vim version do not play well with popup handling. Also i3status used to fail continuously with segmentation violation. Fix is using deb package for i3status from <a href=https://packages.debian.org/buster/i3status title="i3 status package">next version</a> of Debian.</p><h1>GUI Setup</h1><p>WSL does not ship with xserver. Xserver is what handle GUI. I use <a href=https://sourceforge.net/projects/vcxsrv/ title="Visual C++ X server">vcXsrv</a> as Xserver.</p><h2>Working</h2><p>Start vcXsrv which will run Xserver. Run GUI software like i3 providing the servers details.</p><h2>Non Admin</h2><p>I don't like running softwares as admin even if it is for installation. In wiki for vcXsrv we have <a href=https://sourceforge.net/p/vcxsrv/wiki/Making%20Portable/ title="portable xcXsrv">section</a> to make it portable. It requires the software to be extracted as 7z file. Followed by removal of "$PLUGINSDIR" folder. The extracted path used here is <code>%userprofile%\AppData\Local\VcXsrv\</code>.</p><h2>Shortcut</h2><p>I wanted to run the server and i3 without on single click. Simple script crafted by hand is below.</p><p>Note: First run after boot will fail. Kill vcXsrv and retry.</p><p>Setting up variables.</p><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre><span class=normal>1</span>
-<span class=normal>2</span>
-<span class=normal>3</span>
-<span class=normal>4</span>
-<span class=normal>5</span>
-<span class=normal>6</span></pre></div></td><td class=code><div class=codehilite><pre><span></span><code><span class=p>@</span><span class=k>echo</span> off
-<span class=k>set</span> <span class=s2>&quot;command=nohup /usr/bin/i3 &gt;/dev/null 2&gt;&amp;1&quot;</span>
-<span class=k>set</span> <span class=nv>windowmode</span><span class=p>=</span>nodecoration
-<span class=k>set</span> <span class=nv>dispnum</span><span class=p>=</span>1
-<span class=k>set</span> <span class=nv>bash</span><span class=p>=</span><span class=nv>%userprofile%</span>\AppData\Local\Microsoft\WindowsApps\debian.exe
-<span class=k>set</span> <span class=nv>vcxsrvexec</span><span class=p>=</span><span class=nv>%userprofile%</span>\appdata\local\vcxsrv\vcxsrv.exe
-</code></pre></div></td></tr></table><p>Running the shortcut.</p><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre><span class=normal>1</span>
-<span class=normal>2</span>
-<span class=normal>3</span>
-<span class=normal>4</span>
-<span class=normal>5</span>
-<span class=normal>6</span>
-<span class=normal>7</span>
-<span class=normal>8</span>
-<span class=normal>9</span></pre></div></td><td class=code><div class=codehilite><pre><span></span><code><span class=k>start</span> <span class=s2>&quot;Xserver&quot;</span> /D <span class=s2>&quot;</span><span class=nv>%userprofile%</span><span class=s2>\AppData\Local\VcXsrv\&quot;</span> <span class=nv>%vcxsrvexec%</span> <span class=se>^</span>
-<span class=se>:</span><span class=nv>%dispnum%</span> -ac -terminate -lesspointer -<span class=nv>%windowmode%</span> -clipboard -wgl <span class=se>^</span>
-<span class=se>-</span>logfile <span class=nv>%userprofile%</span>\appdata\local\vcxsrv\vcxsrv.log
+sudo update-alternatives --install /usr/bin/firefox firefox /usr/bin/firefox-esr <span class="m">2</span>
+</code></pre></div>
+</td></tr></table>
+<h2>Downside</h2>
+<p>Debian 10.5 contains vim and neo vim version do not play well with popup handling.
+Also i3status used to fail continuously with segmentation violation. 
+Fix is using deb package for i3status from <a href="https://packages.debian.org/buster/i3status" title="i3 status package">next version</a> of Debian.</p>
+<h1>GUI Setup</h1>
+<p>WSL does not ship with xserver. Xserver is what handle GUI. I use <a href="https://sourceforge.net/projects/vcxsrv/" title="Visual C++ X server">vcXsrv</a> as Xserver.</p>
+<h2>Working</h2>
+<p>Start vcXsrv which will run Xserver.
+Run GUI software like i3 providing the servers details.</p>
+<h2>Non Admin</h2>
+<p>I don't like running softwares as admin even if it is for installation.
+In wiki for vcXsrv we have <a href="https://sourceforge.net/p/vcxsrv/wiki/Making%20Portable/" title="portable xcXsrv">section</a> to make it portable.
+It requires the software to be extracted as 7z file.
+Followed by removal of "$PLUGINSDIR" folder.
+The extracted path used here is <code>%userprofile%\AppData\Local\VcXsrv\</code>.</p>
+<h2>Shortcut</h2>
+<p>I wanted to run the server and i3 without on single click.
+Simple script crafted by hand is below.</p>
+<p>Note: First run after boot will fail. Kill vcXsrv and retry.</p>
+<p>Setting up variables.</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="p">@</span><span class="k">echo</span> off
+<span class="k">set</span> <span class="s2">&quot;command=nohup /usr/bin/i3 &gt;/dev/null 2&gt;&amp;1&quot;</span>
+<span class="k">set</span> <span class="nv">windowmode</span><span class="p">=</span>nodecoration
+<span class="k">set</span> <span class="nv">dispnum</span><span class="p">=</span>1
+<span class="k">set</span> <span class="nv">bash</span><span class="p">=</span><span class="nv">%userprofile%</span>\AppData\Local\Microsoft\WindowsApps\debian.exe
+<span class="k">set</span> <span class="nv">vcxsrvexec</span><span class="p">=</span><span class="nv">%userprofile%</span>\appdata\local\vcxsrv\vcxsrv.exe
+</code></pre></div>
+</td></tr></table>
+<p>Running the shortcut.</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">start</span> <span class="s2">&quot;Xserver&quot;</span> /D <span class="s2">&quot;</span><span class="nv">%userprofile%</span><span class="s2">\AppData\Local\VcXsrv\&quot;</span> <span class="nv">%vcxsrvexec%</span> <span class="se">^</span>
+<span class="se">:</span><span class="nv">%dispnum%</span> -ac -terminate -lesspointer -<span class="nv">%windowmode%</span> -clipboard -wgl <span class="se">^</span>
+<span class="se">-</span>logfile <span class="nv">%userprofile%</span>\appdata\local\vcxsrv\vcxsrv.log
 
-<span class=k>IF</span> <span class=s2>&quot;</span><span class=nv>%bash%</span><span class=s2>&quot;</span><span class=o>==</span><span class=s2>&quot;&quot;</span> <span class=p>(</span>
-  <span class=k>set</span> <span class=nv>bash</span><span class=p>=</span><span class=nv>%systemroot%</span>\system32\bash.exe
-<span class=p>)</span>
-<span class=k>set</span> <span class=nv>disp</span><span class=p>=</span>localhost:<span class=nv>%dispnum%</span>.0
-<span class=nv>%bash%</span> -c <span class=s2>&quot;export DISPLAY=</span><span class=nv>%disp%</span><span class=s2>; cd $HOME; </span><span class=nv>%command%</span><span class=s2> &amp; disown&quot;</span> 
-</code></pre></div></td></tr></table></article></div><div class=tags><span>Post Tags:</span><a href=tag/story.html>&nbsp;#story,</a><a href=tag/wsl.html>&nbsp;#wsl,</a><a href=tag/linux.html>&nbsp;#linux</a></div><hr class=my-3><div id=comments></div><script>
+<span class="k">IF</span> <span class="s2">&quot;</span><span class="nv">%bash%</span><span class="s2">&quot;</span><span class="o">==</span><span class="s2">&quot;&quot;</span> <span class="p">(</span>
+  <span class="k">set</span> <span class="nv">bash</span><span class="p">=</span><span class="nv">%systemroot%</span>\system32\bash.exe
+<span class="p">)</span>
+<span class="k">set</span> <span class="nv">disp</span><span class="p">=</span>localhost:<span class="nv">%dispnum%</span>.0
+<span class="nv">%bash%</span> -c <span class="s2">&quot;export DISPLAY=</span><span class="nv">%disp%</span><span class="s2">; cd $HOME; </span><span class="nv">%command%</span><span class="s2"> &amp; disown&quot;</span> 
+</code></pre></div>
+</td></tr></table>
+	</article>
+	</div>
+<div class="tags">
+    <span>Post Tags:</span>
+    <a href="tag/story.html">&nbsp;#story,</a>
+    <a href="tag/wsl.html">&nbsp;#wsl,</a>
+    <a href="tag/linux.html">&nbsp;#linux</a>
+</div><hr class="my-3">
+<div id="comments"></div>
+<script>
   let commentUrl = "https://api.github.com/repos/sak96/sak96.github.io/issues/8/comments"
   let issueUrl = "https://github.com/sak96/sak96.github.io/issues/8"
   function PopulateComment(comments) {
@@ -328,4 +435,14 @@ sudo update-alternatives --install /usr/bin/firefox firefox /usr/bin/firefox-esr
     }
   };
   xhr.send();
-</script><hr><div class=footer><span>Powered by:</span><a href=http://getpelican.com/ >Pelican,</a><a href=https://github.com/pygments/pygments>Pygments,</a><a href=https://github.com/morhetz/gruvbox-contrib>Gruvbox</a></div></div></body></html>
+</script>
+        <script src="https://unpkg.com/mermaid@latest/dist/mermaid.min.js"></script>
+<hr>
+<div class="footer">
+    <span>Powered by:</span>
+    <a href="http://getpelican.com/">Pelican,</a>
+    <a href="https://github.com/pygments/pygments">Pygments,</a>
+    <a href="https://github.com/morhetz/gruvbox-contrib">Gruvbox</a>
+</div>  </div>
+</body>
+</html>

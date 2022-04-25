@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>sak96-blog - git series</title><link href="https://sak96.github.io/" rel="alternate"></link><link href="https://sak96.github.io/feeds/git-series.atom.xml" rel="self"></link><id>https://sak96.github.io/</id><updated>2020-04-29T00:00:00+01:00</updated><entry><title>Git Simplified (Part 1): Introduction</title><link href="https://sak96.github.io/git-simplified-part-1-introduction.html" rel="alternate"></link><published>2020-04-29T00:00:00+01:00</published><updated>2020-04-29T00:00:00+01:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2020-04-29:/git-simplified-part-1-introduction.html</id><summary type="html">&lt;p&gt;This article provides introduction to git internals.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Articles&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>sak96-blog - vcs</title><link href="https://sak96.github.io/" rel="alternate"></link><link href="https://sak96.github.io/feeds/vcs.atom.xml" rel="self"></link><id>https://sak96.github.io/</id><updated>2020-04-29T00:00:00+01:00</updated><entry><title>Git Simplified (Part 1): Introduction</title><link href="https://sak96.github.io/git-simplified-part-1-introduction.html" rel="alternate"></link><published>2020-04-29T00:00:00+01:00</published><updated>2020-04-29T00:00:00+01:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2020-04-29:/git-simplified-part-1-introduction.html</id><summary type="html">&lt;p&gt;This article provides introduction to git internals.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Articles&lt;/h2&gt;
 &lt;p&gt;This article is part of series which provides introduction to git internals.&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;a href="https://sak96.github.io/git-simplified-part-1-introduction.html"&gt;Git: Introduction&lt;/a&gt;&lt;/li&gt;
@@ -18,9 +18,13 @@ It acts like a diary for how/when/where content got modified.&lt;/p&gt;
 Each hash represents a commit or state of content at given time.
 Lets dig bit deeper about the graph part.&lt;/p&gt;
 &lt;h2&gt;Directed Acyclic Graph&lt;/h2&gt;
-&lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;child&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;commit&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;parent&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;commit&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;grandparent&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;commit&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;div class="mermaid"&gt;
+gitGraph
+commit id: "grandparent"
+commit id: "parent"
+commit id: "child"
+&lt;/div&gt;
+
 &lt;p&gt;&lt;em&gt;Graph&lt;/em&gt; is structure which represents relation between objects using connection.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;The object in this case is &lt;em&gt;commits&lt;/em&gt;.&lt;/li&gt;
@@ -59,4 +63,5 @@ More about commit will be covered in next chapter.&lt;/p&gt;
 &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=4XpnKHJAok8" title="Torvalds on git"&gt;Tech Talk: Linus Torvalds on git&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://en.wikipedia.org/wiki/Directed_acyclic_graph" title="Wikipedia: DAG"&gt;wiki: Directed acyclic graph&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://git-scm.com/docs/hash-function-transition/2.18.0" title="Hashes"&gt;Hash Function Transition&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;</content><category term="git series"></category><category term="version"></category><category term="git"></category><category term="information"></category></entry></feed>
+&lt;/ol&gt;
+&lt;script&gt;mermaid.initialize({startOnLoad:true});&lt;/script&gt;</content><category term="vcs"></category><category term="version"></category><category term="git"></category><category term="information"></category></entry></feed>

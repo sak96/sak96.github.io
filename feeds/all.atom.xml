@@ -725,9 +725,13 @@ It acts like a diary for how/when/where content got modified.&lt;/p&gt;
 Each hash represents a commit or state of content at given time.
 Lets dig bit deeper about the graph part.&lt;/p&gt;
 &lt;h2&gt;Directed Acyclic Graph&lt;/h2&gt;
-&lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;child&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;commit&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;parent&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;commit&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;grandparent&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;commit&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;div class="mermaid"&gt;
+gitGraph
+commit id: "grandparent"
+commit id: "parent"
+commit id: "child"
+&lt;/div&gt;
+
 &lt;p&gt;&lt;em&gt;Graph&lt;/em&gt; is structure which represents relation between objects using connection.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;The object in this case is &lt;em&gt;commits&lt;/em&gt;.&lt;/li&gt;
@@ -766,7 +770,8 @@ More about commit will be covered in next chapter.&lt;/p&gt;
 &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=4XpnKHJAok8" title="Torvalds on git"&gt;Tech Talk: Linus Torvalds on git&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://en.wikipedia.org/wiki/Directed_acyclic_graph" title="Wikipedia: DAG"&gt;wiki: Directed acyclic graph&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://git-scm.com/docs/hash-function-transition/2.18.0" title="Hashes"&gt;Hash Function Transition&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;</content><category term="git series"></category><category term="version"></category><category term="git"></category><category term="information"></category></entry><entry><title>My Notes: Debugging And Patching Docker</title><link href="https://sak96.github.io/my-notes-debugging-and-patching-docker.html" rel="alternate"></link><published>2020-02-29T00:00:00+00:00</published><updated>2020-02-29T00:00:00+00:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2020-02-29:/my-notes-debugging-and-patching-docker.html</id><summary type="html">&lt;p&gt;This article provide some notes for debugging and patching docker.&lt;/p&gt;</summary><content type="html">&lt;p&gt;Containerization of software and services allows easy deployment, portability and many other benefits. Docker is one of wide-spread adopted technology used for containerization. I use docker while on work. There are many guide and articles about using and debugging docker. Here is my guide for debugging and patching docker. And link to &lt;a href="#Resources"&gt;resources&lt;/a&gt;.&lt;/p&gt;
+&lt;/ol&gt;
+&lt;script&gt;mermaid.initialize({startOnLoad:true});&lt;/script&gt;</content><category term="vcs"></category><category term="version"></category><category term="git"></category><category term="information"></category></entry><entry><title>My Notes: Debugging And Patching Docker</title><link href="https://sak96.github.io/my-notes-debugging-and-patching-docker.html" rel="alternate"></link><published>2020-02-29T00:00:00+00:00</published><updated>2020-02-29T00:00:00+00:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2020-02-29:/my-notes-debugging-and-patching-docker.html</id><summary type="html">&lt;p&gt;This article provide some notes for debugging and patching docker.&lt;/p&gt;</summary><content type="html">&lt;p&gt;Containerization of software and services allows easy deployment, portability and many other benefits. Docker is one of wide-spread adopted technology used for containerization. I use docker while on work. There are many guide and articles about using and debugging docker. Here is my guide for debugging and patching docker. And link to &lt;a href="#Resources"&gt;resources&lt;/a&gt;.&lt;/p&gt;
 &lt;h1&gt;Terminologies.&lt;/h1&gt;
 &lt;ul&gt;
 &lt;li&gt;Docker: software used for containerization.&lt;/li&gt;

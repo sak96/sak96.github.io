@@ -1,4 +1,17 @@
-<!DOCTYPE html><html><head><title>Weirdness of S3 List Permission</title><link rel="shortcut icon" href=https://sak96.github.io/theme/images/favicon.svg><meta name=viewport content="width=device-width, initial-scale=1.0"><meta charset=UTF-8><link rel=alternate type=application/atom+xml title=sak96-blog href=https://sak96.github.io/feeds/all.atom.xml><link rel=stylesheet href=https://sak96.github.io/theme/syntax/pygment.css><style>
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Weirdness of S3 List Permission</title>
+  <link rel="shortcut icon" 
+  href="https://sak96.github.io/theme/images/favicon.svg">
+  <meta name="viewport" 
+  content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+    <link rel="alternate" type="application/atom+xml"
+    title="sak96-blog" href="https://sak96.github.io/feeds/all.atom.xml" />
+  <link rel="stylesheet" href="https://sak96.github.io/theme/syntax/pygment.css">
+    <style>
 * {
   box-sizing: border-box;
 }
@@ -194,7 +207,26 @@ article strong {
   #theme:before {
     content: "🌞:";
   }
-}    </style></head><body><div class=navbar><div class=nav-header /><a href=https://sak96.github.io/index.html>sak96-blog</a><a id=navbar-toggler>|||</a></div><div class=nav-start><a href=https://sak96.github.io/authors.html>Authors</a><a href=https://sak96.github.io/categories.html>Categories</a><a href=https://sak96.github.io/tags.html>Tags</a></div><div class=nav-end><a href=https://sak96.github.io/feeds/all.atom.xml>Atom</a><a id=theme>Theme</a></div></div><script>
+}    </style>
+</head>
+
+<body>
+<div class="navbar">
+    <div class="nav-header"/>
+        <a href="https://sak96.github.io/index.html">sak96-blog</a>
+        <a id="navbar-toggler">|||</a>
+    </div>
+    <div class="nav-start">
+        <a href="https://sak96.github.io/authors.html">Authors</a>
+        <a href="https://sak96.github.io/categories.html">Categories</a>
+        <a href="https://sak96.github.io/tags.html">Tags</a>
+    </div>
+    <div class="nav-end">
+        <a href="https://sak96.github.io/feeds/all.atom.xml">Atom</a>
+        <a id="theme">Theme</a>
+    </div>
+</div>
+<script>
 document.querySelector("#navbar-toggler").onclick = function (e) {
   document
     .querySelectorAll(".nav-start a,.nav-end a")
@@ -221,64 +253,189 @@ document.querySelector("#theme").onclick = function (e) {
     document.documentElement.setAttribute("data-theme", "light");
     localStorage.setItem("theme", "light");
   }
-};</script><div class=content><div><h1>Weirdness of S3 List Permission</h1><h5><p>Understand Weirdness in S3 List permission model.</p></h5><h5>Read time: 6 min</h5><small>Written on June 20, 2021</small></div><div><article><h2>S3 is flat</h2><p>S3 is one of the file storage service available in the "Cloud". The common way the file are stored is using folder hierarchies. But S3 does not use hierarchies to store files. Instead all files are stored in flat structure. There are no folders, only key value pairs of path and content of file.</p><p>Most interface designs try to maintain consistency with folder hierarchies. This is done by using <code>/</code> as delimiter for folder names. This allows user to carry on his life, as if, he was using folder hierarchies. But interestingly, forgetting that S3 is flat may not be entirely good.</p><h2>S3 List Operation</h2><p>Listing file in normal folder hierarchy is trivial to imagine. List all the file and folder children of given folder.</p><p>But in case of flat hierarchy it becomes interesting. There are no folder to list, so what constitutes a list operation? The ideal answer would be, to map to what would have happened it were folder hierarchy.</p><p>So List operation would show all files/folder starting with certain prefix. Where files would start with the prefix and does not contain a '/'. Where as folders would start with the prefix and end with a '/'. This seems to match what we would have expected from folder hierarchy.</p><h2>S3 List Permission</h2><p>Consider a case where you are storing home directories of user to s3. You would want the user to only able to read,write and <strong>list</strong> his own home. Also the home folder name is same as user name.</p><p>If you googlefu is strong enough you may end up <a href=https://web.archive.org/web/20201112042023/https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_s3_home-directory-console.html>here</a>. I prefer duckduckgo so, I typed <code>!aws IAM users S3 home</code> and picked the first result. <code>!aws</code> searches for aws docs, this is bang search from duckduckgo, more <a href=https://duckduckgo.com/bang>here</a>.</p><p>You might feel that computer security gods and smiling on you. And yes, they are! But not in the way you would hope, not for you happiness. They are, in fact, laughing (not just smiling) at you as you walk into the pit.</p><p>This article is interested in list operation, So, let ignore all other operation. Below is the json permission for managing list operation from <a href=https://web.archive.org/web/20201112042023/https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_s3_home-directory-console.html>here</a>.</p><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre><span class=normal> 1</span>
-<span class=normal> 2</span>
-<span class=normal> 3</span>
-<span class=normal> 4</span>
-<span class=normal> 5</span>
-<span class=normal> 6</span>
-<span class=normal> 7</span>
-<span class=normal> 8</span>
-<span class=normal> 9</span>
-<span class=normal>10</span></pre></div></td><td class=code><div class=codehilite><pre><span></span><code><span class=p>{</span><span class=w></span>
-<span class=w>  </span><span class=nt>&quot;Effect&quot;</span><span class=p>:</span><span class=w> </span><span class=s2>&quot;Allow&quot;</span><span class=p>,</span><span class=w></span>
-<span class=w>  </span><span class=nt>&quot;Action&quot;</span><span class=p>:</span><span class=w> </span><span class=s2>&quot;s3:ListBucket&quot;</span><span class=p>,</span><span class=w></span>
-<span class=w>  </span><span class=nt>&quot;Resource&quot;</span><span class=p>:</span><span class=w> </span><span class=s2>&quot;arn:aws:s3:::bucket-name&quot;</span><span class=p>,</span><span class=w></span>
-<span class=w>  </span><span class=nt>&quot;Condition&quot;</span><span class=p>:</span><span class=w> </span><span class=p>{</span><span class=w></span>
-<span class=w>    </span><span class=nt>&quot;StringLike&quot;</span><span class=p>:</span><span class=w> </span><span class=p>{</span><span class=w></span>
-<span class=w>      </span><span class=nt>&quot;s3:prefix&quot;</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=s2>&quot;&quot;</span><span class=p>,</span><span class=w> </span><span class=s2>&quot;home/&quot;</span><span class=p>,</span><span class=w> </span><span class=s2>&quot;home/${aws:username}/*&quot;</span><span class=p>]</span><span class=w></span>
-<span class=w>    </span><span class=p>}</span><span class=w></span>
-<span class=w>  </span><span class=p>}</span><span class=w></span>
-<span class=p>}</span><span class=w></span>
-</code></pre></div></td></tr></table><p>So the recommended way to restrict list operation is to use <code>s3:prefix</code> condition. This means restriction is entirely based on prefixes.</p><p>Now let us analyze each prefix one by one.</p><table><thead><tr><th>prefix</th><th>use</th></tr></thead><tbody><tr><td>""</td><td>to list root directory</td></tr><tr><td>"home/"</td><td>to list all directory in home</td></tr><tr><td>"home/${aws:username}/*"</td><td>list any thing is user's own home</td></tr></tbody></table><p>Note: <code>${aws:username}</code> is to map every user's home directory name to user name.</p><p>Now let go back to what exactly list does. <strong>List operation would show all files/folder starting with certain prefix</strong>. So everything is fine, correct ? There should be no issue with this.</p><p>No, Interface just hides flat structure of the storage. But we also have recursive listing in folder structure. Imagine, What happens if you use the same here, but on <strong>prefix</strong> ? In particular with <strong>home/</strong> or <strong>""</strong> ?</p><p>You should be able to see all file beginning with "home/" or "". This means you should also be able to see "home/some_other_user/..." in the list. This is exactly what happens, meaning you can see all files in other's home directory. This may not be a issue as they cannot still read or write the files.</p><h2>My Story with List Permission</h2><p>The above issue was something I had already in my mind when I was framing the policy. We decided to go with following list permission in the policy.</p><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre><span class=normal> 1</span>
-<span class=normal> 2</span>
-<span class=normal> 3</span>
-<span class=normal> 4</span>
-<span class=normal> 5</span>
-<span class=normal> 6</span>
-<span class=normal> 7</span>
-<span class=normal> 8</span>
-<span class=normal> 9</span>
-<span class=normal>10</span></pre></div></td><td class=code><div class=codehilite><pre><span></span><code><span class=p>{</span><span class=w></span>
-<span class=w>  </span><span class=nt>&quot;Effect&quot;</span><span class=p>:</span><span class=w> </span><span class=s2>&quot;Allow&quot;</span><span class=p>,</span><span class=w></span>
-<span class=w>  </span><span class=nt>&quot;Action&quot;</span><span class=p>:</span><span class=w> </span><span class=s2>&quot;s3:ListBucket&quot;</span><span class=p>,</span><span class=w></span>
-<span class=w>  </span><span class=nt>&quot;Resource&quot;</span><span class=p>:</span><span class=w> </span><span class=s2>&quot;arn:aws:s3:::bucket-name&quot;</span><span class=p>,</span><span class=w></span>
-<span class=w>  </span><span class=nt>&quot;Condition&quot;</span><span class=p>:</span><span class=w> </span><span class=p>{</span><span class=w></span>
-<span class=w>    </span><span class=nt>&quot;StringLike&quot;</span><span class=p>:</span><span class=w> </span><span class=p>{</span><span class=w></span>
-<span class=w>      </span><span class=nt>&quot;s3:prefix&quot;</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=s2>&quot;home/${aws:username}/*&quot;</span><span class=p>]</span><span class=w></span>
-<span class=w>    </span><span class=p>}</span><span class=w></span>
-<span class=w>  </span><span class=p>}</span><span class=w></span>
-<span class=p>}</span><span class=w></span>
-</code></pre></div></td></tr></table><p>When the policy was used and there were issue, Some of list operation failed. Many user were using <code>home/${aws:username}</code>, without trailing <code>/</code>. This means a lot changes had to be done to comply with this policy. So we decided to allow the path without trailing <code>/</code>.</p><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre><span class=normal> 1</span>
-<span class=normal> 2</span>
-<span class=normal> 3</span>
-<span class=normal> 4</span>
-<span class=normal> 5</span>
-<span class=normal> 6</span>
-<span class=normal> 7</span>
-<span class=normal> 8</span>
-<span class=normal> 9</span>
-<span class=normal>10</span></pre></div></td><td class=code><div class=codehilite><pre><span></span><code><span class=p>{</span><span class=w></span>
-<span class=w>  </span><span class=nt>&quot;Effect&quot;</span><span class=p>:</span><span class=w> </span><span class=s2>&quot;Allow&quot;</span><span class=p>,</span><span class=w></span>
-<span class=w>  </span><span class=nt>&quot;Action&quot;</span><span class=p>:</span><span class=w> </span><span class=s2>&quot;s3:ListBucket&quot;</span><span class=p>,</span><span class=w></span>
-<span class=w>  </span><span class=nt>&quot;Resource&quot;</span><span class=p>:</span><span class=w> </span><span class=s2>&quot;arn:aws:s3:::bucket-name&quot;</span><span class=p>,</span><span class=w></span>
-<span class=w>  </span><span class=nt>&quot;Condition&quot;</span><span class=p>:</span><span class=w> </span><span class=p>{</span><span class=w></span>
-<span class=w>    </span><span class=nt>&quot;StringLike&quot;</span><span class=p>:</span><span class=w> </span><span class=p>{</span><span class=w></span>
-<span class=w>      </span><span class=nt>&quot;s3:prefix&quot;</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=s2>&quot;home/${aws:username}&quot;</span><span class=p>,</span><span class=w> </span><span class=s2>&quot;home/${aws:username}/*&quot;</span><span class=p>]</span><span class=w></span>
-<span class=w>    </span><span class=p>}</span><span class=w></span>
-<span class=w>  </span><span class=p>}</span><span class=w></span>
-<span class=p>}</span><span class=w></span>
-</code></pre></div></td></tr></table><p>Seems ok, there should be no issues, right? It did seem to work well, when we tested again. All scripts worked as expected. But, it had a serious security draw back.</p><p>Just imagine if you had two user <code>user</code> and <code>user_with_user_prefix</code>. And now what happens if <code>user</code> list for his home without <code>/</code>. And yeah user can do it recursively. This list <code>user_with_user_prefix</code>'s home contents as well.</p><p>Note, This might not be problem if you have constant length strings for username. For example in this <a href=https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_s3_cognito-bucket.html>aws docs</a>, similar policy is shown. By my understanding, these <code>${cognito-identity.amazonaws.com:sub}</code> are all same length. Which means there cannot be sub-string of one another. In other words, sanitize user input, even user names.</p><h2>Conclusion</h2><ol><li>Never hurry, especially a security related activity. It's ok to be slow.</li><li>Some times, Concentrate concepts may be better then abstract interface.</li><li>Repeat, Thinking in terms of flat structure <code>&gt;</code> folder hierarchy interface.</li><li>Sanitize user input may be a good idea.</li><li>Use <a href=https://duckduckgo.com/bang>bang</a> to search faster.</li></ol></article></div><div class=tags><span>Post Tags:</span><a href=tag/story.html>&nbsp;#story,</a><a href=tag/s3.html>&nbsp;#s3,</a><a href=tag/security.html>&nbsp;#security</a></div><hr class=my-3><div id=comments></div><script>
+};</script>    <div class="content">
+	<div>
+		<h1>Weirdness of S3 List Permission</h1>
+		<h5><p>Understand Weirdness in S3 List permission model.</p></h5>
+		<h5>Read time: 6 min</h5>
+		<small>Written on June 20, 2021</small>
+	</div>
+	<div> 
+	<article>
+	<!-- cspell:ignore googlefu,duckduckgo -->
+
+<h2>S3 is flat</h2>
+<p>S3 is one of the file storage service available in the "Cloud".
+The common way the file are stored is using folder hierarchies.
+But S3 does not use hierarchies to store files.
+Instead all files are stored in flat structure.
+There are no folders, only key value pairs of path and content of file.</p>
+<p>Most interface designs try to maintain consistency with folder hierarchies.
+This is done by using <code>/</code> as delimiter for folder names.
+This allows user to carry on his life, as if, he was using folder hierarchies.
+But interestingly, forgetting that S3 is flat may not be entirely good.</p>
+<h2>S3 List Operation</h2>
+<p>Listing file in normal folder hierarchy is trivial to imagine.
+List all the file and folder children of given folder.</p>
+<p>But in case of flat hierarchy it becomes interesting.
+There are no folder to list, so what constitutes a list operation?
+The ideal answer would be, to map to what would have happened it were folder hierarchy.</p>
+<p>So List operation would show all files/folder starting with certain prefix.
+Where files would start with the prefix and does not contain a '/'.
+Where as folders would start with the prefix and end with a '/'.
+This seems to match what we would have expected from folder hierarchy.</p>
+<h2>S3 List Permission</h2>
+<p>Consider a case where you are storing home directories of user to s3.
+You would want the user to only able to read,write and <strong>list</strong> his own home.
+Also the home folder name is same as user name.</p>
+<p>If you googlefu is strong enough you may end up <a href="https://web.archive.org/web/20201112042023/https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_s3_home-directory-console.html">here</a>.
+I prefer duckduckgo so, I typed <code>!aws IAM users S3 home</code> and picked the first result.
+<code>!aws</code> searches for aws docs, this is bang search from duckduckgo, more <a href="https://duckduckgo.com/bang">here</a>.</p>
+<p>You might feel that computer security gods and smiling on you.
+And yes, they are!
+But not in the way you would hope, not for you happiness.
+They are, in fact, laughing (not just smiling) at you as you walk into the pit.</p>
+<p>This article is interested in list operation, So, let ignore all other operation.
+Below is the json permission for managing list operation from <a href="https://web.archive.org/web/20201112042023/https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_s3_home-directory-console.html">here</a>.</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s3:ListBucket&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arn:aws:s3:::bucket-name&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;Condition&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;StringLike&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;s3:prefix&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;home/&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;home/${aws:username}/*&quot;</span><span class="p">]</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+</td></tr></table>
+<p>So the recommended way to restrict list operation is to use <code>s3:prefix</code> condition.
+This means restriction is entirely based on prefixes.</p>
+<p>Now let us analyze each prefix one by one.</p>
+<table>
+<thead>
+<tr>
+<th>prefix</th>
+<th>use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>""</td>
+<td>to list root directory</td>
+</tr>
+<tr>
+<td>"home/"</td>
+<td>to list all directory in home</td>
+</tr>
+<tr>
+<td>"home/${aws:username}/*"</td>
+<td>list any thing is user's own home</td>
+</tr>
+</tbody>
+</table>
+<p>Note: <code>${aws:username}</code> is to map every user's home directory name to user name.</p>
+<p>Now let go back to what exactly list does.
+<strong>List operation would show all files/folder starting with certain prefix</strong>.
+So everything is fine, correct ?
+There should be no issue with this.</p>
+<p>No, Interface just hides flat structure of the storage.
+But we also have recursive listing in folder structure.
+Imagine, What happens if you use the same here, but on <strong>prefix</strong> ?
+In particular with <strong>home/</strong> or <strong>""</strong> ?</p>
+<p>You should be able to see all file beginning with "home/" or "".
+This means you should also be able to see "home/some_other_user/..." in the list.
+This is exactly what happens, meaning you can see all files in other's home directory.
+This may not be a issue as they cannot still read or write the files.</p>
+<h2>My Story with List Permission</h2>
+<p>The above issue was something I had already in my mind when I was framing the policy.
+We decided to go with following list permission in the policy.</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s3:ListBucket&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arn:aws:s3:::bucket-name&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;Condition&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;StringLike&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;s3:prefix&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;home/${aws:username}/*&quot;</span><span class="p">]</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+</td></tr></table>
+<p>When the policy was used and there were issue, Some of list operation failed.
+Many user were using <code>home/${aws:username}</code>, without trailing <code>/</code>.
+This means a lot changes had to be done to comply with this policy.
+So we decided to allow the path without trailing <code>/</code>.</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s3:ListBucket&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arn:aws:s3:::bucket-name&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;Condition&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;StringLike&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;s3:prefix&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;home/${aws:username}&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;home/${aws:username}/*&quot;</span><span class="p">]</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+</td></tr></table>
+<p>Seems ok, there should be no issues, right?
+It did seem to work well, when we tested again.
+All scripts worked as expected.
+But, it had a serious security draw back.</p>
+<p>Just imagine if you had two user <code>user</code> and <code>user_with_user_prefix</code>.
+And now what happens if <code>user</code> list for his home without <code>/</code>.
+And yeah user can do it recursively.
+This list <code>user_with_user_prefix</code>'s home contents as well.</p>
+<p>Note, This might not be problem if you have constant length strings for username.
+For example in this <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_s3_cognito-bucket.html">aws docs</a>, similar policy is shown.
+By my understanding, these <code>${cognito-identity.amazonaws.com:sub}</code> are all same length.
+Which means there cannot be sub-string of one another.
+In other words, sanitize user input, even user names.</p>
+<h2>Conclusion</h2>
+<ol>
+<li>Never hurry, especially a security related activity. It's ok to be slow.</li>
+<li>Some times, Concentrate concepts may be better then abstract interface.</li>
+<li>Repeat, Thinking in terms of flat structure <code>&gt;</code> folder hierarchy interface.</li>
+<li>Sanitize user input may be a good idea.</li>
+<li>Use <a href="https://duckduckgo.com/bang">bang</a> to search faster.</li>
+</ol>
+	</article>
+	</div>
+<div class="tags">
+    <span>Post Tags:</span>
+    <a href="tag/story.html">&nbsp;#story,</a>
+    <a href="tag/s3.html">&nbsp;#s3,</a>
+    <a href="tag/security.html">&nbsp;#security</a>
+</div><hr class="my-3">
+<div id="comments"></div>
+<script>
   let commentUrl = "https://api.github.com/repos/sak96/sak96.github.io/issues/11/comments"
   let issueUrl = "https://github.com/sak96/sak96.github.io/issues/11"
   function PopulateComment(comments) {
@@ -341,4 +498,14 @@ document.querySelector("#theme").onclick = function (e) {
     }
   };
   xhr.send();
-</script><hr><div class=footer><span>Powered by:</span><a href=http://getpelican.com/ >Pelican,</a><a href=https://github.com/pygments/pygments>Pygments,</a><a href=https://github.com/morhetz/gruvbox-contrib>Gruvbox</a></div></div></body></html>
+</script>
+        <script src="https://unpkg.com/mermaid@latest/dist/mermaid.min.js"></script>
+<hr>
+<div class="footer">
+    <span>Powered by:</span>
+    <a href="http://getpelican.com/">Pelican,</a>
+    <a href="https://github.com/pygments/pygments">Pygments,</a>
+    <a href="https://github.com/morhetz/gruvbox-contrib">Gruvbox</a>
+</div>  </div>
+</body>
+</html>

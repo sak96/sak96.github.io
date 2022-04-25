@@ -1,4 +1,17 @@
-<!DOCTYPE html><html><head><title>Git Simplified (Part 1): Introduction</title><link rel="shortcut icon" href=https://sak96.github.io/theme/images/favicon.svg><meta name=viewport content="width=device-width, initial-scale=1.0"><meta charset=UTF-8><link rel=alternate type=application/atom+xml title=sak96-blog href=https://sak96.github.io/feeds/all.atom.xml><link rel=stylesheet href=https://sak96.github.io/theme/syntax/pygment.css><style>
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Git Simplified (Part 1): Introduction</title>
+  <link rel="shortcut icon" 
+  href="https://sak96.github.io/theme/images/favicon.svg">
+  <meta name="viewport" 
+  content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+    <link rel="alternate" type="application/atom+xml"
+    title="sak96-blog" href="https://sak96.github.io/feeds/all.atom.xml" />
+  <link rel="stylesheet" href="https://sak96.github.io/theme/syntax/pygment.css">
+    <style>
 * {
   box-sizing: border-box;
 }
@@ -194,7 +207,26 @@ article strong {
   #theme:before {
     content: "🌞:";
   }
-}    </style></head><body><div class=navbar><div class=nav-header /><a href=https://sak96.github.io/index.html>sak96-blog</a><a id=navbar-toggler>|||</a></div><div class=nav-start><a href=https://sak96.github.io/authors.html>Authors</a><a href=https://sak96.github.io/categories.html>Categories</a><a href=https://sak96.github.io/tags.html>Tags</a></div><div class=nav-end><a href=https://sak96.github.io/feeds/all.atom.xml>Atom</a><a id=theme>Theme</a></div></div><script>
+}    </style>
+</head>
+
+<body>
+<div class="navbar">
+    <div class="nav-header"/>
+        <a href="https://sak96.github.io/index.html">sak96-blog</a>
+        <a id="navbar-toggler">|||</a>
+    </div>
+    <div class="nav-start">
+        <a href="https://sak96.github.io/authors.html">Authors</a>
+        <a href="https://sak96.github.io/categories.html">Categories</a>
+        <a href="https://sak96.github.io/tags.html">Tags</a>
+    </div>
+    <div class="nav-end">
+        <a href="https://sak96.github.io/feeds/all.atom.xml">Atom</a>
+        <a id="theme">Theme</a>
+    </div>
+</div>
+<script>
 document.querySelector("#navbar-toggler").onclick = function (e) {
   document
     .querySelectorAll(".nav-start a,.nav-end a")
@@ -221,8 +253,91 @@ document.querySelector("#theme").onclick = function (e) {
     document.documentElement.setAttribute("data-theme", "light");
     localStorage.setItem("theme", "light");
   }
-};</script><div class=content><div><h1>Git Simplified (Part 1): Introduction</h1><h5><p>This article provides introduction to git internals.</p></h5><h5>Read time: 2 min</h5><small>Written on April 29, 2020</small></div><div><article><h2>Articles</h2><p>This article is part of series which provides introduction to git internals.</p><ol><li><a href=https://sak96.github.io/git-simplified-part-1-introduction.html>Git: Introduction</a></li></ol><h2>Introduction</h2><p>Git is the stupid <code>content tracker</code> (as per it's <a href=https://linux.die.net/man/1/git title="git man page">man page</a>). As a content tracker it tracks the modification of done to content. It acts like a diary for how/when/where content got modified.</p><p>This help to enabled the following:</p><ul><li>Track Ownership of changes.</li><li>Backup and Restore to certain older point.</li><li>Synchronization changes between multiple contents.</li></ul><p>Git keeps track of the whole system as <strong>Directed Acyclic Graph of Hashes of commits</strong>. Each hash represents a commit or state of content at given time. Lets dig bit deeper about the graph part.</p><h2>Directed Acyclic Graph</h2><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre><span class=normal>1</span></pre></div></td><td class=code><div class=codehilite><pre><span></span><code><span class=n>child</span><span class=w> </span><span class=n>commit</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=n>parent</span><span class=w> </span><span class=n>commit</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=n>grandparent</span><span class=w> </span><span class=n>commit</span><span class=w></span>
-</code></pre></div></td></tr></table><p><em>Graph</em> is structure which represents relation between objects using connection.</p><ul><li>The object in this case is <em>commits</em>.</li><li>The relationship in this case is <em>parent-child</em> relationship.</li><li>There relation can be many to many.</li><li>Multiple child can share single parent.</li><li>Single child may be created by Multiple parents.</li></ul><p><em>Directed</em> refers to the fact that these relationships have a direction.</p><ul><li>The direction in this case is from child to parent.</li><li>The arrow head points to the direction.</li></ul><p><em>Acyclic</em> means the graph does not have cycles or loops.</p><ul><li>More information at <a href=https://en.wikipedia.org/wiki/Directed_acyclic_graph title="Wikipedia: DAG">wiki</a>.</li></ul><h2>Hash</h2><p>The Directed Acyclic Graph is made of Hashes. Hash function map variable size input to fixed size output. Here each content has different size, you hash them you to get fixed sized output. The fixed sized output is the hash of the input.</p><p>Cryptographic Hashes are hash which are hard to reverse. You cannot guess input from getting output of the hash. In case of git <em>sha-1</em> is used for hashing. In recent version <em>sha-256</em> is used as per <a href=https://git-scm.com/docs/hash-function-transition/2.18.0 title=Hashes>hash function transition article</a>).</p><h2>Commit</h2><p>The snapshot of content at any point of time is called commit. Even though content refers to folder level of content. The changes are maintained at file level. So the commit contains details of these changes. More about commit will be covered in next chapter.</p><h2>Resources</h2><ol><li>Git: <a href=https://linux.die.net/man/1/git title="git man page">Stupid Content Tracker</a>.</li><li><a href="https://www.youtube.com/watch?v=4XpnKHJAok8" title="Torvalds on git">Tech Talk: Linus Torvalds on git</a></li><li><a href=https://en.wikipedia.org/wiki/Directed_acyclic_graph title="Wikipedia: DAG">wiki: Directed acyclic graph</a></li><li><a href=https://git-scm.com/docs/hash-function-transition/2.18.0 title=Hashes>Hash Function Transition</a></li></ol></article></div><div class=tags><span>Post Tags:</span><a href=tag/version.html>&nbsp;#version,</a><a href=tag/git.html>&nbsp;#git,</a><a href=tag/information.html>&nbsp;#information</a></div><hr class=my-3><div id=comments></div><script>
+};</script>    <div class="content">
+	<div>
+		<h1>Git Simplified (Part 1): Introduction</h1>
+		<h5><p>This article provides introduction to git internals.</p></h5>
+		<h5>Read time: 2 min</h5>
+		<small>Written on April 29, 2020</small>
+	</div>
+	<div> 
+	<article>
+	<h2>Articles</h2>
+<p>This article is part of series which provides introduction to git internals.</p>
+<ol>
+<li><a href="https://sak96.github.io/git-simplified-part-1-introduction.html">Git: Introduction</a></li>
+</ol>
+<h2>Introduction</h2>
+<p>Git is the stupid <code>content tracker</code> (as per it's <a href="https://linux.die.net/man/1/git" title="git man page">man page</a>).
+As a content tracker it tracks the modification of done to content.
+It acts like a diary for how/when/where content got modified.</p>
+<p>This help to enabled the following:</p>
+<ul>
+<li>Track Ownership of changes.</li>
+<li>Backup and Restore to certain older point.</li>
+<li>Synchronization changes between multiple contents.</li>
+</ul>
+<p>Git keeps track of the whole system as <strong>Directed Acyclic Graph of Hashes of commits</strong>.
+Each hash represents a commit or state of content at given time.
+Lets dig bit deeper about the graph part.</p>
+<h2>Directed Acyclic Graph</h2>
+<div class="mermaid">
+gitGraph
+commit id: "grandparent"
+commit id: "parent"
+commit id: "child"
+</div>
+
+<p><em>Graph</em> is structure which represents relation between objects using connection.</p>
+<ul>
+<li>The object in this case is <em>commits</em>.</li>
+<li>The relationship in this case is <em>parent-child</em> relationship.</li>
+<li>There relation can be many to many.</li>
+<li>Multiple child can share single parent.</li>
+<li>Single child may be created by Multiple parents.</li>
+</ul>
+<p><em>Directed</em> refers to the fact that these relationships have a direction.</p>
+<ul>
+<li>The direction in this case is from child to parent.</li>
+<li>The arrow head points to the direction.</li>
+</ul>
+<p><em>Acyclic</em> means the graph does not have cycles or loops.</p>
+<ul>
+<li>More information at <a href="https://en.wikipedia.org/wiki/Directed_acyclic_graph" title="Wikipedia: DAG">wiki</a>.</li>
+</ul>
+<h2>Hash</h2>
+<p>The Directed Acyclic Graph is made of Hashes.
+Hash function map variable size input to fixed size output.
+Here each content has different size, you hash them you to get fixed sized output.
+The fixed sized output is the hash of the input.</p>
+<p>Cryptographic Hashes are hash which are hard to reverse.
+You cannot guess input from getting output of the hash.
+In case of git <em>sha-1</em> is used for hashing.
+In recent version <em>sha-256</em> is used as per <a href="https://git-scm.com/docs/hash-function-transition/2.18.0" title="Hashes">hash function transition article</a>).</p>
+<h2>Commit</h2>
+<p>The snapshot of content at any point of time is called commit.
+Even though content refers to folder level of content.
+The changes are maintained at file level.
+So the commit contains details of these changes.
+More about commit will be covered in next chapter.</p>
+<h2>Resources</h2>
+<ol>
+<li>Git: <a href="https://linux.die.net/man/1/git" title="git man page">Stupid Content Tracker</a>.</li>
+<li><a href="https://www.youtube.com/watch?v=4XpnKHJAok8" title="Torvalds on git">Tech Talk: Linus Torvalds on git</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Directed_acyclic_graph" title="Wikipedia: DAG">wiki: Directed acyclic graph</a></li>
+<li><a href="https://git-scm.com/docs/hash-function-transition/2.18.0" title="Hashes">Hash Function Transition</a></li>
+</ol>
+<script>mermaid.initialize({startOnLoad:true});</script>
+	</article>
+	</div>
+<div class="tags">
+    <span>Post Tags:</span>
+    <a href="tag/version.html">&nbsp;#version,</a>
+    <a href="tag/git.html">&nbsp;#git,</a>
+    <a href="tag/information.html">&nbsp;#information</a>
+</div><hr class="my-3">
+<div id="comments"></div>
+<script>
   let commentUrl = "https://api.github.com/repos/sak96/sak96.github.io/issues/4/comments"
   let issueUrl = "https://github.com/sak96/sak96.github.io/issues/4"
   function PopulateComment(comments) {
@@ -285,4 +400,14 @@ document.querySelector("#theme").onclick = function (e) {
     }
   };
   xhr.send();
-</script><hr><div class=footer><span>Powered by:</span><a href=http://getpelican.com/ >Pelican,</a><a href=https://github.com/pygments/pygments>Pygments,</a><a href=https://github.com/morhetz/gruvbox-contrib>Gruvbox</a></div></div></body></html>
+</script>
+        <script src="https://unpkg.com/mermaid@latest/dist/mermaid.min.js"></script>
+<hr>
+<div class="footer">
+    <span>Powered by:</span>
+    <a href="http://getpelican.com/">Pelican,</a>
+    <a href="https://github.com/pygments/pygments">Pygments,</a>
+    <a href="https://github.com/morhetz/gruvbox-contrib">Gruvbox</a>
+</div>  </div>
+</body>
+</html>
