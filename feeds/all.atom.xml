@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>sak96-blog</title><link href="https://sak96.github.io/" rel="alternate"></link><link href="https://sak96.github.io/feeds/all.atom.xml" rel="self"></link><id>https://sak96.github.io/</id><updated>2022-04-25T00:00:00+01:00</updated><entry><title>Debugging Vim Errors</title><link href="https://sak96.github.io/debugging-vim-errors.html" rel="alternate"></link><published>2022-04-25T00:00:00+01:00</published><updated>2022-04-25T00:00:00+01:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2022-04-25:/debugging-vim-errors.html</id><summary type="html">&lt;p&gt;This article provides debugging tips for vim.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Why Debugging Vim ?&lt;/h2&gt;
 &lt;p&gt;Using Vim as it comes out of box is difficult.
-Plugins make vim a lot more powerful.
-Some times some of these plugins cause issue and popping some error message.
-Having knowledge how to figure out what is causing issue can help in such situations.&lt;/p&gt;
-&lt;h2&gt;Error Messages or Messages&lt;/h2&gt;
+Plugins make vim, a lot more powerful.
+Some times some of these plugins cause issues, popping some error message.
+Having knowledge on how to figure out what is causing issue can help in such situations.&lt;/p&gt;
+&lt;h2&gt;Error Messages&lt;/h2&gt;
 &lt;p&gt;The error message which pop in vim may disappear when you type enter or hit some key.
 These error message are as stated "messages" in vim.
 To check the last error message again type &lt;code&gt;:echo errmsg&lt;/code&gt; in normal mode.
@@ -28,28 +28,29 @@ Below is partial stack trace.&lt;/p&gt;
 &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;h2&gt;Which function cause the issue ?&lt;/h2&gt;
 &lt;p&gt;Noticing &lt;code&gt;&amp;lt;SNR&amp;gt;163_on_exit_vim[15]&lt;/code&gt;  can lead to conclusion a function caused issue.
-The &lt;code&gt;&amp;lt;SNR&amp;gt;163&lt;/code&gt; part indicates that 163 script caused the issue.
-To find out the 163 fetch all scripts with id.&lt;/p&gt;
+The &lt;code&gt;&amp;lt;SNR&amp;gt;163&lt;/code&gt; part indicates that 163rd script caused the issue.
+To find out the 163rd script, fetch all scripts with id.&lt;/p&gt;
 &lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="k"&gt;vnew&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; &lt;span class="k"&gt;put&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;execute&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;scriptnames&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;p&gt;This will provide the script location which caused the issue.
-To go to the file press &lt;code&gt;gf&lt;/code&gt; when on the file name&lt;/p&gt;
+To go to the file press &lt;code&gt;gf&lt;/code&gt; when on the file path.&lt;/p&gt;
 &lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="mi"&gt;163&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;~/.&lt;/span&gt;&lt;span class="n"&gt;vim&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;plugged&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;vim&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;gitgutter&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;autoload&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;gitgutter&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;async&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vim&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;p&gt;Now find the function &lt;code&gt;on_exit_vim&lt;/code&gt; and move to 15 line (&lt;code&gt;15j&lt;/code&gt;)in it.
+&lt;p&gt;Now find the function &lt;code&gt;on_exit_vim&lt;/code&gt; and move to 15th line (&lt;code&gt;15j&lt;/code&gt;)in it.
 This is the function which was causing the issue.
 More information can be found in &lt;a href="https://stackoverflow.com/questions/51210172" title="vim stack trace"&gt;stack overflow question&lt;/a&gt;.&lt;/p&gt;
 &lt;h2&gt;How to debug stuff?&lt;/h2&gt;
-&lt;p&gt;Now you need see the code which is causing issue.
-Using &lt;code&gt;echom&lt;/code&gt; and restart vim you can figure out local variables.
-Now call the function or command in debug mode.&lt;/p&gt;
+&lt;p&gt;Now having knowledge of what line in the function cause issue, let's reproduce it.
+First use &lt;code&gt;echom&lt;/code&gt; and restart vim to figure out value of local variable from messages.
+Now execute the code in debug mode.&lt;/p&gt;
 &lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;debug&lt;/span&gt; echo expand&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;%:h&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;p&gt;This is not a good function as it does not do much.
-Like any other debugger, when in debug mode you can use the following commands.&lt;/p&gt;
+&lt;p&gt;The above code returns quickly, but in real situation there is need for more debugging.
+Like any other debugger, when in debug mode command to control the program flow. 
+Few of these are listed below.&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
@@ -120,7 +121,7 @@ The argument can be as follows:&lt;/p&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;There is much detailed explanation in following &lt;a href="https://inlehmansterms.net/2014/10/31/debugging-vim/" title="debugging vim"&gt;blog&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;There is much detailed explanation in following &lt;a href="https://inlehmansterms.net/2014/10/31/debugging-vim/" title="debugging vim"&gt;blog article&lt;/a&gt;.&lt;/p&gt;
 &lt;h2&gt;Are there logs in vim ?&lt;/h2&gt;
 &lt;p&gt;Vim has logging functionality builtin it.
 To start vim in most verbose mode and log it to a file use following command.

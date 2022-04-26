@@ -264,10 +264,10 @@ document.querySelector("#theme").onclick = function (e) {
 	<article>
 	<h2>Why Debugging Vim ?</h2>
 <p>Using Vim as it comes out of box is difficult.
-Plugins make vim a lot more powerful.
-Some times some of these plugins cause issue and popping some error message.
-Having knowledge how to figure out what is causing issue can help in such situations.</p>
-<h2>Error Messages or Messages</h2>
+Plugins make vim, a lot more powerful.
+Some times some of these plugins cause issues, popping some error message.
+Having knowledge on how to figure out what is causing issue can help in such situations.</p>
+<h2>Error Messages</h2>
 <p>The error message which pop in vim may disappear when you type enter or hit some key.
 These error message are as stated "messages" in vim.
 To check the last error message again type <code>:echo errmsg</code> in normal mode.
@@ -291,28 +291,29 @@ Below is partial stack trace.</p>
 </td></tr></table>
 <h2>Which function cause the issue ?</h2>
 <p>Noticing <code>&lt;SNR&gt;163_on_exit_vim[15]</code>  can lead to conclusion a function caused issue.
-The <code>&lt;SNR&gt;163</code> part indicates that 163 script caused the issue.
-To find out the 163 fetch all scripts with id.</p>
+The <code>&lt;SNR&gt;163</code> part indicates that 163rd script caused the issue.
+To find out the 163rd script, fetch all scripts with id.</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="p">:</span><span class="k">vnew</span> <span class="p">|</span> <span class="k">put</span><span class="p">=</span>execute<span class="p">(</span><span class="s1">&#39;scriptnames&#39;</span><span class="p">)</span>
 </code></pre></div>
 </td></tr></table>
 <p>This will provide the script location which caused the issue.
-To go to the file press <code>gf</code> when on the file name</p>
+To go to the file press <code>gf</code> when on the file path.</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="mi">163</span><span class="p">:</span><span class="w"> </span><span class="o">~/.</span><span class="n">vim</span><span class="o">/</span><span class="n">plugged</span><span class="o">/</span><span class="n">vim</span><span class="o">-</span><span class="n">gitgutter</span><span class="o">/</span><span class="n">autoload</span><span class="o">/</span><span class="n">gitgutter</span><span class="o">/</span><span class="n">async</span><span class="o">.</span><span class="n">vim</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
-<p>Now find the function <code>on_exit_vim</code> and move to 15 line (<code>15j</code>)in it.
+<p>Now find the function <code>on_exit_vim</code> and move to 15th line (<code>15j</code>)in it.
 This is the function which was causing the issue.
 More information can be found in <a href="https://stackoverflow.com/questions/51210172" title="vim stack trace">stack overflow question</a>.</p>
 <h2>How to debug stuff?</h2>
-<p>Now you need see the code which is causing issue.
-Using <code>echom</code> and restart vim you can figure out local variables.
-Now call the function or command in debug mode.</p>
+<p>Now having knowledge of what line in the function cause issue, let's reproduce it.
+First use <code>echom</code> and restart vim to figure out value of local variable from messages.
+Now execute the code in debug mode.</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">debug</span> echo expand<span class="p">(</span><span class="s1">&#39;%:h&#39;</span><span class="p">)</span>
 </code></pre></div>
 </td></tr></table>
-<p>This is not a good function as it does not do much.
-Like any other debugger, when in debug mode you can use the following commands.</p>
+<p>The above code returns quickly, but in real situation there is need for more debugging.
+Like any other debugger, when in debug mode command to control the program flow. 
+Few of these are listed below.</p>
 <table>
 <thead>
 <tr>
@@ -383,7 +384,7 @@ The argument can be as follows:</p>
 </tr>
 </tbody>
 </table>
-<p>There is much detailed explanation in following <a href="https://inlehmansterms.net/2014/10/31/debugging-vim/" title="debugging vim">blog</a>.</p>
+<p>There is much detailed explanation in following <a href="https://inlehmansterms.net/2014/10/31/debugging-vim/" title="debugging vim">blog article</a>.</p>
 <h2>Are there logs in vim ?</h2>
 <p>Vim has logging functionality builtin it.
 To start vim in most verbose mode and log it to a file use following command.
