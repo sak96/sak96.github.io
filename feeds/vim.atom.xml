@@ -49,7 +49,7 @@ Now execute the code in debug mode.&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;p&gt;The above code returns quickly, but in real situation there is need for more debugging.
-Like any other debugger, when in debug mode command to control the program flow. 
+Like any other debugger, when in debug mode command to control the program flow.
 Few of these are listed below.&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -128,7 +128,7 @@ To start vim in most verbose mode and log it to a file use following command.
 More information can be got in vim help or you check &lt;a href="https://stackoverflow.com/questions/3025615" title="vim logs"&gt;stack overflow question&lt;/a&gt;.&lt;/p&gt;
 &lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;vim -V9myVim.log
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</content><category term="vim"></category><category term="vim"></category><category term="debugging"></category></entry><entry><title>Vim Wiki Setup</title><link href="https://sak96.github.io/vim-wiki-setup.html" rel="alternate"></link><published>2021-11-09T00:00:00+00:00</published><updated>2021-11-09T00:00:00+00:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2021-11-09:/vim-wiki-setup.html</id><summary type="html">&lt;p&gt;This article explains my vim wiki setup.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Why Keep Notes?&lt;/h2&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</content><category term="vim"></category><category term="vim"></category><category term="neovim"></category><category term="debugging"></category></entry><entry><title>Vim Wiki Setup</title><link href="https://sak96.github.io/vim-wiki-setup.html" rel="alternate"></link><published>2021-11-09T00:00:00+00:00</published><updated>2021-11-09T00:00:00+00:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2021-11-09:/vim-wiki-setup.html</id><summary type="html">&lt;p&gt;This article explains my vim wiki setup.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Why Keep Notes?&lt;/h2&gt;
 &lt;p&gt;Note taking helps in process of learning new material.
 The process of writing notes forces you to summarise what you learned.
 The notes may be used later to revise or recollect facts.
@@ -148,7 +148,7 @@ It also had a command line interface.&lt;/p&gt;
 It was simple setup and the data was versioned.
 And I could parse the data as and when required.
 Installation was also simple via &lt;code&gt;vim-plug&lt;/code&gt;.&lt;/p&gt;
-&lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;Plug &lt;span class="s1"&gt;&amp;#39;vimwiki/vimwiki&amp;#39;&lt;/span&gt; 
+&lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;Plug &lt;span class="s1"&gt;&amp;#39;vimwiki/vimwiki&amp;#39;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;h2&gt;Markdown format&lt;/h2&gt;
@@ -282,7 +282,7 @@ For markdown viewer, using &lt;a href="https://github.com/gsantner/markor" title
 &lt;span class="normal"&gt;19&lt;/span&gt;
 &lt;span class="normal"&gt;20&lt;/span&gt;
 &lt;span class="normal"&gt;21&lt;/span&gt;
-&lt;span class="normal"&gt;22&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;Plug &lt;span class="s1"&gt;&amp;#39;vimwiki/vimwiki&amp;#39;&lt;/span&gt; 
+&lt;span class="normal"&gt;22&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;Plug &lt;span class="s1"&gt;&amp;#39;vimwiki/vimwiki&amp;#39;&lt;/span&gt;
 
 &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="k"&gt;g&lt;/span&gt;:vimwiki_syntax &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;markdown&amp;#39;&lt;/span&gt;
 &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="k"&gt;g&lt;/span&gt;:vimwiki_ext &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;.md&amp;#39;&lt;/span&gt;
@@ -305,4 +305,4 @@ For markdown viewer, using &lt;a href="https://github.com/gsantner/markor" title
 
 &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="k"&gt;g&lt;/span&gt;:vimwiki_diary_rel_path &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;dairy_&amp;#39;&lt;/span&gt;.hostname&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</content><category term="vim"></category><category term="vim"></category><category term="plugin"></category></entry></feed>
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</content><category term="vim"></category><category term="vim"></category><category term="neovim"></category><category term="plugin"></category></entry></feed>

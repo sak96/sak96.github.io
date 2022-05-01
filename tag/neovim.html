@@ -2,14 +2,15 @@
 <html>
 
 <head>
-  <title>Tags</title>
+  <title>neovim</title>
   <link rel="shortcut icon" 
   href="https://sak96.github.io/theme/images/favicon.svg">
   <meta name="viewport" 
   content="width=device-width, initial-scale=1.0" />
   <meta charset="UTF-8">
-    <link rel="alternate" type="application/atom+xml"
+        <link rel="alternate" type="application/atom+xml"
     title="sak96-blog" href="https://sak96.github.io/feeds/all.atom.xml" />
+
   <link rel="stylesheet" href="https://sak96.github.io/theme/syntax/pygment.css">
     <style>
 * {
@@ -254,164 +255,45 @@ document.querySelector("#theme").onclick = function (e) {
     localStorage.setItem("theme", "light");
   }
 };</script>    <div class="content">
-    <!-- article collections are : authors, tags, categories -->
-        <h2>Tags</h2>
+    <!-- article list are articles belonging to authors, tags, categories -->
+        <h2>
+            neovim Articles
+        </h2>
         <div>
-                <span class="item">
-                <a href="https://sak96.github.io/tag/vim.html" >
-                    vim(2)
-                </a> 
-                <small>
-                </small>
-                </span>
-                <span class="item">
-                <a href="https://sak96.github.io/tag/neovim.html" >
-                    neovim(2)
-                </a> 
-                <small>
-                </small>
-                </span>
-                <span class="item">
-                <a href="https://sak96.github.io/tag/debugging.html" >
-                    debugging(2)
-                </a> 
-                <small>
-                </small>
-                </span>
-                <span class="item">
-                <a href="https://sak96.github.io/tag/plugin.html" >
-                    plugin(1)
-                </a> 
-                <small>
-                </small>
-                </span>
-                <span class="item">
-                <a href="https://sak96.github.io/tag/story.html" >
-                    story(5)
-                </a> 
-                <small>
-                </small>
-                </span>
-                <span class="item">
-                <a href="https://sak96.github.io/tag/s3.html" >
-                    s3(1)
-                </a> 
-                <small>
-                </small>
-                </span>
-                <span class="item">
-                <a href="https://sak96.github.io/tag/security.html" >
-                    security(1)
-                </a> 
-                <small>
-                </small>
-                </span>
-                <span class="item">
-                <a href="https://sak96.github.io/tag/rust.html" >
-                    rust(1)
-                </a> 
-                <small>
-                </small>
-                </span>
-                <span class="item">
-                <a href="https://sak96.github.io/tag/ownership.html" >
-                    ownership(1)
-                </a> 
-                <small>
-                </small>
-                </span>
-                <span class="item">
-                <a href="https://sak96.github.io/tag/wsl.html" >
-                    wsl(2)
-                </a> 
-                <small>
-                </small>
-                </span>
-                <span class="item">
-                <a href="https://sak96.github.io/tag/linux.html" >
-                    linux(3)
-                </a> 
-                <small>
-                </small>
-                </span>
-                <span class="item">
-                <a href="https://sak96.github.io/tag/browser.html" >
-                    browser(1)
-                </a> 
-                <small>
-                </small>
-                </span>
-                <span class="item">
-                <a href="https://sak96.github.io/tag/file.html" >
-                    file(2)
-                </a> 
-                <small>
-                </small>
-                </span>
-                <span class="item">
-                <a href="https://sak96.github.io/tag/version.html" >
-                    version(1)
-                </a> 
-                <small>
-                </small>
-                </span>
-                <span class="item">
-                <a href="https://sak96.github.io/tag/git.html" >
-                    git(1)
-                </a> 
-                <small>
-                </small>
-                </span>
-                <span class="item">
-                <a href="https://sak96.github.io/tag/information.html" >
-                    information(1)
-                </a> 
-                <small>
-                </small>
-                </span>
-                <span class="item">
-                <a href="https://sak96.github.io/tag/patching.html" >
-                    patching(1)
-                </a> 
-                <small>
-                </small>
-                </span>
-                <span class="item">
-                <a href="https://sak96.github.io/tag/docker.html" >
-                    docker(1)
-                </a> 
-                <small>
-                </small>
-                </span>
-                <span class="item">
-                <a href="https://sak96.github.io/tag/writing.html" >
-                    writing(2)
-                </a> 
-                <small>
-                </small>
-                </span>
-                <span class="item">
-                <a href="https://sak96.github.io/tag/documentation.html" >
-                    documentation(1)
-                </a> 
-                <small>
-                </small>
-                </span>
-                <span class="item">
-                <a href="https://sak96.github.io/tag/programming.html" >
-                    programming(2)
-                </a> 
-                <small>
-                </small>
-                </span>
-                <span class="item">
-                <a href="https://sak96.github.io/tag/articles.html" >
-                    articles(1)
-                </a> 
-                <small>
-                </small>
-                </span>
+                <a href="https://sak96.github.io/debugging-vim-errors.html" class="item">
+                    <h4>Debugging Vim Errors</h4>
+                    <span><p>This article provides debugging tips for vim.</p></span>
+                    <small>April 25, 2022</small>
+                </a>
+                <a href="https://sak96.github.io/vim-wiki-setup.html" class="item">
+                    <h4>Vim Wiki Setup</h4>
+                    <span><p>This article explains my vim wiki setup.</p></span>
+                    <small>November 09, 2021</small>
+                </a>
         </div>
+    <!-- navigation for paged article groups -->
+    <div class="paginator">
+        <a             class="disabled"
+        href='https://sak96.github.io/tag/neovim.html'>
+        &lt;&lt;<span> First</span>
+        </a>
+        <a             class="disabled"
+        href='https://sak96.github.io/'>
+            &lt;<span > Prev</span>
+        </a>
+
+        <span class="page-item" >&hellip;</span>
+
+        <a             class="disabled"
+        href='https://sak96.github.io/'>
+            <span class="page-item">Next </span>&gt; 
+        </a> 
+        <a             class="disabled"
+ 
+        href='https://sak96.github.io/tag/neovim.html'>
+            <span class="page-item">Last </span>&gt;&gt;
+        </a>
+    </div>
         <script src="https://unpkg.com/mermaid@latest/dist/mermaid.min.js"></script>
 <hr>
 <div class="footer">
