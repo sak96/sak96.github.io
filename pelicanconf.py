@@ -26,6 +26,10 @@ LINKS = (
     ("Gruvbox", "https://github.com/morhetz/gruvbox-contrib"),
 )
 
+# helpful list for 404
+LINKS_404 = (
+    ("Home Page", "index.html"),
+)
 
 DEFAULT_PAGINATION = 3
 

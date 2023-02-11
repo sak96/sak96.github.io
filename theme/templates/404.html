@@ -7,7 +7,9 @@
 {% block content %}
 <h1 class="not-found">
     <span>404!</span><br><br>
-    <span>Nothing to see here.</span><br /> 
-    <span>Return to <a href="{{SITEURL}}/index.html">homepage</a>.</span>
+    <span>Nothing to see here.</span><br />
+    {% for name, link in LINKS_404 %}
+    <span>Return to <a href="{{SITEURL}}/{{link}}">{{name}}</a>.</span><br />
+    {% endfor %}
 </h1>
 {% endblock content %}
