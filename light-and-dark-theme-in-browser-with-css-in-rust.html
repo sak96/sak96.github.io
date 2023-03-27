@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Light and Dark Theme in Browser with CSS in Rust</title>
+  <link rel="shortcut icon" 
+  href="https://sak96.github.io/theme/images/favicon.svg">
+  <meta name="viewport" 
+  content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+    <link rel="alternate" type="application/atom+xml"
+    title="sak96-blog" href="https://sak96.github.io/feeds/all.atom.xml" />
+  <link rel="stylesheet" href="https://sak96.github.io/theme/syntax/pygment.css">
+    <style>
+* {
+  box-sizing: border-box;
+}
+:root {
+  --bg: #1d2021;
+  --fg: #d4be98;
+  --gray: #928374;
+  --blue: #7daea3;
+  --green: #a9b665;
+  --red: #ea6962;
+}
+[data-theme="light"] {
+  --bg: #f9f5d7;
+  --fg: #654735;
+  --gray: #928374;
+  --blue: #45707a;
+  --green: #6c782e;
+  --red: #c14a4a;
+}
+table,
+th,
+td {
+  padding: 10px;
+  border: 1px solid var(--fg);
+  border-collapse: collapse;
+}
+.codehilitetable {
+  padding: 0px;
+  display: block;
+  overflow-x: auto;
+  border: 2px solid var(--blue);
+  border-radius: 4px;
+  border-collapse: collapse;
+  font-family: monospace;
+}
+.codehilite {
+  margin: 0 1em;
+}
+.linenos {
+  text-align: right;
+  border: 0px;
+  border-right: 2px solid var(--blue);
+  padding: 0em 0.5em;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.code {
+  border: 0px;
+}
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+}
+a {
+  text-decoration: none;
+  color: var(--blue);
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--green);
+}
+small {
+  color: var(--gray);
+}
+.navbar {
+  border-bottom: 1px solid var(--green);
+}
+.navbar div {
+  display: inline-block;
+}
+.nav-end {
+  position: absolute;
+  right: 0.5rem;
+}
+.navbar a {
+  padding: 0.5rem 0;
+}
+.navbar a:before {
+  content: "[";
+}
+.navbar a:after {
+  content: "]";
+}
+#theme {
+  cursor: pointer;
+}
+[data-theme="light"] #theme:before {
+  content: "[🌚:";
+}
+#theme:before {
+  content: "[🌞:";
+}
+#navbar-toggler {
+  display: none;
+}
+.content {
+  width: 80%;
+  max-width: 50rem;
+  margin: auto;
+}
+article em,
+article strong {
+  color: var(--red);
+}
+.not-found,
+.coming-soon {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+.item {
+  display: block;
+  margin: 0.5rem 0;
+  padding: 1rem;
+  border-top: 1px dashed var(--red);
+  color: var(--fg);
+}
+.item > :first-child {
+  margin-top: 0;
+}
+.img-fluid {
+  width: 100%;
+}
+.paginator {
+  margin: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+.footer,
+.tags {
+  margin: 0.5rem;
+  display: flex;
+  justify-content: center;
+}
+.disabled {
+  pointer-events: none;
+  color: var(--gray);
+}
+@media only screen and (max-width: 500px) {
+  .navbar {
+    border: none;
+  }
+  .nav-header {
+    border-bottom: 0.025rem solid var(--green);
+  }
+  .navbar div {
+    display: block;
+    position: static;
+  }
+  #navbar-toggler {
+    transform: rotate(90deg);
+    position: absolute;
+    right: 1rem;
+    display: inline;
+    background-color: inherit;
+    border: none;
+    color: inherit;
+  }
+  .navbar a:after,
+  .navbar a:before {
+    content: "";
+  }
+  .navbar a {
+    border-bottom: 0.025rem solid var(--green);
+    display: none;
+  }
+  .nav-header a {
+    display: inline-block;
+    border: none;
+  }
+  .navbar a.show {
+    display: block;
+  }
+  .content {
+    width: 100%;
+  }
+  .footer {
+    display: inline-block;
+  }
+  .paginator span {
+    display: none;
+  }
+  [data-theme="light"] #theme:before {
+    content: "🌚:";
+  }
+  #theme:before {
+    content: "🌞:";
+  }
+}    </style>
+</head>
+
+<body>
+<div class="navbar">
+    <div class="nav-header"/>
+        <a href="https://sak96.github.io/index.html">sak96-blog</a>
+        <a id="navbar-toggler">|||</a>
+    </div>
+    <div class="nav-start">
+        <a href="https://sak96.github.io/authors.html">Authors</a>
+        <a href="https://sak96.github.io/categories.html">Categories</a>
+        <a href="https://sak96.github.io/tags.html">Tags</a>
+    </div>
+    <div class="nav-end">
+        <a href="https://sak96.github.io/feeds/all.atom.xml">Atom</a>
+        <a id="theme">Theme</a>
+    </div>
+</div>
+<script>
+document.querySelector("#navbar-toggler").onclick = function (e) {
+  document
+    .querySelectorAll(".nav-start a,.nav-end a")
+    .forEach((e) => e.classList.toggle("show"));
+};
+{
+  let theme = localStorage.getItem("theme");
+  if (
+    theme === "light" ||
+    window.matchMedia("(prefers-color-scheme: light)").matches
+  ) {
+    document.documentElement.setAttribute("data-theme", "light");
+    localStorage.setItem("theme", "light");
+  } else {
+    document.documentElement.setAttribute("data-theme", "dark");
+    localStorage.setItem("theme", "dark");
+  }
+}
+document.querySelector("#theme").onclick = function (e) {
+  if (document.documentElement.getAttribute("data-theme")) {
+    document.documentElement.setAttribute("data-theme", "");
+    localStorage.setItem("theme", "dark");
+  } else {
+    document.documentElement.setAttribute("data-theme", "light");
+    localStorage.setItem("theme", "light");
+  }
+};</script>    <div class="content">
+	<div>
+		<h1>Light and Dark Theme in Browser with CSS in Rust</h1>
+		<h5><p>This article implementing dark and light theme using css.</p></h5>
+		<h5>Read time: 5 min</h5>
+		<small>Written on March 28, 2023</small>
+	</div>
+	<div> 
+	<article>
+	<p>I am fan of dark theme, the brightness just hurts my eye.
+Hence I try to implement dark theme in app which I build.
+(Not that I have build any popular apps.)</p>
+<p>Most app that I build these days are in rust.
+They usually end up being CLI as I found UI hard in rust.
+Finally after trying out <a href="https://tauri.app/" title="A Rust Desktop UI Framework">tauri</a>  with <a href="https://yew.rs/" title="A Rust Web UI Framework">yew</a> , I feel there is hope.</p>
+<p>Basically tauri is alternative to electron written in rust.
+And yew alternative rust framework to react.</p>
+<p>So I built an app called <a href="https://github.com/sak96/time_tracker" title="A Time Tracker">time tracker</a> which tracks time.
+And I wanted dark theme but without any frameworks.
+I got stuck and could not see how to proceed so I had paused work on app.
+But finally, I have the idea of building dark theme.</p>
+<h2>The Dark Arts of Dark themes</h2>
+<p>CSS is a large standard for styling, it has lot of stuff.
+Usually I learn new trick by browsing <code>stackoverflow</code> or <code>github</code> browsing.
+I found about <code>prefers-color-scheme</code> which would allow theming to system preference.</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="p">:</span><span class="nd">root</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nv">--c-bg</span><span class="p">:</span><span class="w"> </span><span class="mh">#fff</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="nv">--c-text</span><span class="p">:</span><span class="w"> </span><span class="mh">#000</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="p">@</span><span class="k">media</span><span class="w"> </span><span class="o">(</span><span class="nt">prefers-color-scheme</span><span class="o">:</span><span class="w"> </span><span class="nt">dark</span><span class="o">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="p">:</span><span class="nd">root</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nv">--c-bg</span><span class="p">:</span><span class="w"> </span><span class="mh">#000</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="nv">--c-text</span><span class="p">:</span><span class="w"> </span><span class="mh">#fff</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+</td></tr></table>
+<p>Based on users system preference the CSS color variables would be set.
+This could be used in the CSS styling for setting dark or light theme.
+This was fine, but the issue was the user could not toggle theme for particular app.</p>
+<h2>Dark or Light is just data</h2>
+<p>CSS selector provide way to select elements by data attributes.
+These attributes can be used to store information which are not actually part of HTML.
+We can store the theming information in here and toggle it to get desired result.</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="o">[</span><span class="nt">data-theme</span><span class="o">=</span><span class="s2">&quot;light&quot;</span><span class="o">]</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nv">--bg</span><span class="p">:</span><span class="w"> </span><span class="mh">#1d2021</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="nv">--fg</span><span class="p">:</span><span class="w"> </span><span class="mh">#d4be98</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="o">[</span><span class="nt">data-theme</span><span class="o">=</span><span class="s2">&quot;light&quot;</span><span class="o">]</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nv">--bg</span><span class="p">:</span><span class="w"> </span><span class="mh">#f9f5d7</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="nv">--fg</span><span class="p">:</span><span class="w"> </span><span class="mh">#654735</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+</td></tr></table>
+<p>The above provides variable to element with data attribute <code>data-theme</code>.
+We can set <code>data-theme</code> to document element via JavaScript and toggle it.</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s2">&quot;data-theme&quot;</span><span class="p">,</span> <span class="s2">&quot;dark&quot;</span><span class="p">);</span>
+</code></pre></div>
+</td></tr></table>
+<p>You can set default to system preference and later toggle when user asks.
+To get the system preference media queries can be used.</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="nx">is_system_preference_dark</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">matchMedia</span><span class="p">(</span><span class="s2">&quot;(prefers-color-scheme: light)&quot;</span><span class="p">).</span><span class="nx">matches</span><span class="p">;</span>
+</code></pre></div>
+</td></tr></table>
+<p>This is actually how this blog handles the theming.
+But this approach requires setting <code>background-color</code> and <code>color</code> properly to elements.
+When building app avoiding CSS framework it would be nice to utilize system colors,
+and change only app specific colors (like for dangerous delete) button based on data attributes.</p>
+<h2>Only required colors, please!</h2>
+<p>Data attributes are fine for colors which are defined by app.</p>
+<p>For technical specification for CSS I refer to <a href="https://developer.mozilla.org/en-US/docs/Web/CSS" title="Mozilla Developer Network">MDN</a>.
+And I stumbled across <code>color-scheme</code> which allows elements to declare there preference.
+There is is <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta/name" title="Meta tag for color-scheme">color scheme meta tag</a> which can also be set to apply it for whole document.</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="o">&lt;</span><span class="nt">meta</span><span class="w"> </span><span class="nt">name</span><span class="o">=</span><span class="s2">&quot;color-scheme&quot;</span><span class="w"> </span><span class="nt">content</span><span class="o">=</span><span class="s2">&quot;dark light&quot;</span><span class="o">&gt;</span><span class="w"></span>
+</code></pre></div>
+</td></tr></table>
+<p>This attribute can be toggles using JavaScript to change the theme mode.
+The elements use their default colors for background and font based on color scheme.</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s2">&quot;meta&quot;</span><span class="p">).</span><span class="nx">namedItem</span><span class="p">(</span><span class="s2">&quot;color-scheme&quot;</span><span class="p">).</span><span class="nx">content</span> <span class="o">=</span> <span class="s2">&quot;dark&quot;</span><span class="p">;</span>
+</code></pre></div>
+</td></tr></table>
+<p>In some edge case you might want to reuse the default colors say for background.
+Hard coding does not cut it, the background color might be effected by system settings.
+Instead utilize system colors, this avoid hard coding of colors.</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="na">.remove-transparent</span><span class="w"> </span><span class="err">{</span><span class="w"></span>
+<span class="w">    </span><span class="cm">/*</span>
+<span class="cm">        adding class to element with &quot;background-color: transparent;&quot;</span>
+<span class="cm">        removes it&#39;s transparency.</span>
+<span class="cm">    */</span><span class="w"></span>
+<span class="w">    </span><span class="nl">background-color:</span><span class="w"> </span><span class="nf">Canvas</span><span class="c1">;</span>
+<span class="err">}</span><span class="w"></span>
+</code></pre></div>
+</td></tr></table>
+<h2>What is the rusty way ?</h2>
+<p>This is all great but how to do it in rust?
+The theming requires interacting with browser, which is done through <a href="https://rustwasm.github.io/docs/wasm-bindgen/" title="Wasm Bind Gen">wasmbindgen</a>.
+The easiest way would be to write JavaScript code and expose it to rust.
+This can be done using <a href="https://rustwasm.github.io/docs/wasm-bindgen/reference/js-snippets.html" title="Inline java-script in rust">inline</a> technique provided by the tool.</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="cp">#[wasm_bindgen(inline_js = r#</span><span class="s">&quot;</span>
+<span class="s">export function setDarkTheme() { </span>
+<span class="s">    document.getElementsByTagName(&#39;meta&#39;).namedItem(&#39;color-scheme&#39;).content = &#39;dark&#39;;</span>
+<span class="s">    document.documentElement.setAttribute(&#39;data-theme&#39;, &#39;light&#39;); </span>
+<span class="s">} </span>
+<span class="s">&quot;</span><span class="cp">#)]</span><span class="w"></span>
+<span class="k">extern</span><span class="w"> </span><span class="s">&quot;C&quot;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="k">fn</span> <span class="nf">setDarkTheme</span><span class="p">();</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="c1">//  in toggle function ..</span>
+<span class="n">setDarkTheme</span><span class="p">();</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+</td></tr></table>
+<h2>Resources</h2>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme">prefers color scheme</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/data-*">data attributes</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color-scheme">color scheme</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries">media queries</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/system-color" title="System colors">system color</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta/name" title="Meta tag for color-scheme">color scheme meta tag</a></li>
+</ul>
+	</article>
+	</div>
+<div class="tags">
+    <span>Post Tags:</span>
+    <a href="tag/css.html">&nbsp;#css,</a>
+    <a href="tag/theme.html">&nbsp;#theme,</a>
+    <a href="tag/html.html">&nbsp;#html,</a>
+    <a href="tag/dark.html">&nbsp;#dark,</a>
+    <a href="tag/rust.html">&nbsp;#rust</a>
+</div><hr class="my-3">
+<div id="comments"></div>
+<script>
+  let commentUrl = "https://api.github.com/repos/sak96/sak96.github.io/issues/15/comments"
+  let issueUrl = "https://github.com/sak96/sak96.github.io/issues/15"
+  function PopulateComment(comments) {
+    commentsBlock = document.getElementById("comments");
+
+    // comments heading
+    let heading = document.createElement("div")
+    heading.innerText = "Comments"
+    commentsBlock.append(heading)
+
+    // comments placeholder
+    let commentsDiv = document.createElement("div")
+    commentsBlock.append(commentsDiv)
+
+    comments.forEach(comment => {
+      // username 
+      let username = document.createElement("span")
+      username.innerText = comment.user.login
+
+      // posting time
+      updateTime = document.createElement("small")
+      updateTime.innerText = "(" + comment.updated_at + ")"
+
+      // comment body
+      commentBody = document.createElement("div")
+      commentBody.innerText = comment.body
+
+      //line break
+      lineBreak = document.createElement("br")
+
+      // create comment box
+      commentBox = document.createElement("a")
+      commentBox.classList.add("item")
+      commentBox.append(username)
+      commentBox.append(updateTime)
+      commentBox.append(lineBreak)
+      commentBox.append(commentBody)
+      commentBox.href = comment.html_url
+
+      commentsDiv.append(commentBox)
+    });
+
+    // add comment
+    let addComment = document.createElement("a")
+    addComment.classList.add("item")
+    addComment.href = issueUrl
+    addComment.innerText = "Have some comments? Add comment ..."
+    commentsDiv.append(addComment)
+
+  }
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', commentUrl, true);
+  xhr.responseType = 'json';
+  xhr.onload = function () {
+    var status = xhr.status;
+    if (status === 200) {
+      console.log(PopulateComment(xhr.response));
+    } else {
+      console.log(xhr.response);
+    }
+  };
+  xhr.send();
+</script>
+        <script src="https://unpkg.com/mermaid@latest/dist/mermaid.min.js"></script>
+<hr>
+<div class="footer">
+    <span>Powered by:</span>
+    <a href="http://getpelican.com/">Pelican,</a>
+    <a href="https://github.com/pygments/pygments">Pygments,</a>
+    <a href="https://github.com/morhetz/gruvbox-contrib">Gruvbox</a>
+</div>  </div>
+</body>
+</html>
