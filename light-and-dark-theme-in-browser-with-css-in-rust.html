@@ -256,24 +256,25 @@ document.querySelector("#theme").onclick = function (e) {
 };</script>    <div class="content">
 	<div>
 		<h1>Light and Dark Theme in Browser with CSS in Rust</h1>
-		<h5><p>This article implementing dark and light theme using css.</p></h5>
+		<h5><p>This article walks-through implementing dark and light theme using css.</p></h5>
 		<h5>Read time: 5 min</h5>
 		<small>Written on March 28, 2023</small>
 	</div>
 	<div> 
 	<article>
-	<p>I am fan of dark theme, the brightness just hurts my eye.
-Hence I try to implement dark theme in app which I build.
+	<p>I am a fan of dark theme, as brightness just hurts my eye.
+Hence I try to implement dark theme for apps that I build.
 (Not that I have build any popular apps.)</p>
-<p>Most app that I build these days are in rust.
-They usually end up being CLI as I found UI hard in rust.
-Finally after trying out <a href="https://tauri.app/" title="A Rust Desktop UI Framework">tauri</a>  with <a href="https://yew.rs/" title="A Rust Web UI Framework">yew</a> , I feel there is hope.</p>
-<p>Basically tauri is alternative to electron written in rust.
-And yew alternative rust framework to react.</p>
+<p>Most apps that I build these days are in rust.
+They usually end up being command line tools.
+As I find Building Graphical User Interface is hard in rust.
+Finally after trying out <a href="https://tauri.app/" title="A Rust Desktop UI Framework">tauri</a>  and <a href="https://yew.rs/" title="A Rust Web UI Framework">yew</a> framework, I feel there is hope.</p>
+<p>Basically TAURI is alternative to electron written in rust.
+And YEW is alternative rust framework to react.</p>
 <p>So I built an app called <a href="https://github.com/sak96/time_tracker" title="A Time Tracker">time tracker</a> which tracks time.
 And I wanted dark theme but without any frameworks.
-I got stuck and could not see how to proceed so I had paused work on app.
-But finally, I have the idea of building dark theme.</p>
+I got stuck and could not see how to proceed so I had paused work on the app.
+But finally, I found out the tricks for building dark theme.</p>
 <h2>The Dark Arts of Dark themes</h2>
 <p>CSS is a large standard for styling, it has lot of stuff.
 Usually I learn new trick by browsing <code>stackoverflow</code> or <code>github</code> browsing.
@@ -323,8 +324,9 @@ We can store the theming information in here and toggle it to get desired result
 <span class="p">}</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
-<p>The above provides variable to element with data attribute <code>data-theme</code>.
-We can set <code>data-theme</code> to document element via JavaScript and toggle it.</p>
+<p>The above provides color variables to element with data attribute <code>data-theme</code>.
+We can set <code>data-theme</code> to document element via JavaScript and toggle it.
+This change would make the color variables available to all the elements.</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s2">&quot;data-theme&quot;</span><span class="p">,</span> <span class="s2">&quot;dark&quot;</span><span class="p">);</span>
 </code></pre></div>
 </td></tr></table>
@@ -336,23 +338,22 @@ To get the system preference media queries can be used.</p>
 <p>This is actually how this blog handles the theming.
 But this approach requires setting <code>background-color</code> and <code>color</code> properly to elements.
 When building app avoiding CSS framework it would be nice to utilize system colors,
-and change only app specific colors (like for dangerous delete) button based on data attributes.</p>
+and change only app specific colors (like color for dangerous delete button) based on data attributes.</p>
 <h2>Only required colors, please!</h2>
-<p>Data attributes are fine for colors which are defined by app.</p>
 <p>For technical specification for CSS I refer to <a href="https://developer.mozilla.org/en-US/docs/Web/CSS" title="Mozilla Developer Network">MDN</a>.
 And I stumbled across <code>color-scheme</code> which allows elements to declare there preference.
-There is is <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta/name" title="Meta tag for color-scheme">color scheme meta tag</a> which can also be set to apply it for whole document.</p>
+There is <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta/name" title="Meta tag for color-scheme">color scheme meta tag</a> which can also be set to apply it for whole document.</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="o">&lt;</span><span class="nt">meta</span><span class="w"> </span><span class="nt">name</span><span class="o">=</span><span class="s2">&quot;color-scheme&quot;</span><span class="w"> </span><span class="nt">content</span><span class="o">=</span><span class="s2">&quot;dark light&quot;</span><span class="o">&gt;</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
-<p>This attribute can be toggles using JavaScript to change the theme mode.
+<p>This attribute can be toggle using JavaScript to change the theme mode.
 The elements use their default colors for background and font based on color scheme.</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s2">&quot;meta&quot;</span><span class="p">).</span><span class="nx">namedItem</span><span class="p">(</span><span class="s2">&quot;color-scheme&quot;</span><span class="p">).</span><span class="nx">content</span> <span class="o">=</span> <span class="s2">&quot;dark&quot;</span><span class="p">;</span>
 </code></pre></div>
 </td></tr></table>
 <p>In some edge case you might want to reuse the default colors say for background.
 Hard coding does not cut it, the background color might be effected by system settings.
-Instead utilize system colors, this avoid hard coding of colors.</p>
+Instead utilize system colors, this avoids hard coding of colors.</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
@@ -372,7 +373,7 @@ Instead utilize system colors, this avoid hard coding of colors.</p>
 <p>This is all great but how to do it in rust?
 The theming requires interacting with browser, which is done through <a href="https://rustwasm.github.io/docs/wasm-bindgen/" title="Wasm Bind Gen">wasmbindgen</a>.
 The easiest way would be to write JavaScript code and expose it to rust.
-This can be done using <a href="https://rustwasm.github.io/docs/wasm-bindgen/reference/js-snippets.html" title="Inline java-script in rust">inline</a> technique provided by the tool.</p>
+This can be done using <a href="https://rustwasm.github.io/docs/wasm-bindgen/reference/js-snippets.html" title="Inline java-script in rust">inline</a> technique provided by the library.</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
@@ -386,10 +387,10 @@ This can be done using <a href="https://rustwasm.github.io/docs/wasm-bindgen/ref
 <span class="normal">11</span>
 <span class="normal">12</span>
 <span class="normal">13</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="cp">#[wasm_bindgen(inline_js = r#</span><span class="s">&quot;</span>
-<span class="s">export function setDarkTheme() { </span>
-<span class="s">    document.getElementsByTagName(&#39;meta&#39;).namedItem(&#39;color-scheme&#39;).content = &#39;dark&#39;;</span>
-<span class="s">    document.documentElement.setAttribute(&#39;data-theme&#39;, &#39;light&#39;); </span>
-<span class="s">} </span>
+<span class="s">  export function setDarkTheme() {</span>
+<span class="s">      document.getElementsByTagName(&#39;meta&#39;).namedItem(&#39;color-scheme&#39;).content = &#39;dark&#39;;</span>
+<span class="s">      document.documentElement.setAttribute(&#39;data-theme&#39;, &#39;light&#39;);</span>
+<span class="s">  }</span>
 <span class="s">&quot;</span><span class="cp">#)]</span><span class="w"></span>
 <span class="k">extern</span><span class="w"> </span><span class="s">&quot;C&quot;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="k">fn</span> <span class="nf">setDarkTheme</span><span class="p">();</span><span class="w"></span>

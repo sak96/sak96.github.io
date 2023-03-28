@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>sak96-blog - css</title><link href="https://sak96.github.io/" rel="alternate"></link><link href="https://sak96.github.io/feeds/css.atom.xml" rel="self"></link><id>https://sak96.github.io/</id><updated>2023-03-28T00:00:00+01:00</updated><entry><title>Light and Dark Theme in Browser with CSS in Rust</title><link href="https://sak96.github.io/light-and-dark-theme-in-browser-with-css-in-rust.html" rel="alternate"></link><published>2023-03-28T00:00:00+01:00</published><updated>2023-03-28T00:00:00+01:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2023-03-28:/light-and-dark-theme-in-browser-with-css-in-rust.html</id><summary type="html">&lt;p&gt;This article implementing dark and light theme using css.&lt;/p&gt;</summary><content type="html">&lt;p&gt;I am fan of dark theme, the brightness just hurts my eye.
-Hence I try to implement dark theme in app which I build.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>sak96-blog - css</title><link href="https://sak96.github.io/" rel="alternate"></link><link href="https://sak96.github.io/feeds/css.atom.xml" rel="self"></link><id>https://sak96.github.io/</id><updated>2023-03-28T00:00:00+01:00</updated><entry><title>Light and Dark Theme in Browser with CSS in Rust</title><link href="https://sak96.github.io/light-and-dark-theme-in-browser-with-css-in-rust.html" rel="alternate"></link><published>2023-03-28T00:00:00+01:00</published><updated>2023-03-28T00:00:00+01:00</updated><author><name>sak96</name></author><id>tag:sak96.github.io,2023-03-28:/light-and-dark-theme-in-browser-with-css-in-rust.html</id><summary type="html">&lt;p&gt;This article walks-through implementing dark and light theme using css.&lt;/p&gt;</summary><content type="html">&lt;p&gt;I am a fan of dark theme, as brightness just hurts my eye.
+Hence I try to implement dark theme for apps that I build.
 (Not that I have build any popular apps.)&lt;/p&gt;
-&lt;p&gt;Most app that I build these days are in rust.
-They usually end up being CLI as I found UI hard in rust.
-Finally after trying out &lt;a href="https://tauri.app/" title="A Rust Desktop UI Framework"&gt;tauri&lt;/a&gt;  with &lt;a href="https://yew.rs/" title="A Rust Web UI Framework"&gt;yew&lt;/a&gt; , I feel there is hope.&lt;/p&gt;
-&lt;p&gt;Basically tauri is alternative to electron written in rust.
-And yew alternative rust framework to react.&lt;/p&gt;
+&lt;p&gt;Most apps that I build these days are in rust.
+They usually end up being command line tools.
+As I find Building Graphical User Interface is hard in rust.
+Finally after trying out &lt;a href="https://tauri.app/" title="A Rust Desktop UI Framework"&gt;tauri&lt;/a&gt;  and &lt;a href="https://yew.rs/" title="A Rust Web UI Framework"&gt;yew&lt;/a&gt; framework, I feel there is hope.&lt;/p&gt;
+&lt;p&gt;Basically TAURI is alternative to electron written in rust.
+And YEW is alternative rust framework to react.&lt;/p&gt;
 &lt;p&gt;So I built an app called &lt;a href="https://github.com/sak96/time_tracker" title="A Time Tracker"&gt;time tracker&lt;/a&gt; which tracks time.
 And I wanted dark theme but without any frameworks.
-I got stuck and could not see how to proceed so I had paused work on app.
-But finally, I have the idea of building dark theme.&lt;/p&gt;
+I got stuck and could not see how to proceed so I had paused work on the app.
+But finally, I found out the tricks for building dark theme.&lt;/p&gt;
 &lt;h2&gt;The Dark Arts of Dark themes&lt;/h2&gt;
 &lt;p&gt;CSS is a large standard for styling, it has lot of stuff.
 Usually I learn new trick by browsing &lt;code&gt;stackoverflow&lt;/code&gt; or &lt;code&gt;github&lt;/code&gt; browsing.
@@ -60,8 +61,9 @@ We can store the theming information in here and toggle it to get desired result
 &lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;p&gt;The above provides variable to element with data attribute &lt;code&gt;data-theme&lt;/code&gt;.
-We can set &lt;code&gt;data-theme&lt;/code&gt; to document element via JavaScript and toggle it.&lt;/p&gt;
+&lt;p&gt;The above provides color variables to element with data attribute &lt;code&gt;data-theme&lt;/code&gt;.
+We can set &lt;code&gt;data-theme&lt;/code&gt; to document element via JavaScript and toggle it.
+This change would make the color variables available to all the elements.&lt;/p&gt;
 &lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;document&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;documentElement&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;setAttribute&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;data-theme&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;dark&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
@@ -73,23 +75,22 @@ To get the system preference media queries can be used.&lt;/p&gt;
 &lt;p&gt;This is actually how this blog handles the theming.
 But this approach requires setting &lt;code&gt;background-color&lt;/code&gt; and &lt;code&gt;color&lt;/code&gt; properly to elements.
 When building app avoiding CSS framework it would be nice to utilize system colors,
-and change only app specific colors (like for dangerous delete) button based on data attributes.&lt;/p&gt;
+and change only app specific colors (like color for dangerous delete button) based on data attributes.&lt;/p&gt;
 &lt;h2&gt;Only required colors, please!&lt;/h2&gt;
-&lt;p&gt;Data attributes are fine for colors which are defined by app.&lt;/p&gt;
 &lt;p&gt;For technical specification for CSS I refer to &lt;a href="https://developer.mozilla.org/en-US/docs/Web/CSS" title="Mozilla Developer Network"&gt;MDN&lt;/a&gt;.
 And I stumbled across &lt;code&gt;color-scheme&lt;/code&gt; which allows elements to declare there preference.
-There is is &lt;a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta/name" title="Meta tag for color-scheme"&gt;color scheme meta tag&lt;/a&gt; which can also be set to apply it for whole document.&lt;/p&gt;
+There is &lt;a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta/name" title="Meta tag for color-scheme"&gt;color scheme meta tag&lt;/a&gt; which can also be set to apply it for whole document.&lt;/p&gt;
 &lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;meta&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;color-scheme&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;content&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;dark light&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;p&gt;This attribute can be toggles using JavaScript to change the theme mode.
+&lt;p&gt;This attribute can be toggle using JavaScript to change the theme mode.
 The elements use their default colors for background and font based on color scheme.&lt;/p&gt;
 &lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;document&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;getElementsByTagName&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;meta&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;namedItem&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;color-scheme&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;content&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;dark&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;p&gt;In some edge case you might want to reuse the default colors say for background.
 Hard coding does not cut it, the background color might be effected by system settings.
-Instead utilize system colors, this avoid hard coding of colors.&lt;/p&gt;
+Instead utilize system colors, this avoids hard coding of colors.&lt;/p&gt;
 &lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
 &lt;span class="normal"&gt;2&lt;/span&gt;
 &lt;span class="normal"&gt;3&lt;/span&gt;
@@ -109,7 +110,7 @@ Instead utilize system colors, this avoid hard coding of colors.&lt;/p&gt;
 &lt;p&gt;This is all great but how to do it in rust?
 The theming requires interacting with browser, which is done through &lt;a href="https://rustwasm.github.io/docs/wasm-bindgen/" title="Wasm Bind Gen"&gt;wasmbindgen&lt;/a&gt;.
 The easiest way would be to write JavaScript code and expose it to rust.
-This can be done using &lt;a href="https://rustwasm.github.io/docs/wasm-bindgen/reference/js-snippets.html" title="Inline java-script in rust"&gt;inline&lt;/a&gt; technique provided by the tool.&lt;/p&gt;
+This can be done using &lt;a href="https://rustwasm.github.io/docs/wasm-bindgen/reference/js-snippets.html" title="Inline java-script in rust"&gt;inline&lt;/a&gt; technique provided by the library.&lt;/p&gt;
 &lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt; 1&lt;/span&gt;
 &lt;span class="normal"&gt; 2&lt;/span&gt;
 &lt;span class="normal"&gt; 3&lt;/span&gt;
@@ -123,10 +124,10 @@ This can be done using &lt;a href="https://rustwasm.github.io/docs/wasm-bindgen/
 &lt;span class="normal"&gt;11&lt;/span&gt;
 &lt;span class="normal"&gt;12&lt;/span&gt;
 &lt;span class="normal"&gt;13&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="cp"&gt;#[wasm_bindgen(inline_js = r#&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;
-&lt;span class="s"&gt;export function setDarkTheme() { &lt;/span&gt;
-&lt;span class="s"&gt;    document.getElementsByTagName(&amp;#39;meta&amp;#39;).namedItem(&amp;#39;color-scheme&amp;#39;).content = &amp;#39;dark&amp;#39;;&lt;/span&gt;
-&lt;span class="s"&gt;    document.documentElement.setAttribute(&amp;#39;data-theme&amp;#39;, &amp;#39;light&amp;#39;); &lt;/span&gt;
-&lt;span class="s"&gt;} &lt;/span&gt;
+&lt;span class="s"&gt;  export function setDarkTheme() {&lt;/span&gt;
+&lt;span class="s"&gt;      document.getElementsByTagName(&amp;#39;meta&amp;#39;).namedItem(&amp;#39;color-scheme&amp;#39;).content = &amp;#39;dark&amp;#39;;&lt;/span&gt;
+&lt;span class="s"&gt;      document.documentElement.setAttribute(&amp;#39;data-theme&amp;#39;, &amp;#39;light&amp;#39;);&lt;/span&gt;
+&lt;span class="s"&gt;  }&lt;/span&gt;
 &lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="cp"&gt;#)]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="k"&gt;extern&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;C&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="k"&gt;pub&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;fn&lt;/span&gt; &lt;span class="nf"&gt;setDarkTheme&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
