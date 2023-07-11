@@ -1,4 +1,4 @@
 pelican
 ghp-import
-Markdown
+Markdown<3.2 # https://stackoverflow.com/a/73339082
 md_mermaid
