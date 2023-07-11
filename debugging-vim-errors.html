@@ -274,33 +274,37 @@ To check the last error message again type <code>:echo errmsg</code> in normal m
 To view all message type <code>:messages</code> in normal mode.</p>
 <p>Some time it is much better to view error in new buffer.
 This can be achieved as follows.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="p">:</span><span class="k">vnew</span> <span class="p">|</span> <span class="k">put</span><span class="p">=</span>execute<span class="p">(</span><span class="s1">&#39;messages&#39;</span><span class="p">)</span>
-</code></pre></div>
-</td></tr></table>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><span class="p">:</span><span class="k">vnew</span> <span class="p">|</span> <span class="k">put</span><span class="p">=</span>execute<span class="p">(</span><span class="s1">&#39;messages&#39;</span><span class="p">)</span>
+</pre></div></td></tr></table></div>
+
+
 <h2>Stack Trace in Vim ?</h2>
 <p>The error message can be simple and easy to understand.
 Some of these error message are stack trace.
 These stack trace can be hard to follow some time.
 Below is partial stack trace.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
-<span class="normal">3</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="nv">Error</span> <span class="nv">detected</span> <span class="k">while</span> <span class="nv">processing</span> <span class="nv">function</span> <span class="o">&lt;</span><span class="nv">SNR</span><span class="o">&gt;</span><span class="mi">163</span><span class="nv">_on_exit_vim</span>[<span class="mi">15</span>]..<span class="mi">1</span>:
-<span class="nv">line</span>    <span class="mi">1</span>:
-<span class="nv">E687</span>: <span class="nv">Less</span> <span class="nv">targets</span> <span class="nv">than</span> <span class="nv">List</span> <span class="nv">items</span>
-</code></pre></div>
-</td></tr></table>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><span class="nv">Error</span><span class="w"> </span><span class="nv">detected</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="nv">processing</span><span class="w"> </span><span class="nv">function</span><span class="w"> </span><span class="o">&lt;</span><span class="nv">SNR</span><span class="o">&gt;</span><span class="mi">163</span><span class="nv">_on_exit_vim</span>[<span class="mi">15</span>]..<span class="mi">1</span>:
+<span class="nv">line</span><span class="w">    </span><span class="mi">1</span>:
+<span class="nv">E687</span>:<span class="w"> </span><span class="nv">Less</span><span class="w"> </span><span class="nv">targets</span><span class="w"> </span><span class="nv">than</span><span class="w"> </span><span class="nv">List</span><span class="w"> </span><span class="nv">items</span>
+</pre></div></td></tr></table></div>
+
+
 <h2>Which function cause the issue ?</h2>
 <p>Noticing <code>&lt;SNR&gt;163_on_exit_vim[15]</code>  can lead to conclusion a function caused issue.
 The <code>&lt;SNR&gt;163</code> part indicates that 163rd script caused the issue.
 To find out the 163rd script, fetch all scripts with id.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="p">:</span><span class="k">vnew</span> <span class="p">|</span> <span class="k">put</span><span class="p">=</span>execute<span class="p">(</span><span class="s1">&#39;scriptnames&#39;</span><span class="p">)</span>
-</code></pre></div>
-</td></tr></table>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><span class="p">:</span><span class="k">vnew</span> <span class="p">|</span> <span class="k">put</span><span class="p">=</span>execute<span class="p">(</span><span class="s1">&#39;scriptnames&#39;</span><span class="p">)</span>
+</pre></div></td></tr></table></div>
+
+
 <p>This will provide the script location which caused the issue.
 To go to the file press <code>gf</code> when on the file path.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="mi">163</span><span class="p">:</span><span class="w"> </span><span class="o">~/.</span><span class="n">vim</span><span class="o">/</span><span class="n">plugged</span><span class="o">/</span><span class="n">vim</span><span class="o">-</span><span class="n">gitgutter</span><span class="o">/</span><span class="n">autoload</span><span class="o">/</span><span class="n">gitgutter</span><span class="o">/</span><span class="n">async</span><span class="o">.</span><span class="n">vim</span><span class="w"></span>
-</code></pre></div>
-</td></tr></table>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><span class="mi">163</span><span class="p">:</span><span class="w"> </span><span class="o">~/.</span><span class="n">vim</span><span class="o">/</span><span class="n">plugged</span><span class="o">/</span><span class="n">vim</span><span class="o">-</span><span class="n">gitgutter</span><span class="o">/</span><span class="n">autoload</span><span class="o">/</span><span class="n">gitgutter</span><span class="o">/</span><span class="n">async</span><span class="o">.</span><span class="n">vim</span>
+</pre></div></td></tr></table></div>
+
+
 <p>Now find the function <code>on_exit_vim</code> and move to 15th line (<code>15j</code>)in it.
 This is the function which was causing the issue.
 More information can be found in <a href="https://stackoverflow.com/questions/51210172" title="vim stack trace">stack overflow question</a>.</p>
@@ -308,9 +312,10 @@ More information can be found in <a href="https://stackoverflow.com/questions/51
 <p>Now having knowledge of what line in the function cause issue, let's reproduce it.
 First use <code>echom</code> and restart vim to figure out value of local variable from messages.
 Now execute the code in debug mode.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">debug</span> echo expand<span class="p">(</span><span class="s1">&#39;%:h&#39;</span><span class="p">)</span>
-</code></pre></div>
-</td></tr></table>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><span class="k">debug</span> echo expand<span class="p">(</span><span class="s1">&#39;%:h&#39;</span><span class="p">)</span>
+</pre></div></td></tr></table></div>
+
+
 <p>The above code returns quickly, but in real situation there is need for more debugging.
 Like any other debugger, when in debug mode command to control the program flow.
 Few of these are listed below.</p>
@@ -389,9 +394,8 @@ The argument can be as follows:</p>
 <p>Vim has logging functionality builtin it.
 To start vim in most verbose mode and log it to a file use following command.
 More information can be got in vim help or you check <a href="https://stackoverflow.com/questions/3025615" title="vim logs">stack overflow question</a>.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>vim -V9myVim.log
-</code></pre></div>
-</td></tr></table>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span>vim<span class="w"> </span>-V9myVim.log
+</pre></div></td></tr></table></div>
 	</article>
 	</div>
 <div class="tags">

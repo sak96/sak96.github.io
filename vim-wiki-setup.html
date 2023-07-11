@@ -282,79 +282,88 @@ It also had a command line interface.</p>
 It was simple setup and the data was versioned.
 And I could parse the data as and when required.
 Installation was also simple via <code>vim-plug</code>.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>Plug <span class="s1">&#39;vimwiki/vimwiki&#39;</span>
-</code></pre></div>
-</td></tr></table>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span>Plug <span class="s1">&#39;vimwiki/vimwiki&#39;</span>
+</pre></div></td></tr></table></div>
+
+
 <h2>Markdown format</h2>
 <h3>Enabling markdown</h3>
 <p>By default vim wiki has it own format of data.
 But it also support markdown syntax by setting following.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">let</span> <span class="k">g</span>:vimwiki_syntax <span class="p">=</span> <span class="s1">&#39;markdown&#39;</span>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><span class="k">let</span> <span class="k">g</span>:vimwiki_syntax <span class="p">=</span> <span class="s1">&#39;markdown&#39;</span>
 <span class="k">let</span> <span class="k">g</span>:vimwiki_ext <span class="p">=</span> <span class="s1">&#39;.md&#39;</span>
-</code></pre></div>
-</td></tr></table>
+</pre></div></td></tr></table></div>
+
+
 <h3>Generating Html From Markdown</h3>
 <p>Vim wiki support conversion of notes to html artifacts.
 But markdown syntax is not supported for this feature.
 The only way to make it work is to use custom program like <code>vimwiki_markdown</code>.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
-<span class="normal">4</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">if</span> executable<span class="p">(</span><span class="s1">&#39;vimwiki_markdown&#39;</span><span class="p">)</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><span class="k">if</span> executable<span class="p">(</span><span class="s1">&#39;vimwiki_markdown&#39;</span><span class="p">)</span>
   <span class="k">let</span> <span class="k">g</span>:vimwiki_custom_wiki2html <span class="p">=</span> <span class="s1">&#39;vimwiki_markdown&#39;</span>
   <span class="k">let</span> <span class="k">g</span>:vimwiki_template_path <span class="p">=</span> <span class="s1">&#39;~/.wiki_template/&#39;</span>
 <span class="k">endif</span>
-</code></pre></div>
-</td></tr></table>
+</pre></div></td></tr></table></div>
+
+
 <p>The above code sets up <code>vimwiki_markdown</code> as html generator.
 Custom template can be provided which is placed in <code>~/.wiki_template/default.tpl</code>.</p>
 <h3>syntax highlight</h3>
 <p>Syntax highlighting is not enabled by default.
 It can be set explicitly.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">let</span> <span class="k">g</span>:vimwiki_automatic_nested_syntaxes <span class="p">=</span> <span class="m">1</span>
-</code></pre></div>
-</td></tr></table>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><span class="k">let</span> <span class="k">g</span>:vimwiki_automatic_nested_syntaxes <span class="p">=</span> <span class="m">1</span>
+</pre></div></td></tr></table></div>
+
+
 <p>Only certain language can also be set.
 This also can be used to map syntax highlight as you please.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">let</span> <span class="k">g</span>:vimwiki_nested_syntaxes <span class="p">=</span> {<span class="s1">&#39;python&#39;</span>: <span class="s1">&#39;python&#39;</span><span class="p">,</span> <span class="s1">&#39;c++&#39;</span>: <span class="s1">&#39;cpp&#39;</span>}
-</code></pre></div>
-</td></tr></table>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><span class="k">let</span> <span class="k">g</span>:vimwiki_nested_syntaxes <span class="p">=</span> {<span class="s1">&#39;python&#39;</span>: <span class="s1">&#39;python&#39;</span><span class="p">,</span> <span class="s1">&#39;c++&#39;</span>: <span class="s1">&#39;cpp&#39;</span>}
+</pre></div></td></tr></table></div>
+
+
 <h2>Folder Hierarchy</h2>
 <p>Organizing notes into folder hierarchy can be helpful.
 This might help classifying notes into broad categories.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span>
 <span class="normal">5</span>
-<span class="normal">6</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">let</span> <span class="k">g</span>:vimwiki_list <span class="p">=</span> [
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><span class="k">let</span> <span class="k">g</span>:vimwiki_list <span class="p">=</span> [
       \ {<span class="s1">&#39;name&#39;</span>: <span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;path&#39;</span>: <span class="s1">&#39;&#39;</span>}<span class="p">,</span>
       \ {<span class="s1">&#39;name&#39;</span>: <span class="s1">&#39;python&#39;</span><span class="p">,</span> <span class="s1">&#39;path&#39;</span>: <span class="s1">&#39;language/py/&#39;</span>}<span class="p">,</span>
       \ {<span class="s1">&#39;name&#39;</span>: <span class="s1">&#39;rust&#39;</span><span class="p">,</span> <span class="s1">&#39;path&#39;</span>: <span class="s1">&#39;language/rs/&#39;</span>}<span class="p">,</span>
       \ {<span class="s1">&#39;name&#39;</span>: <span class="s1">&#39;software&#39;</span><span class="p">,</span> <span class="s1">&#39;path&#39;</span>: <span class="s1">&#39;software/&#39;</span>}<span class="p">,</span>
       \ ]
-</code></pre></div>
-</td></tr></table>
+</pre></div></td></tr></table></div>
+
+
 <h3>Better links</h3>
 <p>Using spaces in link might some time cause issues.
 Underscores can be used instead.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">let</span> <span class="k">g</span>:vimwiki_links_space_char <span class="p">=</span> <span class="s1">&#39;_&#39;</span>
-</code></pre></div>
-</td></tr></table>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><span class="k">let</span> <span class="k">g</span>:vimwiki_links_space_char <span class="p">=</span> <span class="s1">&#39;_&#39;</span>
+</pre></div></td></tr></table></div>
+
+
 <h3>Better Indexes For Vim Wiki</h3>
 <p>Vim wiki allows generating of link and creating of wiki for that file.
 But in case you use <code>/</code> at the it does opens directory but not index file.
 Index file can be made default for directory.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">let</span> <span class="k">g</span>:vimwiki_dir_link <span class="p">=</span> <span class="s1">&#39;index&#39;</span>
-</code></pre></div>
-</td></tr></table>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><span class="k">let</span> <span class="k">g</span>:vimwiki_dir_link <span class="p">=</span> <span class="s1">&#39;index&#39;</span>
+</pre></div></td></tr></table></div>
+
+
 <h2>Diary Usage</h2>
 <p>Vim wiki also allows diary creation.
 To have different diary for different machine we can use host name.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">let</span> <span class="k">g</span>:vimwiki_diary_rel_path <span class="p">=</span> <span class="s1">&#39;dairy_&#39;</span>.hostname<span class="p">()</span>
-</code></pre></div>
-</td></tr></table>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><span class="k">let</span> <span class="k">g</span>:vimwiki_diary_rel_path <span class="p">=</span> <span class="s1">&#39;dairy_&#39;</span>.hostname<span class="p">()</span>
+</pre></div></td></tr></table></div>
+
+
 <h2>Keybinding</h2>
 <p>Most command keybinding can be found in this <a href="https://gist.github.com/drkarl/4c503bccb62558dc85e8b1bc0f29e9cb" title="Cheat sheet">cheat sheet</a>.</p>
 <h2>Android sync</h2>
@@ -367,7 +376,7 @@ For markdown viewer, using <a href="https://github.com/gsantner/markor" title="M
 <li>View Mode</li>
 <li>Inject -&gt; body</li>
 </ol>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
 <span class="normal"> 4</span>
@@ -379,23 +388,24 @@ For markdown viewer, using <a href="https://github.com/gsantner/markor" title="M
 <span class="normal">10</span>
 <span class="normal">11</span>
 <span class="normal">12</span>
-<span class="normal">13</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
-  <span class="nb">window</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nb">Array</span><span class="p">.</span><span class="kr">from</span><span class="p">(</span>
-      <span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
-    <span class="p">).</span><span class="nx">forEach</span><span class="p">(</span>
-        <span class="p">(</span><span class="nx">a</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
-          <span class="k">if</span> <span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">href</span><span class="p">.</span><span class="nx">endsWith</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">))</span> <span class="p">{</span>
-            <span class="nx">a</span><span class="p">.</span><span class="nx">href</span><span class="o">+=</span><span class="s1">&#39;index&#39;</span>
-          <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">)</span>
-  <span class="p">}</span>
+<span class="normal">13</span></pre></div></td><td class="code"><div><pre><span></span><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="w">  </span><span class="nb">window</span><span class="p">.</span><span class="nx">onload</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nb">Array</span><span class="p">.</span><span class="kr">from</span><span class="p">(</span>
+<span class="w">      </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+<span class="w">    </span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span>
+<span class="w">        </span><span class="p">(</span><span class="nx">a</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">href</span><span class="p">.</span><span class="nx">endsWith</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">a</span><span class="p">.</span><span class="nx">href</span><span class="o">+=</span><span class="s1">&#39;index&#39;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">)</span>
+<span class="w">  </span><span class="p">}</span>
 <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</code></pre></div>
-</td></tr></table>
+</pre></div></td></tr></table></div>
+
+
 <h2>Vim Configuration</h2>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
 <span class="normal"> 4</span>
@@ -416,7 +426,7 @@ For markdown viewer, using <a href="https://github.com/gsantner/markor" title="M
 <span class="normal">19</span>
 <span class="normal">20</span>
 <span class="normal">21</span>
-<span class="normal">22</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>Plug <span class="s1">&#39;vimwiki/vimwiki&#39;</span>
+<span class="normal">22</span></pre></div></td><td class="code"><div><pre><span></span>Plug <span class="s1">&#39;vimwiki/vimwiki&#39;</span>
 
 <span class="k">let</span> <span class="k">g</span>:vimwiki_syntax <span class="p">=</span> <span class="s1">&#39;markdown&#39;</span>
 <span class="k">let</span> <span class="k">g</span>:vimwiki_ext <span class="p">=</span> <span class="s1">&#39;.md&#39;</span>
@@ -438,8 +448,7 @@ For markdown viewer, using <a href="https://github.com/gsantner/markor" title="M
 <span class="k">let</span> <span class="k">g</span>:vimwiki_dir_link <span class="p">=</span> <span class="s1">&#39;index&#39;</span>
 
 <span class="k">let</span> <span class="k">g</span>:vimwiki_diary_rel_path <span class="p">=</span> <span class="s1">&#39;dairy_&#39;</span>.hostname<span class="p">()</span>
-</code></pre></div>
-</td></tr></table>
+</pre></div></td></tr></table></div>
 	</article>
 	</div>
 <div class="tags">

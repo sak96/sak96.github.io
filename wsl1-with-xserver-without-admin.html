@@ -286,30 +286,32 @@ Sleep work fine with this version of glibc in WSL1.</p>
 <p>One of the main reason of not using Ubuntu 18.04 is it comes with python2.
 Debian 10.5 did not come with python2 hence no major headache on this part.</p>
 <p>Though you could set your /bin/python to python3 (and pip) as follows</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
-<span class="normal">3</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="c1"># For Ubuntu</span>
-sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 <span class="m">2</span>
-sudo update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 <span class="m">2</span>
-</code></pre></div>
-</td></tr></table>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><span class="c1"># For Ubuntu</span>
+sudo<span class="w"> </span>update-alternatives<span class="w"> </span>--install<span class="w"> </span>/usr/bin/python<span class="w"> </span>python<span class="w"> </span>/usr/bin/python3<span class="w"> </span><span class="m">2</span>
+sudo<span class="w"> </span>update-alternatives<span class="w"> </span>--install<span class="w"> </span>/usr/bin/pip<span class="w"> </span>pip<span class="w"> </span>/usr/bin/pip3<span class="w"> </span><span class="m">2</span>
+</pre></div></td></tr></table></div>
+
+
 <h2>Firefox</h2>
 <p>In Debian WSL installing and installing firefox-esr worked without issue.
 There were few issue in case of Ubuntu 20.04 but not sure of Ubuntu 18.04.
 Also Ubuntu requires you to add repository to use firefox-esr.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span>
 <span class="normal">5</span>
-<span class="normal">6</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="c1"># For Ubuntu</span>
-sudo apt install --no-install-recommends software-properties-common
-sudo add-apt-repository ppa:mozillateam/ppa
-sudo apt update
-sudo apt install --no-install-recommends firefox-esr 
-sudo update-alternatives --install /usr/bin/firefox firefox /usr/bin/firefox-esr <span class="m">2</span>
-</code></pre></div>
-</td></tr></table>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><span class="c1"># For Ubuntu</span>
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>--no-install-recommends<span class="w"> </span>software-properties-common
+sudo<span class="w"> </span>add-apt-repository<span class="w"> </span>ppa:mozillateam/ppa
+sudo<span class="w"> </span>apt<span class="w"> </span>update
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>--no-install-recommends<span class="w"> </span>firefox-esr<span class="w"> </span>
+sudo<span class="w"> </span>update-alternatives<span class="w"> </span>--install<span class="w"> </span>/usr/bin/firefox<span class="w"> </span>firefox<span class="w"> </span>/usr/bin/firefox-esr<span class="w"> </span><span class="m">2</span>
+</pre></div></td></tr></table></div>
+
+
 <h2>Downside</h2>
 <p>Debian 10.5 contains vim and neo vim version do not play well with popup handling.
 Also i3status used to fail continuously with segmentation violation. 
@@ -330,21 +332,22 @@ The extracted path used here is <code>%userprofile%\AppData\Local\VcXsrv\</code>
 Simple script crafted by hand is below.</p>
 <p>Note: First run after boot will fail. Kill vcXsrv and retry.</p>
 <p>Setting up variables.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span>
 <span class="normal">5</span>
-<span class="normal">6</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="p">@</span><span class="k">echo</span> off
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><span class="p">@</span><span class="k">echo</span> off
 <span class="k">set</span> <span class="s2">&quot;command=nohup /usr/bin/i3 &gt;/dev/null 2&gt;&amp;1&quot;</span>
 <span class="k">set</span> <span class="nv">windowmode</span><span class="p">=</span>nodecoration
 <span class="k">set</span> <span class="nv">dispnum</span><span class="p">=</span>1
 <span class="k">set</span> <span class="nv">bash</span><span class="p">=</span><span class="nv">%userprofile%</span>\AppData\Local\Microsoft\WindowsApps\debian.exe
 <span class="k">set</span> <span class="nv">vcxsrvexec</span><span class="p">=</span><span class="nv">%userprofile%</span>\appdata\local\vcxsrv\vcxsrv.exe
-</code></pre></div>
-</td></tr></table>
+</pre></div></td></tr></table></div>
+
+
 <p>Running the shortcut.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span>
@@ -352,7 +355,7 @@ Simple script crafted by hand is below.</p>
 <span class="normal">6</span>
 <span class="normal">7</span>
 <span class="normal">8</span>
-<span class="normal">9</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">start</span> <span class="s2">&quot;Xserver&quot;</span> /D <span class="s2">&quot;</span><span class="nv">%userprofile%</span><span class="s2">\AppData\Local\VcXsrv\&quot;</span> <span class="nv">%vcxsrvexec%</span> <span class="se">^</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><span class="k">start</span> <span class="s2">&quot;Xserver&quot;</span> /D <span class="s2">&quot;</span><span class="nv">%userprofile%</span><span class="s2">\AppData\Local\VcXsrv\&quot;</span> <span class="nv">%vcxsrvexec%</span> <span class="se">^</span>
 <span class="se">:</span><span class="nv">%dispnum%</span> -ac -terminate -lesspointer -<span class="nv">%windowmode%</span> -clipboard -wgl <span class="se">^</span>
 <span class="se">-</span>logfile <span class="nv">%userprofile%</span>\appdata\local\vcxsrv\vcxsrv.log
 
@@ -361,8 +364,7 @@ Simple script crafted by hand is below.</p>
 <span class="p">)</span>
 <span class="k">set</span> <span class="nv">disp</span><span class="p">=</span>localhost:<span class="nv">%dispnum%</span>.0
 <span class="nv">%bash%</span> -c <span class="s2">&quot;export DISPLAY=</span><span class="nv">%disp%</span><span class="s2">; cd $HOME; </span><span class="nv">%command%</span><span class="s2"> &amp; disown&quot;</span> 
-</code></pre></div>
-</td></tr></table>
+</pre></div></td></tr></table></div>
 	</article>
 	</div>
 <div class="tags">

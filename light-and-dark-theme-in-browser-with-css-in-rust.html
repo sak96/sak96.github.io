@@ -279,7 +279,7 @@ But finally, I found out the tricks for building dark theme.</p>
 <p>CSS is a large standard for styling, it has lot of stuff.
 Usually I learn new trick by browsing <code>stackoverflow</code> or <code>github</code> browsing.
 I found about <code>prefers-color-scheme</code> which would allow theming to system preference.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
 <span class="normal"> 4</span>
@@ -288,18 +288,19 @@ I found about <code>prefers-color-scheme</code> which would allow theming to sys
 <span class="normal"> 7</span>
 <span class="normal"> 8</span>
 <span class="normal"> 9</span>
-<span class="normal">10</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="p">:</span><span class="nd">root</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="nv">--c-bg</span><span class="p">:</span><span class="w"> </span><span class="mh">#fff</span><span class="p">;</span><span class="w"></span>
-<span class="w">  </span><span class="nv">--c-text</span><span class="p">:</span><span class="w"> </span><span class="mh">#000</span><span class="p">;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
-<span class="p">@</span><span class="k">media</span><span class="w"> </span><span class="o">(</span><span class="nt">prefers-color-scheme</span><span class="o">:</span><span class="w"> </span><span class="nt">dark</span><span class="o">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="p">:</span><span class="nd">root</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nv">--c-bg</span><span class="p">:</span><span class="w"> </span><span class="mh">#000</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="nv">--c-text</span><span class="p">:</span><span class="w"> </span><span class="mh">#fff</span><span class="p">;</span><span class="w"></span>
-<span class="w">  </span><span class="p">}</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
-</code></pre></div>
-</td></tr></table>
+<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><span class="p">:</span><span class="nd">root</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nv">--c-bg</span><span class="p">:</span><span class="w"> </span><span class="mh">#fff</span><span class="p">;</span>
+<span class="w">  </span><span class="nv">--c-text</span><span class="p">:</span><span class="w"> </span><span class="mh">#000</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">@</span><span class="k">media</span><span class="w"> </span><span class="o">(</span><span class="nt">prefers-color-scheme</span><span class="o">:</span><span class="w"> </span><span class="nt">dark</span><span class="o">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="p">:</span><span class="nd">root</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nv">--c-bg</span><span class="p">:</span><span class="w"> </span><span class="mh">#000</span><span class="p">;</span>
+<span class="w">    </span><span class="nv">--c-text</span><span class="p">:</span><span class="w"> </span><span class="mh">#fff</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div></td></tr></table></div>
+
+
 <p>Based on users system preference the CSS color variables would be set.
 This could be used in the CSS styling for setting dark or light theme.
 This was fine, but the issue was the user could not toggle theme for particular app.</p>
@@ -307,34 +308,37 @@ This was fine, but the issue was the user could not toggle theme for particular 
 <p>CSS selector provide way to select elements by data attributes.
 These attributes can be used to store information which are not actually part of HTML.
 We can store the theming information in here and toggle it to get desired result.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span>
 <span class="normal">5</span>
 <span class="normal">6</span>
 <span class="normal">7</span>
-<span class="normal">8</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="o">[</span><span class="nt">data-theme</span><span class="o">=</span><span class="s2">&quot;light&quot;</span><span class="o">]</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="nv">--bg</span><span class="p">:</span><span class="w"> </span><span class="mh">#1d2021</span><span class="p">;</span><span class="w"></span>
-<span class="w">  </span><span class="nv">--fg</span><span class="p">:</span><span class="w"> </span><span class="mh">#d4be98</span><span class="p">;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
-<span class="o">[</span><span class="nt">data-theme</span><span class="o">=</span><span class="s2">&quot;light&quot;</span><span class="o">]</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="nv">--bg</span><span class="p">:</span><span class="w"> </span><span class="mh">#f9f5d7</span><span class="p">;</span><span class="w"></span>
-<span class="w">  </span><span class="nv">--fg</span><span class="p">:</span><span class="w"> </span><span class="mh">#654735</span><span class="p">;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
-</code></pre></div>
-</td></tr></table>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><span class="o">[</span><span class="nt">data-theme</span><span class="o">=</span><span class="s2">&quot;light&quot;</span><span class="o">]</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nv">--bg</span><span class="p">:</span><span class="w"> </span><span class="mh">#1d2021</span><span class="p">;</span>
+<span class="w">  </span><span class="nv">--fg</span><span class="p">:</span><span class="w"> </span><span class="mh">#d4be98</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="o">[</span><span class="nt">data-theme</span><span class="o">=</span><span class="s2">&quot;light&quot;</span><span class="o">]</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nv">--bg</span><span class="p">:</span><span class="w"> </span><span class="mh">#f9f5d7</span><span class="p">;</span>
+<span class="w">  </span><span class="nv">--fg</span><span class="p">:</span><span class="w"> </span><span class="mh">#654735</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div></td></tr></table></div>
+
+
 <p>The above provides color variables to element with data attribute <code>data-theme</code>.
 We can set <code>data-theme</code> to document element via JavaScript and toggle it.
 This change would make the color variables available to all the elements.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s2">&quot;data-theme&quot;</span><span class="p">,</span> <span class="s2">&quot;dark&quot;</span><span class="p">);</span>
-</code></pre></div>
-</td></tr></table>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s2">&quot;data-theme&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;dark&quot;</span><span class="p">);</span>
+</pre></div></td></tr></table></div>
+
+
 <p>You can set default to system preference and later toggle when user asks.
 To get the system preference media queries can be used.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="nx">is_system_preference_dark</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">matchMedia</span><span class="p">(</span><span class="s2">&quot;(prefers-color-scheme: light)&quot;</span><span class="p">).</span><span class="nx">matches</span><span class="p">;</span>
-</code></pre></div>
-</td></tr></table>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><span class="nx">is_system_preference_dark</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">window</span><span class="p">.</span><span class="nx">matchMedia</span><span class="p">(</span><span class="s2">&quot;(prefers-color-scheme: light)&quot;</span><span class="p">).</span><span class="nx">matches</span><span class="p">;</span>
+</pre></div></td></tr></table></div>
+
+
 <p>This is actually how this blog handles the theming.
 But this approach requires setting <code>background-color</code> and <code>color</code> properly to elements.
 When building app avoiding CSS framework it would be nice to utilize system colors,
@@ -343,38 +347,41 @@ and change only app specific colors (like color for dangerous delete button) bas
 <p>For technical specification for CSS I refer to <a href="https://developer.mozilla.org/en-US/docs/Web/CSS" title="Mozilla Developer Network">MDN</a>.
 And I stumbled across <code>color-scheme</code> which allows elements to declare there preference.
 There is <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta/name" title="Meta tag for color-scheme">color scheme meta tag</a> which can also be set to apply it for whole document.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="o">&lt;</span><span class="nt">meta</span><span class="w"> </span><span class="nt">name</span><span class="o">=</span><span class="s2">&quot;color-scheme&quot;</span><span class="w"> </span><span class="nt">content</span><span class="o">=</span><span class="s2">&quot;dark light&quot;</span><span class="o">&gt;</span><span class="w"></span>
-</code></pre></div>
-</td></tr></table>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><span class="o">&lt;</span><span class="nt">meta</span><span class="w"> </span><span class="nt">name</span><span class="o">=</span><span class="s2">&quot;color-scheme&quot;</span><span class="w"> </span><span class="nt">content</span><span class="o">=</span><span class="s2">&quot;dark light&quot;</span><span class="o">&gt;</span>
+</pre></div></td></tr></table></div>
+
+
 <p>This attribute can be toggle using JavaScript to change the theme mode.
 The elements use their default colors for background and font based on color scheme.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s2">&quot;meta&quot;</span><span class="p">).</span><span class="nx">namedItem</span><span class="p">(</span><span class="s2">&quot;color-scheme&quot;</span><span class="p">).</span><span class="nx">content</span> <span class="o">=</span> <span class="s2">&quot;dark&quot;</span><span class="p">;</span>
-</code></pre></div>
-</td></tr></table>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s2">&quot;meta&quot;</span><span class="p">).</span><span class="nx">namedItem</span><span class="p">(</span><span class="s2">&quot;color-scheme&quot;</span><span class="p">).</span><span class="nx">content</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;dark&quot;</span><span class="p">;</span>
+</pre></div></td></tr></table></div>
+
+
 <p>In some edge case you might want to reuse the default colors say for background.
 Hard coding does not cut it, the background color might be effected by system settings.
 Instead utilize system colors, this avoids hard coding of colors.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span>
 <span class="normal">5</span>
 <span class="normal">6</span>
-<span class="normal">7</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="na">.remove-transparent</span><span class="w"> </span><span class="err">{</span><span class="w"></span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><span class="na">.remove-transparent</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="cm">/*</span>
 <span class="cm">        adding class to element with &quot;background-color: transparent;&quot;</span>
 <span class="cm">        removes it&#39;s transparency.</span>
-<span class="cm">    */</span><span class="w"></span>
+<span class="cm">    */</span>
 <span class="w">    </span><span class="nl">background-color:</span><span class="w"> </span><span class="nf">Canvas</span><span class="c1">;</span>
-<span class="err">}</span><span class="w"></span>
-</code></pre></div>
-</td></tr></table>
+<span class="err">}</span>
+</pre></div></td></tr></table></div>
+
+
 <h2>What is the rusty way ?</h2>
 <p>This is all great but how to do it in rust?
 The theming requires interacting with browser, which is done through <a href="https://rustwasm.github.io/docs/wasm-bindgen/" title="Wasm Bind Gen">wasmbindgen</a>.
 The easiest way would be to write JavaScript code and expose it to rust.
 This can be done using <a href="https://rustwasm.github.io/docs/wasm-bindgen/reference/js-snippets.html" title="Inline java-script in rust">inline</a> technique provided by the library.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
 <span class="normal"> 4</span>
@@ -386,21 +393,22 @@ This can be done using <a href="https://rustwasm.github.io/docs/wasm-bindgen/ref
 <span class="normal">10</span>
 <span class="normal">11</span>
 <span class="normal">12</span>
-<span class="normal">13</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="cp">#[wasm_bindgen(inline_js = r#</span><span class="s">&quot;</span>
+<span class="normal">13</span></pre></div></td><td class="code"><div><pre><span></span><span class="cp">#[wasm_bindgen(inline_js = r#</span><span class="s">&quot;</span>
 <span class="s">  export function setDarkTheme() {</span>
 <span class="s">      document.getElementsByTagName(&#39;meta&#39;).namedItem(&#39;color-scheme&#39;).content = &#39;dark&#39;;</span>
 <span class="s">      document.documentElement.setAttribute(&#39;data-theme&#39;, &#39;light&#39;);</span>
 <span class="s">  }</span>
-<span class="s">&quot;</span><span class="cp">#)]</span><span class="w"></span>
-<span class="k">extern</span><span class="w"> </span><span class="s">&quot;C&quot;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="k">fn</span> <span class="nf">setDarkTheme</span><span class="p">();</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="s">&quot;</span><span class="cp">#)]</span>
+<span class="k">extern</span><span class="w"> </span><span class="s">&quot;C&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="k">fn</span> <span class="nf">setDarkTheme</span><span class="p">();</span>
+<span class="p">}</span>
 
 <span class="c1">//  in toggle function ..</span>
-<span class="n">setDarkTheme</span><span class="p">();</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
-</code></pre></div>
-</td></tr></table>
+<span class="n">setDarkTheme</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div></td></tr></table></div>
+
+
 <h2>Resources</h2>
 <ul>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme">prefers color scheme</a></li>

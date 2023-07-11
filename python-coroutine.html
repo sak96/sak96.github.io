@@ -269,7 +269,7 @@ Typical solution to the problem is to store sum in object.
 We will move from this solution towards one which demonstrate working of coroutine.</p>
 <p>The typical solution will involve object which takes integer as input.
 It stores the sum as state and provides the output.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
 <span class="normal"> 4</span>
@@ -279,7 +279,7 @@ It stores the sum as state and provides the output.</p>
 <span class="normal"> 8</span>
 <span class="normal"> 9</span>
 <span class="normal">10</span>
-<span class="normal">11</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">Summer</span><span class="p">:</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><span class="k">class</span> <span class="nc">Summer</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">total</span> <span class="o">=</span> <span class="n">total</span>
     <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
@@ -290,13 +290,14 @@ It stores the sum as state and provides the output.</p>
 <span class="n">summer</span> <span class="o">=</span> <span class="n">Summer</span><span class="p">()</span>
 <span class="n">summer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 <span class="k">assert</span> <span class="n">summer</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">==</span> <span class="mi">10</span>
-</code></pre></div>
-</td></tr></table>
+</pre></div></td></tr></table></div>
+
+
 <h2>Let's call some objects</h2>
 <p>Instead of having two different methods, a single method can used.
 The said method can update the sum with input and return the sum as output.
 The default value of <code>0</code> as input to this will emulate <code>sum</code> from previous example.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
 <span class="normal"> 4</span>
@@ -305,7 +306,7 @@ The default value of <code>0</code> as input to this will emulate <code>sum</cod
 <span class="normal"> 7</span>
 <span class="normal"> 8</span>
 <span class="normal"> 9</span>
-<span class="normal">10</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">SummerV0</span><span class="p">:</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><span class="k">class</span> <span class="nc">SummerV0</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">total</span> <span class="o">=</span> <span class="n">total</span>
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
@@ -315,8 +316,9 @@ The default value of <code>0</code> as input to this will emulate <code>sum</cod
 <span class="n">summer</span> <span class="o">=</span> <span class="n">SummerV0</span><span class="p">()</span>
 <span class="k">assert</span> <span class="n">summer</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="mi">10</span>
 <span class="k">assert</span> <span class="n">summer</span><span class="p">()</span> <span class="o">==</span> <span class="mi">10</span>
-</code></pre></div>
-</td></tr></table>
+</pre></div></td></tr></table></div>
+
+
 <p>Object can be called as function by implementing <code>__call__</code> function.
 This allow calling the object like any other function in python.
 Calling the object will call the <code>__call__</code> method with the argument specified.</p>
@@ -326,7 +328,7 @@ This could also be achieved by using coroutine with similar interface.</p>
 <p>Coroutine looks similar to function in python but the differ in certain ways.
 They can store state and <code>yield</code> the output instead of <code>return</code>-ing the output.
 In this regard they are closer to generator rather than function.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
 <span class="normal"> 4</span>
@@ -336,7 +338,7 @@ In this regard they are closer to generator rather than function.</p>
 <span class="normal"> 8</span>
 <span class="normal"> 9</span>
 <span class="normal">10</span>
-<span class="normal">11</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">summer_v1</span><span class="p">(</span><span class="n">total_init</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><span class="k">def</span> <span class="nf">summer_v1</span><span class="p">(</span><span class="n">total_init</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="k">global</span> <span class="n">total</span>
     <span class="n">total</span> <span class="o">=</span> <span class="n">total_init</span>
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
@@ -347,8 +349,9 @@ In this regard they are closer to generator rather than function.</p>
 <span class="nb">next</span><span class="p">(</span><span class="n">summer</span><span class="p">)</span>
 <span class="n">summer</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 <span class="k">assert</span> <span class="n">total</span> <span class="o">==</span> <span class="mi">10</span>
-</code></pre></div>
-</td></tr></table>
+</pre></div></td></tr></table></div>
+
+
 <p>In the above example you see that we are using <code>global</code> variable to access the state.
 The coroutine returns a coroutine, this is initialized by calling <code>next</code> on the same.
 The initialization of coroutine will run the code till first yield.
@@ -359,7 +362,7 @@ The value enters the coroutine at <code>yield</code> and can be used by the coro
 This would mean having two coroutine would not be possible at same time.
 The problem can be avoided if coroutine could return the value of the state.
 The <code>yield</code> can be followed by value that can be returned by <code>send</code> interface.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
 <span class="normal"> 4</span>
@@ -370,7 +373,7 @@ The <code>yield</code> can be followed by value that can be returned by <code>se
 <span class="normal"> 9</span>
 <span class="normal">10</span>
 <span class="normal">11</span>
-<span class="normal">12</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">summer_v2</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="normal">12</span></pre></div></td><td class="code"><div><pre><span></span><span class="k">def</span> <span class="nf">summer_v2</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="n">total</span> <span class="o">=</span> <span class="n">total</span>
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
         <span class="n">z</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">total</span>
@@ -382,14 +385,15 @@ The <code>yield</code> can be followed by value that can be returned by <code>se
 <span class="k">assert</span> <span class="nb">next</span><span class="p">(</span><span class="n">summer_again</span><span class="p">)</span> <span class="o">==</span> <span class="mi">12</span>
 <span class="k">assert</span> <span class="n">summer</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="mi">10</span>
 <span class="k">assert</span> <span class="n">summer_again</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="mi">22</span>
-</code></pre></div>
-</td></tr></table>
+</pre></div></td></tr></table></div>
+
+
 <h2>Automatic Initialization of coroutine</h2>
 <p>The initialization of coroutine from coroutine is needed before sending values.
 Sending value before initialization will raise exception.
 The message will be <code>TypeError: can't send non-None value to a just-started coroutine</code>.
 To avoid such accident we can decorate the coroutine with a <code>safety_wrapper</code>.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
 <span class="normal"> 4</span>
@@ -405,8 +409,8 @@ To avoid such accident we can decorate the coroutine with a <code>safety_wrapper
 <span class="normal">14</span>
 <span class="normal">15</span>
 <span class="normal">16</span>
-<span class="normal">17</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">safety_wrapper</span><span class="p">(</span><span class="n">cr</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;the safety wrapper&quot;&quot;&quot;</span>
+<span class="normal">17</span></pre></div></td><td class="code"><div><pre><span></span><span class="k">def</span> <span class="nf">safety_wrapper</span><span class="p">(</span><span class="n">cr</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;the safety wrapper&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">init_cr</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">dec_cr</span> <span class="o">=</span> <span class="n">cr</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">dec_cr</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
@@ -422,15 +426,16 @@ To avoid such accident we can decorate the coroutine with a <code>safety_wrapper
 
 <span class="n">summer</span> <span class="o">=</span> <span class="n">summer_v3</span><span class="p">()</span>
 <span class="k">assert</span> <span class="n">summer</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="mi">10</span>
-</code></pre></div>
-</td></tr></table>
+</pre></div></td></tr></table></div>
+
+
 <p>Note in the example we are not using <code>next</code> instead we are using <code>obj.send(None)</code>.
 Using <code>next</code> is actually calling <code>obj.send(None)</code> internally.</p>
 <h2>How to stop or rest summer for summing up.</h2>
 <p>Coroutine can be <a href="https://docs.python.org/3/reference/datamodel.html#coroutine.close">closed</a> just like a generator which has been exhausted.
 Coroutine can be auto closed when it goes out of scope.
 Clean up action can be taken when coroutine by catching <code>GeneratorExit</code> exception.</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
 <span class="normal"> 4</span>
@@ -462,7 +467,7 @@ Clean up action can be taken when coroutine by catching <code>GeneratorExit</cod
 <span class="normal">30</span>
 <span class="normal">31</span>
 <span class="normal">32</span>
-<span class="normal">33</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">Reset</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="normal">33</span></pre></div></td><td class="code"><div><pre><span></span><span class="k">class</span> <span class="nc">Reset</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="k">pass</span>
 
 <span class="nd">@safety_wrapper</span>
@@ -495,8 +500,9 @@ Clean up action can be taken when coroutine by catching <code>GeneratorExit</cod
 <span class="k">assert</span> <span class="n">summer_1</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="mi">20</span>
 <span class="k">assert</span> <span class="n">summer_1</span><span class="o">.</span><span class="n">throw</span><span class="p">(</span><span class="n">Reset</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
 <span class="k">assert</span> <span class="n">summer_1</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="mi">10</span>
-</code></pre></div>
-</td></tr></table>
+</pre></div></td></tr></table></div>
+
+
 <p>The coroutine is suppose <code>return</code> on <code>GeneratorExit</code> marking end of generator.
 If the coroutine <code>return</code> then <code>RuntimeError: generator ignored GeneratorExit</code> is raised.
 On <code>return</code> the coroutine has ended hence it will throw <code>StopIteration</code> if <code>send</code> is called.</p>
