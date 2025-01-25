@@ -1,515 +1,106 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-  <title>Vimspector Setup For Rust test</title>
-  <link rel="shortcut icon" 
-  href="https://sak96.github.io/theme/images/favicon.svg">
-  <meta name="viewport" 
-  content="width=device-width, initial-scale=1.0" />
-  <meta charset="UTF-8">
-    <link rel="alternate" type="application/atom+xml"
-    title="sak96-blog" href="https://sak96.github.io/feeds/all.atom.xml" />
-  <link rel="stylesheet" href="https://sak96.github.io/theme/syntax/pygment.css">
-    <style>
-* {
-  box-sizing: border-box;
-}
-:root {
-  --bg: #1d2021;
-  --fg: #d4be98;
-  --gray: #928374;
-  --blue: #7daea3;
-  --green: #a9b665;
-  --red: #ea6962;
-}
-[data-theme="light"] {
-  --bg: #f9f5d7;
-  --fg: #654735;
-  --gray: #928374;
-  --blue: #45707a;
-  --green: #6c782e;
-  --red: #c14a4a;
-}
-table,
-th,
-td {
-  padding: 10px;
-  border: 1px solid var(--fg);
-  border-collapse: collapse;
-}
-.codehilitetable {
-  padding: 0px;
-  display: block;
-  overflow-x: auto;
-  border: 2px solid var(--blue);
-  border-radius: 4px;
-  border-collapse: collapse;
-  font-family: monospace;
-}
-.codehilite {
-  margin: 0 1em;
-}
-.linenos {
-  text-align: right;
-  border: 0px;
-  border-right: 2px solid var(--blue);
-  padding: 0em 0.5em;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-.code {
-  border: 0px;
-}
-body {
-  background-color: var(--bg);
-  color: var(--fg);
-}
-a {
-  text-decoration: none;
-  color: var(--blue);
-}
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: var(--green);
-}
-small {
-  color: var(--gray);
-}
-.navbar {
-  border-bottom: 1px solid var(--green);
-}
-.navbar div {
-  display: inline-block;
-}
-.nav-end {
-  position: absolute;
-  right: 0.5rem;
-}
-.navbar a {
-  padding: 0.5rem 0;
-}
-.navbar a:before {
-  content: "[";
-}
-.navbar a:after {
-  content: "]";
-}
-#theme {
-  cursor: pointer;
-}
-[data-theme="light"] #theme:before {
-  content: "[🌚:";
-}
-#theme:before {
-  content: "[🌞:";
-}
-#navbar-toggler {
-  display: none;
-}
-.content {
-  width: 80%;
-  max-width: 50rem;
-  margin: auto;
-}
-article em,
-article strong {
-  color: var(--red);
-}
-.not-found,
-.coming-soon {
-  display: block;
-  width: 100%;
-  text-align: center;
-}
-.item {
-  display: block;
-  margin: 0.5rem 0;
-  padding: 1rem;
-  border-top: 1px dashed var(--red);
-  color: var(--fg);
-}
-.item > :first-child {
-  margin-top: 0;
-}
-.img-fluid {
-  width: 100%;
-}
-.paginator {
-  margin: 0.5rem;
-  display: flex;
-  justify-content: space-between;
-}
-.footer,
-.tags {
-  margin: 0.5rem;
-  display: flex;
-  justify-content: center;
-}
-.disabled {
-  pointer-events: none;
-  color: var(--gray);
-}
-@media only screen and (max-width: 500px) {
-  .navbar {
-    border: none;
-  }
-  .nav-header {
-    border-bottom: 0.025rem solid var(--green);
-  }
-  .navbar div {
-    display: block;
-    position: static;
-  }
-  #navbar-toggler {
-    transform: rotate(90deg);
-    position: absolute;
-    right: 1rem;
-    display: inline;
-    background-color: inherit;
-    border: none;
-    color: inherit;
-  }
-  .navbar a:after,
-  .navbar a:before {
-    content: "";
-  }
-  .navbar a {
-    border-bottom: 0.025rem solid var(--green);
-    display: none;
-  }
-  .nav-header a {
-    display: inline-block;
-    border: none;
-  }
-  .navbar a.show {
-    display: block;
-  }
-  .content {
-    width: 100%;
-  }
-  .footer {
-    display: inline-block;
-  }
-  .paginator span {
-    display: none;
-  }
-  [data-theme="light"] #theme:before {
-    content: "🌚:";
-  }
-  #theme:before {
-    content: "🌞:";
-  }
-}    </style>
-</head>
-
-<body>
-<div class="navbar">
-    <div class="nav-header"/>
-        <a href="https://sak96.github.io/index.html">sak96-blog</a>
-        <a id="navbar-toggler">|||</a>
-    </div>
-    <div class="nav-start">
-        <a href="https://sak96.github.io/authors.html">Authors</a>
-        <a href="https://sak96.github.io/categories.html">Categories</a>
-        <a href="https://sak96.github.io/tags.html">Tags</a>
-    </div>
-    <div class="nav-end">
-        <a href="https://sak96.github.io/feeds/all.atom.xml">Atom</a>
-        <a id="theme">Theme</a>
-    </div>
-</div>
-<script>
-document.querySelector("#navbar-toggler").onclick = function (e) {
-  document
-    .querySelectorAll(".nav-start a,.nav-end a")
-    .forEach((e) => e.classList.toggle("show"));
-};
-{
-  let theme = localStorage.getItem("theme");
-  if (
-    theme === "light" ||
-    window.matchMedia("(prefers-color-scheme: light)").matches
-  ) {
-    document.documentElement.setAttribute("data-theme", "light");
-    localStorage.setItem("theme", "light");
-  } else {
-    document.documentElement.setAttribute("data-theme", "dark");
-    localStorage.setItem("theme", "dark");
-  }
-}
-document.querySelector("#theme").onclick = function (e) {
-  if (document.documentElement.getAttribute("data-theme")) {
-    document.documentElement.setAttribute("data-theme", "");
-    localStorage.setItem("theme", "dark");
-  } else {
-    document.documentElement.setAttribute("data-theme", "light");
-    localStorage.setItem("theme", "light");
-  }
-};</script>    <div class="content">
-	<div>
-		<h1>Vimspector Setup For Rust test</h1>
-		<h5><p>Challenge faced when setting up Rust test debugging via Vimspector.</p></h5>
-		<h5>Read time: 5 min</h5>
-		<small>Written on July 12, 2023</small>
-	</div>
-	<div> 
-	<article>
-	<p>Vim is my go to editor for editing text.
-I wanted to setup vim for rust library project.
-The language server setup was straight forward with vim-ale.
-But setup for debugging had a certain amount of challenges.</p>
-<h2>Challenge 1: Finding the test executable</h2>
-<p>In library based project in rust can only be debugged using test cases.
-Cargo generates a test case executable which can be used to run the test.
-The issue is these binary generated have random hash attached to the filename.
-Hence the setup for Vimspector has to run binary whose path is non deterministic.</p>
-<p>This made it hard to write generic configuration which works for any developer using vim.
-This issue has plagued others as well and can be checkout on <a href="https://github.com/rust-lang/cargo/issues/8525" title="Finding the test executable issue">Github</a>.
-Fortunately there is a way to extract the path from the json output.</p>
-<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span>cargo<span class="w"> </span><span class="nb">test</span><span class="w"> </span>--no-run<span class="w"> </span>--message-format<span class="o">=</span>json<span class="w"> </span>-q<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-Poi<span class="w"> </span><span class="s1">&#39;executable&quot;:&quot;\\K([^&quot;]*)(?=&quot;)&#39;</span>
-</pre></div></td></tr></table></div>
-
-
-<p>Vimspector allows runtime variables to be used in configuration.
-An example for this can be found in <a href="https://github.com/puremourning/vimspector/tree/02c8da857bbb1b5fc2cf7dfbdda85ba1201a8d8c#picking-a-pid" title="Picking pid">readme</a>, where process id is found at runtime.
-The same logic is used to find the test executable and is set to variable <code>test_exe</code>.</p>
-<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span>
-<span class="normal">5</span>
-<span class="normal">6</span>
-<span class="normal">7</span>
-<span class="normal">8</span>
-<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;test_exe&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;shell&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">      </span><span class="s2">&quot;bash&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="s2">&quot;-c&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="s2">&quot;cargo test --no-run --message-format=json -q | grep -Poi &#39;executable\&quot;:\&quot;\\K([^\&quot;]*)(?=\&quot;)&#39;&quot;</span>
-<span class="w">    </span><span class="p">]</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div></td></tr></table></div>
-
-
-<h2>Challenge 2: Setting up standard libraries source to debug.</h2>
-<p>By setting up the <code>test_exe</code>, the test could be debugged.
-But, whenever the code stepped into standard library call, the debugged would show machine instruction.
-The source file for the symbol seemed to be starting with <code>/rustc/&lt;hash&gt;/</code>.
-This issue was encounter with <a href="https://github.com/simrat39/rust-tools.nvim/pull/231" title="Rust tools has no std source map">rust-tools</a> plugins as well.</p>
-<p>The solution seems to be adding a source map configuration.
-Source map directs <code>/rustc/&lt;hash&gt;/</code> to <code>&lt;rust-toolchain-src&gt;/lib/rustlib/src/rust/</code>.
-This allows the debugger to find the symbols correctly.</p>
-<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><span class="nt">&quot;sourceMap&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;/rustc/db9d1b20bba1968c1ec1fc49616d4742c1725b4b/&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;${rust_std}/lib/rustlib/src/rust/&quot;</span>
-<span class="p">}</span>
-</pre></div></td></tr></table></div>
-
-
-<p>The variable <code>rust_std</code> point to rust tool chain source files.
-It could be determined at runtime using following command</p>
-<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span>rustc<span class="w"> </span>--print<span class="w"> </span>sysroot
-</pre></div></td></tr></table></div>
-
-
-<h2>Challenge 3: Getting rid of the hard code hash</h2>
-<p>Hash in source map key points to <code>rustc</code> commit used to compile the project.
-This can be determined at runtime using command below.
-But as this is on key side of the equation the configuration would not expand the variables.
-This seemed like a dead end as there was no way to expand the variable in key.</p>
-<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span>rustc<span class="w"> </span>-Vv<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-Poi<span class="w"> </span><span class="s1">&#39;commit-hash: \K(.*)&#39;</span>
-</pre></div></td></tr></table></div>
-
-
-<p>On reaching out to the developer of vimspector, there was a <a href="https://puremourning.github.io/vimspector/configuration.html#coercing-types" title="The json hack">hack</a> of <code>#json</code> pointed out.
-This key would coerces the string value from to json type(boolean/number/list/map).
-This allowed me to coerces the value of <code>sourceMap</code> to map using variable in the key.</p>
-<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;sourceMap#json&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{\&quot;/rustc/${rustc_commit}/\&quot; : \&quot;${rust_std}/lib/rustlib/src/rust/\&quot;}&quot;</span>
-<span class="p">}</span>
-</pre></div></td></tr></table></div>
-
-
-<h2>Conclusion</h2>
-<p>To setup vimspector for rust library (test case), there were multiple challenges.</p>
-<ol>
-<li>Test executable name has to be determined at runtime.</li>
-<li>Rust standard library symbol need to be mapped using source map.</li>
-<li>Utilize Vimspector type coerce to allow dynamic key for source map.</li>
-</ol>
-<p>Final configuration looks like this:</p>
-<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
-<span class="normal"> 2</span>
-<span class="normal"> 3</span>
-<span class="normal"> 4</span>
-<span class="normal"> 5</span>
-<span class="normal"> 6</span>
-<span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span>
-<span class="normal">12</span>
-<span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span>
-<span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span>
-<span class="normal">28</span>
-<span class="normal">29</span>
-<span class="normal">30</span>
-<span class="normal">31</span>
-<span class="normal">32</span>
-<span class="normal">33</span>
-<span class="normal">34</span>
-<span class="normal">35</span>
-<span class="normal">36</span>
-<span class="normal">37</span>
-<span class="normal">38</span></pre></div></td><td class="code"><div><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;configurations&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;launch&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;adapter&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CodeLLDB&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;variables&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;rustc_commit&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">          </span><span class="nt">&quot;shell&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">            </span><span class="s2">&quot;bash&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="s2">&quot;-c&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="s2">&quot;rustc -Vv | grep -Poi &#39;commit-hash: \\K(.*)&#39;&quot;</span>
-<span class="w">          </span><span class="p">]</span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">&quot;rust_std&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">          </span><span class="nt">&quot;shell&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">&quot;rustc&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--print&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;sysroot&quot;</span><span class="w"> </span><span class="p">]</span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">&quot;test_exe&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">          </span><span class="nt">&quot;shell&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">            </span><span class="s2">&quot;bash&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="s2">&quot;-c&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="s2">&quot;cargo test --no-run --message-format=json -q | grep -Poi &#39;executable\&quot;:\&quot;\\K([^\&quot;]*)(?=\&quot;)&#39;&quot;</span>
-<span class="w">          </span><span class="p">]</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">      </span><span class="p">},</span>
-<span class="w">      </span><span class="nt">&quot;configuration&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;sourceMap#json&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{\&quot;/rustc/${rustc_commit}/\&quot; : \&quot;${rust_std}/lib/rustlib/src/rust/\&quot;}&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;request&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;launch&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;program&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;${test_exe}&quot;</span>
-<span class="w">      </span><span class="p">},</span>
-<span class="w">      </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">&quot;*${args}&quot;</span><span class="w"> </span><span class="p">],</span>
-<span class="w">      </span><span class="nt">&quot;breakpoints&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;exception&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">          </span><span class="nt">&quot;cpp_throw&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">&quot;cpp_catch&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">      </span><span class="p">}</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div></td></tr></table></div>
-	</article>
-	</div>
-<div class="tags">
-    <span>Post Tags:</span>
-    <a href="tag/vim.html">&nbsp;#vim,</a>
-    <a href="tag/neovim.html">&nbsp;#neovim,</a>
-    <a href="tag/plugin.html">&nbsp;#plugin,</a>
-    <a href="tag/vimspector.html">&nbsp;#vimspector,</a>
-    <a href="tag/rust.html">&nbsp;#rust,</a>
-    <a href="tag/test.html">&nbsp;#test</a>
-</div><hr class="my-3">
-<div id="comments"></div>
-<script>
-  let commentUrl = "https://api.github.com/repos/sak96/sak96.github.io/issues/16/comments"
-  let issueUrl = "https://github.com/sak96/sak96.github.io/issues/16"
-  function PopulateComment(comments) {
-    commentsBlock = document.getElementById("comments");
-
-    // comments heading
-    let heading = document.createElement("div")
-    heading.innerText = "Comments"
-    commentsBlock.append(heading)
-
-    // comments placeholder
-    let commentsDiv = document.createElement("div")
-    commentsBlock.append(commentsDiv)
-
-    comments.forEach(comment => {
-      // username 
-      let username = document.createElement("span")
-      username.innerText = comment.user.login
-
-      // posting time
-      updateTime = document.createElement("small")
-      updateTime.innerText = "(" + comment.updated_at + ")"
-
-      // comment body
-      commentBody = document.createElement("div")
-      commentBody.innerText = comment.body
-
-      //line break
-      lineBreak = document.createElement("br")
-
-      // create comment box
-      commentBox = document.createElement("a")
-      commentBox.classList.add("item")
-      commentBox.append(username)
-      commentBox.append(updateTime)
-      commentBox.append(lineBreak)
-      commentBox.append(commentBody)
-      commentBox.href = comment.html_url
-
-      commentsDiv.append(commentBox)
-    });
-
-    // add comment
-    let addComment = document.createElement("a")
-    addComment.classList.add("item")
-    addComment.href = issueUrl
-    addComment.innerText = "Have some comments? Add comment ..."
-    commentsDiv.append(addComment)
-
-  }
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', commentUrl, true);
-  xhr.responseType = 'json';
-  xhr.onload = function () {
-    var status = xhr.status;
-    if (status === 200) {
-      console.log(PopulateComment(xhr.response));
-    } else {
-      console.log(xhr.response);
-    }
-  };
-  xhr.send();
-</script>
-        <script src="https://unpkg.com/mermaid@latest/dist/mermaid.min.js"></script>
-<hr>
-<div class="footer">
-    <span>Powered by:</span>
-    <a href="http://getpelican.com/">Pelican,</a>
-    <a href="https://github.com/pygments/pygments">Pygments,</a>
-    <a href="https://github.com/morhetz/gruvbox-contrib">Gruvbox</a>
-</div>  </div>
-</body>
-</html>
+<!doctype html><title>Vimspector Setup For Rust test</title><link rel="shortcut icon" href=https://sak96.github.io/theme/images/favicon.svg><meta content=width=device-width,initial-scale=1.0 name=viewport><meta charset=UTF-8><link href=https://sak96.github.io/feeds/all.atom.xml rel=alternate title=sak96-blog type=application/atom+xml><link href=https://sak96.github.io/theme/syntax/pygment.css rel=stylesheet><style>*{box-sizing:border-box}:root{--bg:#1d2021;--fg:#d4be98;--gray:#928374;--blue:#7daea3;--green:#a9b665;--red:#ea6962}[data-theme=light]{--bg:#f9f5d7;--fg:#654735;--gray:#928374;--blue:#45707a;--green:#6c782e;--red:#c14a4a}table,th,td{border:1px solid var(--fg);border-collapse:collapse;padding:10px}.codehilitetable{border:2px solid var(--blue);border-collapse:collapse;border-radius:4px;padding:0;font-family:monospace;display:block;overflow-x:auto}.codehilite{margin:0 1em}.linenos{text-align:right;border:0;border-right:2px solid var(--blue);-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-khtml-user-select:none;padding:0 .5em}.code{border:0}body{background-color:var(--bg);color:var(--fg)}a{color:var(--blue);text-decoration:none}h1,h2,h3,h4,h5,h6{color:var(--green)}small{color:var(--gray)}.navbar{border-bottom:1px solid var(--green)}.navbar div{display:inline-block}.nav-end{position:absolute;right:.5rem}.navbar a{padding:.5rem 0}.navbar a:before{content:"["}.navbar a:after{content:"]"}#theme{cursor:pointer}[data-theme=light] #theme:before{content:"[🌚:"}#theme:before{content:"[🌞:"}#navbar-toggler{display:none}.content{width:80%;max-width:50rem;margin:auto}article em,article strong{color:var(--red)}.not-found,.coming-soon{text-align:center;width:100%;display:block}.item{border-top:1px dashed var(--red);color:var(--fg);margin:.5rem 0;padding:1rem;display:block}.item>:first-child{margin-top:0}.img-fluid{width:100%}.paginator{justify-content:space-between;margin:.5rem;display:flex}.footer,.tags{justify-content:center;margin:.5rem;display:flex}.disabled{pointer-events:none;color:var(--gray)}@media only screen and (width<=500px){.navbar{border:none}.nav-header{border-bottom:.025rem solid var(--green)}.navbar div{display:block;position:static}#navbar-toggler{background-color:inherit;color:inherit;border:none;display:inline;position:absolute;right:1rem;transform:rotate(90deg)}.navbar a:after,.navbar a:before{content:""}.navbar a{border-bottom:.025rem solid var(--green);display:none}.nav-header a{border:none;display:inline-block}.navbar a.show{display:block}.content{width:100%}.footer{display:inline-block}.paginator span{display:none}[data-theme=light] #theme:before{content:"🌚:"}#theme:before{content:"🌞:"}}</style><body><div class=navbar><div class=nav-header><a href=https://sak96.github.io/index.html>sak96-blog</a><a id=navbar-toggler>|||</a></div><div class=nav-start><a href=https://sak96.github.io/authors.html>Authors</a><a href=https://sak96.github.io/categories.html>Categories</a><a href=https://sak96.github.io/tags.html>Tags</a></div><div class=nav-end><a href=https://sak96.github.io/feeds/all.atom.xml>Atom</a><a id=theme>Theme</a></div></div><script>document.querySelector(`#navbar-toggler`).onclick=(a=>{document.querySelectorAll(`.nav-start a,.nav-end a`).forEach(a=>a.classList.toggle(`show`))});{let d=`data-theme`,e=`dark`,c=`light`,b=`theme`;let a=localStorage.getItem(b);if(a===c||window.matchMedia(`(prefers-color-scheme: light)`).matches){document.documentElement.setAttribute(d,c);localStorage.setItem(b,c)}else{document.documentElement.setAttribute(d,e);localStorage.setItem(b,e)}}document.querySelector(`#theme`).onclick=(a=>{let b=`data-theme`,d=`light`,c=`theme`;if(document.documentElement.getAttribute(b)){document.documentElement.setAttribute(b,``);localStorage.setItem(c,`dark`)}else{document.documentElement.setAttribute(b,d);localStorage.setItem(c,d)}})</script><div class=content><div><h1>Vimspector Setup For Rust test</h1><h5><p>Challenge faced when setting up Rust test debugging via Vimspector.</h5><h5>Read time: 5 min</h5><small>Written on July 12, 2023</small></div><div><article><p>Vim is my go to editor for editing text. I wanted to setup vim for rust library project. The language server setup was straight forward with vim-ale. But setup for debugging had a certain amount of challenges.<h2>Challenge 1: Finding the test executable</h2><p>In library based project in rust can only be debugged using test cases. Cargo generates a test case executable which can be used to run the test. The issue is these binary generated have random hash attached to the filename. Hence the setup for Vimspector has to run binary whose path is non deterministic.<p>This made it hard to write generic configuration which works for any developer using vim. This issue has plagued others as well and can be checkout on <a title="Finding the test executable issue" href=https://github.com/rust-lang/cargo/issues/8525>Github</a>. Fortunately there is a way to extract the path from the json output.<div class=codehilite><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre><span class=normal>1</span></pre></div><td class=code><div><pre><span></span>cargo<span class=w> </span><span class=nb>test</span><span class=w> </span>--no-run<span class=w> </span>--message-format<span class=o>=</span>json<span class=w> </span>-q<span class=w> </span><span class=p>|</span><span class=w> </span>grep<span class=w> </span>-Poi<span class=w> </span><span class=s1>'executable":"\\K([^"]*)(?=")'</span>
+</pre></div></table></div><p>Vimspector allows runtime variables to be used in configuration. An example for this can be found in <a title="Picking pid" href=https://github.com/puremourning/vimspector/tree/02c8da857bbb1b5fc2cf7dfbdda85ba1201a8d8c#picking-a-pid>readme</a>, where process id is found at runtime. The same logic is used to find the test executable and is set to variable <code>test_exe</code>.<div class=codehilite><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre><span class=normal>1</span>
+<span class=normal>2</span>
+<span class=normal>3</span>
+<span class=normal>4</span>
+<span class=normal>5</span>
+<span class=normal>6</span>
+<span class=normal>7</span>
+<span class=normal>8</span>
+<span class=normal>9</span></pre></div><td class=code><div><pre><span></span><span class=p>{</span>
+<span class=w>  </span><span class=nt>"test_exe"</span><span class=p>:</span><span class=w> </span><span class=p>{</span>
+<span class=w>    </span><span class=nt>"shell"</span><span class=p>:</span><span class=w> </span><span class=p>[</span>
+<span class=w>      </span><span class=s2>"bash"</span><span class=p>,</span>
+<span class=w>      </span><span class=s2>"-c"</span><span class=p>,</span>
+<span class=w>      </span><span class=s2>"cargo test --no-run --message-format=json -q | grep -Poi 'executable\":\"\\K([^\"]*)(?=\")'"</span>
+<span class=w>    </span><span class=p>]</span>
+<span class=w>  </span><span class=p>}</span>
+<span class=p>}</span>
+</pre></div></table></div><h2>Challenge 2: Setting up standard libraries source to debug.</h2><p>By setting up the <code>test_exe</code>, the test could be debugged. But, whenever the code stepped into standard library call, the debugged would show machine instruction. The source file for the symbol seemed to be starting with <code>/rustc/&LThash>/</code>. This issue was encounter with <a title="Rust tools has no std source map" href=https://github.com/simrat39/rust-tools.nvim/pull/231>rust-tools</a> plugins as well.<p>The solution seems to be adding a source map configuration. Source map directs <code>/rustc/&LThash>/</code> to <code>&LTrust-toolchain-src>/lib/rustlib/src/rust/</code>. This allows the debugger to find the symbols correctly.<div class=codehilite><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre><span class=normal>1</span>
+<span class=normal>2</span>
+<span class=normal>3</span></pre></div><td class=code><div><pre><span></span><span class=nt>"sourceMap"</span><span class=p>:</span><span class=w> </span><span class=p>{</span>
+<span class=w>  </span><span class=nt>"/rustc/db9d1b20bba1968c1ec1fc49616d4742c1725b4b/"</span><span class=w> </span><span class=p>:</span><span class=w> </span><span class=s2>"${rust_std}/lib/rustlib/src/rust/"</span>
+<span class=p>}</span>
+</pre></div></table></div><p>The variable <code>rust_std</code> point to rust tool chain source files. It could be determined at runtime using following command<div class=codehilite><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre><span class=normal>1</span></pre></div><td class=code><div><pre><span></span>rustc<span class=w> </span>--print<span class=w> </span>sysroot
+</pre></div></table></div><h2>Challenge 3: Getting rid of the hard code hash</h2><p>Hash in source map key points to <code>rustc</code> commit used to compile the project. This can be determined at runtime using command below. But as this is on key side of the equation the configuration would not expand the variables. This seemed like a dead end as there was no way to expand the variable in key.<div class=codehilite><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre><span class=normal>1</span></pre></div><td class=code><div><pre><span></span>rustc<span class=w> </span>-Vv<span class=w> </span><span class=p>|</span><span class=w> </span>grep<span class=w> </span>-Poi<span class=w> </span><span class=s1>'commit-hash: \K(.*)'</span>
+</pre></div></table></div><p>On reaching out to the developer of vimspector, there was a <a title="The json hack" href=https://puremourning.github.io/vimspector/configuration.html#coercing-types>hack</a> of <code>#json</code> pointed out. This key would coerces the string value from to json type(boolean/number/list/map). This allowed me to coerces the value of <code>sourceMap</code> to map using variable in the key.<div class=codehilite><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre><span class=normal>1</span>
+<span class=normal>2</span>
+<span class=normal>3</span></pre></div><td class=code><div><pre><span></span><span class=p>{</span>
+<span class=w>  </span><span class=nt>"sourceMap#json"</span><span class=p>:</span><span class=w> </span><span class=s2>"{\"/rustc/${rustc_commit}/\" : \"${rust_std}/lib/rustlib/src/rust/\"}"</span>
+<span class=p>}</span>
+</pre></div></table></div><h2>Conclusion</h2><p>To setup vimspector for rust library (test case), there were multiple challenges.<ol><li>Test executable name has to be determined at runtime.<li>Rust standard library symbol need to be mapped using source map.<li>Utilize Vimspector type coerce to allow dynamic key for source map.</ol><p>Final configuration looks like this:<div class=codehilite><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre><span class=normal> 1</span>
+<span class=normal> 2</span>
+<span class=normal> 3</span>
+<span class=normal> 4</span>
+<span class=normal> 5</span>
+<span class=normal> 6</span>
+<span class=normal> 7</span>
+<span class=normal> 8</span>
+<span class=normal> 9</span>
+<span class=normal>10</span>
+<span class=normal>11</span>
+<span class=normal>12</span>
+<span class=normal>13</span>
+<span class=normal>14</span>
+<span class=normal>15</span>
+<span class=normal>16</span>
+<span class=normal>17</span>
+<span class=normal>18</span>
+<span class=normal>19</span>
+<span class=normal>20</span>
+<span class=normal>21</span>
+<span class=normal>22</span>
+<span class=normal>23</span>
+<span class=normal>24</span>
+<span class=normal>25</span>
+<span class=normal>26</span>
+<span class=normal>27</span>
+<span class=normal>28</span>
+<span class=normal>29</span>
+<span class=normal>30</span>
+<span class=normal>31</span>
+<span class=normal>32</span>
+<span class=normal>33</span>
+<span class=normal>34</span>
+<span class=normal>35</span>
+<span class=normal>36</span>
+<span class=normal>37</span>
+<span class=normal>38</span></pre></div><td class=code><div><pre><span></span><span class=p>{</span>
+<span class=w>  </span><span class=nt>"configurations"</span><span class=p>:</span><span class=w> </span><span class=p>{</span>
+<span class=w>    </span><span class=nt>"launch"</span><span class=p>:</span><span class=w> </span><span class=p>{</span>
+<span class=w>      </span><span class=nt>"adapter"</span><span class=p>:</span><span class=w> </span><span class=s2>"CodeLLDB"</span><span class=p>,</span>
+<span class=w>      </span><span class=nt>"variables"</span><span class=p>:</span><span class=w> </span><span class=p>{</span>
+<span class=w>        </span><span class=nt>"rustc_commit"</span><span class=p>:</span><span class=w> </span><span class=p>{</span>
+<span class=w>          </span><span class=nt>"shell"</span><span class=p>:</span><span class=w> </span><span class=p>[</span>
+<span class=w>            </span><span class=s2>"bash"</span><span class=p>,</span>
+<span class=w>            </span><span class=s2>"-c"</span><span class=p>,</span>
+<span class=w>            </span><span class=s2>"rustc -Vv | grep -Poi 'commit-hash: \\K(.*)'"</span>
+<span class=w>          </span><span class=p>]</span>
+<span class=w>        </span><span class=p>},</span>
+<span class=w>        </span><span class=nt>"rust_std"</span><span class=p>:</span><span class=w> </span><span class=p>{</span>
+<span class=w>          </span><span class=nt>"shell"</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=w> </span><span class=s2>"rustc"</span><span class=p>,</span><span class=w> </span><span class=s2>"--print"</span><span class=p>,</span><span class=w> </span><span class=s2>"sysroot"</span><span class=w> </span><span class=p>]</span>
+<span class=w>        </span><span class=p>},</span>
+<span class=w>        </span><span class=nt>"test_exe"</span><span class=p>:</span><span class=w> </span><span class=p>{</span>
+<span class=w>          </span><span class=nt>"shell"</span><span class=p>:</span><span class=w> </span><span class=p>[</span>
+<span class=w>            </span><span class=s2>"bash"</span><span class=p>,</span>
+<span class=w>            </span><span class=s2>"-c"</span><span class=p>,</span>
+<span class=w>            </span><span class=s2>"cargo test --no-run --message-format=json -q | grep -Poi 'executable\":\"\\K([^\"]*)(?=\")'"</span>
+<span class=w>          </span><span class=p>]</span>
+<span class=w>        </span><span class=p>}</span>
+<span class=w>      </span><span class=p>},</span>
+<span class=w>      </span><span class=nt>"configuration"</span><span class=p>:</span><span class=w> </span><span class=p>{</span>
+<span class=w>        </span><span class=nt>"sourceMap#json"</span><span class=p>:</span><span class=w> </span><span class=s2>"{\"/rustc/${rustc_commit}/\" : \"${rust_std}/lib/rustlib/src/rust/\"}"</span><span class=p>,</span>
+<span class=w>        </span><span class=nt>"request"</span><span class=p>:</span><span class=w> </span><span class=s2>"launch"</span><span class=p>,</span>
+<span class=w>        </span><span class=nt>"program"</span><span class=p>:</span><span class=w> </span><span class=s2>"${test_exe}"</span>
+<span class=w>      </span><span class=p>},</span>
+<span class=w>      </span><span class=nt>"args"</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=w> </span><span class=s2>"*${args}"</span><span class=w> </span><span class=p>],</span>
+<span class=w>      </span><span class=nt>"breakpoints"</span><span class=p>:</span><span class=w> </span><span class=p>{</span>
+<span class=w>        </span><span class=nt>"exception"</span><span class=p>:</span><span class=w> </span><span class=p>{</span>
+<span class=w>          </span><span class=nt>"cpp_throw"</span><span class=p>:</span><span class=w> </span><span class=s2>""</span><span class=p>,</span>
+<span class=w>          </span><span class=nt>"cpp_catch"</span><span class=p>:</span><span class=w> </span><span class=s2>""</span>
+<span class=w>        </span><span class=p>}</span>
+<span class=w>      </span><span class=p>}</span>
+<span class=w>    </span><span class=p>}</span>
+<span class=w>  </span><span class=p>}</span>
+<span class=p>}</span>
+</pre></div></table></div></article></div><div class=tags><span>Post Tags:</span><a href=tag/vim.html> #vim,</a><a href=tag/neovim.html> #neovim,</a><a href=tag/plugin.html> #plugin,</a><a href=tag/vimspector.html> #vimspector,</a><a href=tag/rust.html> #rust,</a><a href=tag/test.html> #test</a></div><hr class=my-3><div id=comments></div><script>var PopulateComment=(a=>{let e=`div`,f=`a`,g=`item`;commentsBlock=document.getElementById(`comments`);let b=document.createElement(e);b.innerText=`Comments`;commentsBlock.append(b);let c=document.createElement(e);commentsBlock.append(c);a.forEach(a=>{let b=document.createElement(`span`);b.innerText=a.user.login;updateTime=document.createElement(`small`);updateTime.innerText=`(`+ a.updated_at+ `)`;commentBody=document.createElement(e);commentBody.innerText=a.body;lineBreak=document.createElement(`br`);commentBox=document.createElement(f);commentBox.classList.add(g);commentBox.append(b);commentBox.append(updateTime);commentBox.append(lineBreak);commentBox.append(commentBody);commentBox.href=a.html_url;c.append(commentBox)});let d=document.createElement(f);d.classList.add(g);d.href=issueUrl;d.innerText=`Have some comments? Add comment ...`;c.append(d)});let commentUrl=`https://api.github.com/repos/sak96/sak96.github.io/issues/16/comments`;let issueUrl=`https://github.com/sak96/sak96.github.io/issues/16`;var xhr=new XMLHttpRequest();xhr.open(`GET`,commentUrl,!0);xhr.responseType=`json`;xhr.onload=(()=>{var a=xhr.status;if(a===200){console.log(PopulateComment(xhr.response))}else{console.log(xhr.response)}});xhr.send()</script><script src=https://unpkg.com/mermaid@latest/dist/mermaid.min.js></script><hr><div class=footer><span>Powered by:</span><a href=http://getpelican.com/>Pelican,</a><a href=https://github.com/pygments/pygments>Pygments,</a><a href=https://github.com/morhetz/gruvbox-contrib>Gruvbox</a></div></div>

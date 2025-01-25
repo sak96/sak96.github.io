@@ -1,592 +1,183 @@
-<!DOCTYPE html>
-<html>
+<!doctype html><title>Python coroutine</title><link rel="shortcut icon" href=https://sak96.github.io/theme/images/favicon.svg><meta content=width=device-width,initial-scale=1.0 name=viewport><meta charset=UTF-8><link href=https://sak96.github.io/feeds/all.atom.xml rel=alternate title=sak96-blog type=application/atom+xml><link href=https://sak96.github.io/theme/syntax/pygment.css rel=stylesheet><style>*{box-sizing:border-box}:root{--bg:#1d2021;--fg:#d4be98;--gray:#928374;--blue:#7daea3;--green:#a9b665;--red:#ea6962}[data-theme=light]{--bg:#f9f5d7;--fg:#654735;--gray:#928374;--blue:#45707a;--green:#6c782e;--red:#c14a4a}table,th,td{border:1px solid var(--fg);border-collapse:collapse;padding:10px}.codehilitetable{border:2px solid var(--blue);border-collapse:collapse;border-radius:4px;padding:0;font-family:monospace;display:block;overflow-x:auto}.codehilite{margin:0 1em}.linenos{text-align:right;border:0;border-right:2px solid var(--blue);-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-khtml-user-select:none;padding:0 .5em}.code{border:0}body{background-color:var(--bg);color:var(--fg)}a{color:var(--blue);text-decoration:none}h1,h2,h3,h4,h5,h6{color:var(--green)}small{color:var(--gray)}.navbar{border-bottom:1px solid var(--green)}.navbar div{display:inline-block}.nav-end{position:absolute;right:.5rem}.navbar a{padding:.5rem 0}.navbar a:before{content:"["}.navbar a:after{content:"]"}#theme{cursor:pointer}[data-theme=light] #theme:before{content:"[🌚:"}#theme:before{content:"[🌞:"}#navbar-toggler{display:none}.content{width:80%;max-width:50rem;margin:auto}article em,article strong{color:var(--red)}.not-found,.coming-soon{text-align:center;width:100%;display:block}.item{border-top:1px dashed var(--red);color:var(--fg);margin:.5rem 0;padding:1rem;display:block}.item>:first-child{margin-top:0}.img-fluid{width:100%}.paginator{justify-content:space-between;margin:.5rem;display:flex}.footer,.tags{justify-content:center;margin:.5rem;display:flex}.disabled{pointer-events:none;color:var(--gray)}@media only screen and (width<=500px){.navbar{border:none}.nav-header{border-bottom:.025rem solid var(--green)}.navbar div{display:block;position:static}#navbar-toggler{background-color:inherit;color:inherit;border:none;display:inline;position:absolute;right:1rem;transform:rotate(90deg)}.navbar a:after,.navbar a:before{content:""}.navbar a{border-bottom:.025rem solid var(--green);display:none}.nav-header a{border:none;display:inline-block}.navbar a.show{display:block}.content{width:100%}.footer{display:inline-block}.paginator span{display:none}[data-theme=light] #theme:before{content:"🌚:"}#theme:before{content:"🌞:"}}</style><body><div class=navbar><div class=nav-header><a href=https://sak96.github.io/index.html>sak96-blog</a><a id=navbar-toggler>|||</a></div><div class=nav-start><a href=https://sak96.github.io/authors.html>Authors</a><a href=https://sak96.github.io/categories.html>Categories</a><a href=https://sak96.github.io/tags.html>Tags</a></div><div class=nav-end><a href=https://sak96.github.io/feeds/all.atom.xml>Atom</a><a id=theme>Theme</a></div></div><script>document.querySelector(`#navbar-toggler`).onclick=(a=>{document.querySelectorAll(`.nav-start a,.nav-end a`).forEach(a=>a.classList.toggle(`show`))});{let d=`data-theme`,e=`dark`,c=`light`,b=`theme`;let a=localStorage.getItem(b);if(a===c||window.matchMedia(`(prefers-color-scheme: light)`).matches){document.documentElement.setAttribute(d,c);localStorage.setItem(b,c)}else{document.documentElement.setAttribute(d,e);localStorage.setItem(b,e)}}document.querySelector(`#theme`).onclick=(a=>{let b=`data-theme`,d=`light`,c=`theme`;if(document.documentElement.getAttribute(b)){document.documentElement.setAttribute(b,``);localStorage.setItem(c,`dark`)}else{document.documentElement.setAttribute(b,d);localStorage.setItem(c,d)}})</script><div class=content><div><h1>Python coroutine</h1><h5><p>Understanding coroutine in python by using summer problem</h5><h5>Read time: 7 min</h5><small>Written on March 08, 2023</small></div><div><article><h2>Easy problem and Typical solution</h2><p>Imagine a problem where you need to keep track of sum of integer. Let us call it problem of <code>Summer</code> (also a season). Typical solution to the problem is to store sum in object. We will move from this solution towards one which demonstrate working of coroutine.<p>The typical solution will involve object which takes integer as input. It stores the sum as state and provides the output.<div class=codehilite><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre><span class=normal> 1</span>
+<span class=normal> 2</span>
+<span class=normal> 3</span>
+<span class=normal> 4</span>
+<span class=normal> 5</span>
+<span class=normal> 6</span>
+<span class=normal> 7</span>
+<span class=normal> 8</span>
+<span class=normal> 9</span>
+<span class=normal>10</span>
+<span class=normal>11</span></pre></div><td class=code><div><pre><span></span><span class=k>class</span> <span class=nc>Summer</span><span class=p>:</span>
+    <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>total</span><span class=o>=</span><span class=mi>0</span><span class=p>):</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>total</span> <span class=o>=</span> <span class=n>total</span>
+    <span class=k>def</span> <span class=nf>add</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>m</span><span class=o>=</span><span class=mi>0</span><span class=p>):</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>total</span> <span class=o>+=</span> <span class=n>m</span>
+    <span class=k>def</span> <span class=nf>sum</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
+        <span class=k>return</span> <span class=bp>self</span><span class=o>.</span><span class=n>total</span>
 
-<head>
-  <title>Python coroutine</title>
-  <link rel="shortcut icon" 
-  href="https://sak96.github.io/theme/images/favicon.svg">
-  <meta name="viewport" 
-  content="width=device-width, initial-scale=1.0" />
-  <meta charset="UTF-8">
-    <link rel="alternate" type="application/atom+xml"
-    title="sak96-blog" href="https://sak96.github.io/feeds/all.atom.xml" />
-  <link rel="stylesheet" href="https://sak96.github.io/theme/syntax/pygment.css">
-    <style>
-* {
-  box-sizing: border-box;
-}
-:root {
-  --bg: #1d2021;
-  --fg: #d4be98;
-  --gray: #928374;
-  --blue: #7daea3;
-  --green: #a9b665;
-  --red: #ea6962;
-}
-[data-theme="light"] {
-  --bg: #f9f5d7;
-  --fg: #654735;
-  --gray: #928374;
-  --blue: #45707a;
-  --green: #6c782e;
-  --red: #c14a4a;
-}
-table,
-th,
-td {
-  padding: 10px;
-  border: 1px solid var(--fg);
-  border-collapse: collapse;
-}
-.codehilitetable {
-  padding: 0px;
-  display: block;
-  overflow-x: auto;
-  border: 2px solid var(--blue);
-  border-radius: 4px;
-  border-collapse: collapse;
-  font-family: monospace;
-}
-.codehilite {
-  margin: 0 1em;
-}
-.linenos {
-  text-align: right;
-  border: 0px;
-  border-right: 2px solid var(--blue);
-  padding: 0em 0.5em;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-.code {
-  border: 0px;
-}
-body {
-  background-color: var(--bg);
-  color: var(--fg);
-}
-a {
-  text-decoration: none;
-  color: var(--blue);
-}
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: var(--green);
-}
-small {
-  color: var(--gray);
-}
-.navbar {
-  border-bottom: 1px solid var(--green);
-}
-.navbar div {
-  display: inline-block;
-}
-.nav-end {
-  position: absolute;
-  right: 0.5rem;
-}
-.navbar a {
-  padding: 0.5rem 0;
-}
-.navbar a:before {
-  content: "[";
-}
-.navbar a:after {
-  content: "]";
-}
-#theme {
-  cursor: pointer;
-}
-[data-theme="light"] #theme:before {
-  content: "[🌚:";
-}
-#theme:before {
-  content: "[🌞:";
-}
-#navbar-toggler {
-  display: none;
-}
-.content {
-  width: 80%;
-  max-width: 50rem;
-  margin: auto;
-}
-article em,
-article strong {
-  color: var(--red);
-}
-.not-found,
-.coming-soon {
-  display: block;
-  width: 100%;
-  text-align: center;
-}
-.item {
-  display: block;
-  margin: 0.5rem 0;
-  padding: 1rem;
-  border-top: 1px dashed var(--red);
-  color: var(--fg);
-}
-.item > :first-child {
-  margin-top: 0;
-}
-.img-fluid {
-  width: 100%;
-}
-.paginator {
-  margin: 0.5rem;
-  display: flex;
-  justify-content: space-between;
-}
-.footer,
-.tags {
-  margin: 0.5rem;
-  display: flex;
-  justify-content: center;
-}
-.disabled {
-  pointer-events: none;
-  color: var(--gray);
-}
-@media only screen and (max-width: 500px) {
-  .navbar {
-    border: none;
-  }
-  .nav-header {
-    border-bottom: 0.025rem solid var(--green);
-  }
-  .navbar div {
-    display: block;
-    position: static;
-  }
-  #navbar-toggler {
-    transform: rotate(90deg);
-    position: absolute;
-    right: 1rem;
-    display: inline;
-    background-color: inherit;
-    border: none;
-    color: inherit;
-  }
-  .navbar a:after,
-  .navbar a:before {
-    content: "";
-  }
-  .navbar a {
-    border-bottom: 0.025rem solid var(--green);
-    display: none;
-  }
-  .nav-header a {
-    display: inline-block;
-    border: none;
-  }
-  .navbar a.show {
-    display: block;
-  }
-  .content {
-    width: 100%;
-  }
-  .footer {
-    display: inline-block;
-  }
-  .paginator span {
-    display: none;
-  }
-  [data-theme="light"] #theme:before {
-    content: "🌚:";
-  }
-  #theme:before {
-    content: "🌞:";
-  }
-}    </style>
-</head>
+<span class=n>summer</span> <span class=o>=</span> <span class=n>Summer</span><span class=p>()</span>
+<span class=n>summer</span><span class=o>.</span><span class=n>add</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span>
+<span class=k>assert</span> <span class=n>summer</span><span class=o>.</span><span class=n>sum</span><span class=p>()</span> <span class=o>==</span> <span class=mi>10</span>
+</pre></div></table></div><h2>Let's call some objects</h2><p>Instead of having two different methods, a single method can used. The said method can update the sum with input and return the sum as output. The default value of <code>0</code> as input to this will emulate <code>sum</code> from previous example.<div class=codehilite><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre><span class=normal> 1</span>
+<span class=normal> 2</span>
+<span class=normal> 3</span>
+<span class=normal> 4</span>
+<span class=normal> 5</span>
+<span class=normal> 6</span>
+<span class=normal> 7</span>
+<span class=normal> 8</span>
+<span class=normal> 9</span>
+<span class=normal>10</span></pre></div><td class=code><div><pre><span></span><span class=k>class</span> <span class=nc>SummerV0</span><span class=p>:</span>
+    <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>total</span><span class=o>=</span><span class=mi>0</span><span class=p>):</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>total</span> <span class=o>=</span> <span class=n>total</span>
+    <span class=k>def</span> <span class=fm>__call__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>m</span><span class=o>=</span><span class=mi>0</span><span class=p>):</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>total</span> <span class=o>+=</span> <span class=n>m</span>
+        <span class=k>return</span> <span class=bp>self</span><span class=o>.</span><span class=n>total</span>
 
-<body>
-<div class="navbar">
-    <div class="nav-header"/>
-        <a href="https://sak96.github.io/index.html">sak96-blog</a>
-        <a id="navbar-toggler">|||</a>
-    </div>
-    <div class="nav-start">
-        <a href="https://sak96.github.io/authors.html">Authors</a>
-        <a href="https://sak96.github.io/categories.html">Categories</a>
-        <a href="https://sak96.github.io/tags.html">Tags</a>
-    </div>
-    <div class="nav-end">
-        <a href="https://sak96.github.io/feeds/all.atom.xml">Atom</a>
-        <a id="theme">Theme</a>
-    </div>
-</div>
-<script>
-document.querySelector("#navbar-toggler").onclick = function (e) {
-  document
-    .querySelectorAll(".nav-start a,.nav-end a")
-    .forEach((e) => e.classList.toggle("show"));
-};
-{
-  let theme = localStorage.getItem("theme");
-  if (
-    theme === "light" ||
-    window.matchMedia("(prefers-color-scheme: light)").matches
-  ) {
-    document.documentElement.setAttribute("data-theme", "light");
-    localStorage.setItem("theme", "light");
-  } else {
-    document.documentElement.setAttribute("data-theme", "dark");
-    localStorage.setItem("theme", "dark");
-  }
-}
-document.querySelector("#theme").onclick = function (e) {
-  if (document.documentElement.getAttribute("data-theme")) {
-    document.documentElement.setAttribute("data-theme", "");
-    localStorage.setItem("theme", "dark");
-  } else {
-    document.documentElement.setAttribute("data-theme", "light");
-    localStorage.setItem("theme", "light");
-  }
-};</script>    <div class="content">
-	<div>
-		<h1>Python coroutine</h1>
-		<h5><p>Understanding coroutine in python by using summer problem</p></h5>
-		<h5>Read time: 7 min</h5>
-		<small>Written on March 08, 2023</small>
-	</div>
-	<div> 
-	<article>
-	<h2>Easy problem and Typical solution</h2>
-<p>Imagine a problem where you need to keep track of sum of integer.
-Let us call it problem of <code>Summer</code> (also a season).
-Typical solution to the problem is to store sum in object.
-We will move from this solution towards one which demonstrate working of coroutine.</p>
-<p>The typical solution will involve object which takes integer as input.
-It stores the sum as state and provides the output.</p>
-<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
-<span class="normal"> 2</span>
-<span class="normal"> 3</span>
-<span class="normal"> 4</span>
-<span class="normal"> 5</span>
-<span class="normal"> 6</span>
-<span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><span class="k">class</span> <span class="nc">Summer</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">total</span> <span class="o">=</span> <span class="n">total</span>
-    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">total</span> <span class="o">+=</span> <span class="n">m</span>
-    <span class="k">def</span> <span class="nf">sum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">total</span>
+<span class=n>summer</span> <span class=o>=</span> <span class=n>SummerV0</span><span class=p>()</span>
+<span class=k>assert</span> <span class=n>summer</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span> <span class=o>==</span> <span class=mi>10</span>
+<span class=k>assert</span> <span class=n>summer</span><span class=p>()</span> <span class=o>==</span> <span class=mi>10</span>
+</pre></div></table></div><p>Object can be called as function by implementing <code>__call__</code> function. This allow calling the object like any other function in python. Calling the object will call the <code>__call__</code> method with the argument specified.<h2>Summer using coroutine and globals</h2><p>In previous example we used a single state which is updated when the object is called. This could also be achieved by using coroutine with similar interface.<p>Coroutine looks similar to function in python but the differ in certain ways. They can store state and <code>yield</code> the output instead of <code>return</code>-ing the output. In this regard they are closer to generator rather than function.<div class=codehilite><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre><span class=normal> 1</span>
+<span class=normal> 2</span>
+<span class=normal> 3</span>
+<span class=normal> 4</span>
+<span class=normal> 5</span>
+<span class=normal> 6</span>
+<span class=normal> 7</span>
+<span class=normal> 8</span>
+<span class=normal> 9</span>
+<span class=normal>10</span>
+<span class=normal>11</span></pre></div><td class=code><div><pre><span></span><span class=k>def</span> <span class=nf>summer_v1</span><span class=p>(</span><span class=n>total_init</span><span class=o>=</span><span class=mi>0</span><span class=p>):</span>
+    <span class=k>global</span> <span class=n>total</span>
+    <span class=n>total</span> <span class=o>=</span> <span class=n>total_init</span>
+    <span class=k>while</span> <span class=kc>True</span><span class=p>:</span>
+        <span class=n>z</span> <span class=o>=</span> <span class=k>yield</span>
+        <span class=n>total</span> <span class=o>+=</span> <span class=n>z</span> <span class=k>if</span> <span class=n>z</span> <span class=k>else</span> <span class=mi>0</span>
 
-<span class="n">summer</span> <span class="o">=</span> <span class="n">Summer</span><span class="p">()</span>
-<span class="n">summer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="k">assert</span> <span class="n">summer</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">==</span> <span class="mi">10</span>
-</pre></div></td></tr></table></div>
+<span class=n>summer</span> <span class=o>=</span> <span class=n>summer_v1</span><span class=p>()</span>
+<span class=nb>next</span><span class=p>(</span><span class=n>summer</span><span class=p>)</span>
+<span class=n>summer</span><span class=o>.</span><span class=n>send</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span>
+<span class=k>assert</span> <span class=n>total</span> <span class=o>==</span> <span class=mi>10</span>
+</pre></div></table></div><p>In the above example you see that we are using <code>global</code> variable to access the state. The coroutine returns a coroutine, this is initialized by calling <code>next</code> on the same. The initialization of coroutine will run the code till first yield. Once initialized the coroutine, input can be sent by using <a href=https://docs.python.org/3/reference/datamodel.html#coroutine.send>send</a> interface. The value enters the coroutine at <code>yield</code> and can be used by the coroutine as it see fit.<h2>No global please!!!</h2><p>In previous example globals was used to access the state. This would mean having two coroutine would not be possible at same time. The problem can be avoided if coroutine could return the value of the state. The <code>yield</code> can be followed by value that can be returned by <code>send</code> interface.<div class=codehilite><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre><span class=normal> 1</span>
+<span class=normal> 2</span>
+<span class=normal> 3</span>
+<span class=normal> 4</span>
+<span class=normal> 5</span>
+<span class=normal> 6</span>
+<span class=normal> 7</span>
+<span class=normal> 8</span>
+<span class=normal> 9</span>
+<span class=normal>10</span>
+<span class=normal>11</span>
+<span class=normal>12</span></pre></div><td class=code><div><pre><span></span><span class=k>def</span> <span class=nf>summer_v2</span><span class=p>(</span><span class=n>total</span><span class=o>=</span><span class=mi>0</span><span class=p>):</span>
+    <span class=n>total</span> <span class=o>=</span> <span class=n>total</span>
+    <span class=k>while</span> <span class=kc>True</span><span class=p>:</span>
+        <span class=n>z</span> <span class=o>=</span> <span class=k>yield</span> <span class=n>total</span>
+        <span class=n>total</span> <span class=o>+=</span> <span class=n>z</span> <span class=k>if</span> <span class=n>z</span> <span class=k>else</span> <span class=mi>0</span>
 
+<span class=n>summer</span> <span class=o>=</span> <span class=n>summer_v2</span><span class=p>()</span>
+<span class=n>summer_again</span> <span class=o>=</span> <span class=n>summer_v2</span><span class=p>(</span><span class=mi>12</span><span class=p>)</span>
+<span class=k>assert</span> <span class=nb>next</span><span class=p>(</span><span class=n>summer</span><span class=p>)</span> <span class=o>==</span> <span class=mi>0</span>
+<span class=k>assert</span> <span class=nb>next</span><span class=p>(</span><span class=n>summer_again</span><span class=p>)</span> <span class=o>==</span> <span class=mi>12</span>
+<span class=k>assert</span> <span class=n>summer</span><span class=o>.</span><span class=n>send</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span> <span class=o>==</span> <span class=mi>10</span>
+<span class=k>assert</span> <span class=n>summer_again</span><span class=o>.</span><span class=n>send</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span> <span class=o>==</span> <span class=mi>22</span>
+</pre></div></table></div><h2>Automatic Initialization of coroutine</h2><p>The initialization of coroutine from coroutine is needed before sending values. Sending value before initialization will raise exception. The message will be <code>TypeError: can't send non-None value to a just-started coroutine</code>. To avoid such accident we can decorate the coroutine with a <code>safety_wrapper</code>.<div class=codehilite><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre><span class=normal> 1</span>
+<span class=normal> 2</span>
+<span class=normal> 3</span>
+<span class=normal> 4</span>
+<span class=normal> 5</span>
+<span class=normal> 6</span>
+<span class=normal> 7</span>
+<span class=normal> 8</span>
+<span class=normal> 9</span>
+<span class=normal>10</span>
+<span class=normal>11</span>
+<span class=normal>12</span>
+<span class=normal>13</span>
+<span class=normal>14</span>
+<span class=normal>15</span>
+<span class=normal>16</span>
+<span class=normal>17</span></pre></div><td class=code><div><pre><span></span><span class=k>def</span> <span class=nf>safety_wrapper</span><span class=p>(</span><span class=n>cr</span><span class=p>):</span>
+<span class=w>    </span><span class=sd>"""the safety wrapper"""</span>
+    <span class=k>def</span> <span class=nf>init_cr</span><span class=p>(</span><span class=o>*</span><span class=n>args</span><span class=p>,</span> <span class=o>**</span><span class=n>kwargs</span><span class=p>):</span>
+        <span class=n>dec_cr</span> <span class=o>=</span> <span class=n>cr</span><span class=p>(</span><span class=o>*</span><span class=n>args</span><span class=p>,</span> <span class=o>**</span><span class=n>kwargs</span><span class=p>)</span>
+        <span class=n>dec_cr</span><span class=o>.</span><span class=n>send</span><span class=p>(</span><span class=kc>None</span><span class=p>)</span>
+        <span class=k>return</span> <span class=n>dec_cr</span>
+    <span class=k>return</span> <span class=n>init_cr</span>
 
-<h2>Let's call some objects</h2>
-<p>Instead of having two different methods, a single method can used.
-The said method can update the sum with input and return the sum as output.
-The default value of <code>0</code> as input to this will emulate <code>sum</code> from previous example.</p>
-<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
-<span class="normal"> 2</span>
-<span class="normal"> 3</span>
-<span class="normal"> 4</span>
-<span class="normal"> 5</span>
-<span class="normal"> 6</span>
-<span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><span class="k">class</span> <span class="nc">SummerV0</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">total</span> <span class="o">=</span> <span class="n">total</span>
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">total</span> <span class="o">+=</span> <span class="n">m</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">total</span>
+<span class=nd>@safety_wrapper</span>
+<span class=k>def</span> <span class=nf>summer_v3</span><span class=p>(</span><span class=n>total_init</span><span class=o>=</span><span class=mi>0</span><span class=p>):</span>
+    <span class=n>total</span> <span class=o>=</span> <span class=n>total_init</span>
+    <span class=k>while</span> <span class=kc>True</span><span class=p>:</span>
+        <span class=n>z</span> <span class=o>=</span> <span class=k>yield</span> <span class=n>total</span>
+        <span class=n>total</span> <span class=o>+=</span> <span class=n>z</span> <span class=k>if</span> <span class=n>z</span> <span class=k>else</span> <span class=mi>0</span>
 
-<span class="n">summer</span> <span class="o">=</span> <span class="n">SummerV0</span><span class="p">()</span>
-<span class="k">assert</span> <span class="n">summer</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="mi">10</span>
-<span class="k">assert</span> <span class="n">summer</span><span class="p">()</span> <span class="o">==</span> <span class="mi">10</span>
-</pre></div></td></tr></table></div>
+<span class=n>summer</span> <span class=o>=</span> <span class=n>summer_v3</span><span class=p>()</span>
+<span class=k>assert</span> <span class=n>summer</span><span class=o>.</span><span class=n>send</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span> <span class=o>==</span> <span class=mi>10</span>
+</pre></div></table></div><p>Note in the example we are not using <code>next</code> instead we are using <code>obj.send(None)</code>. Using <code>next</code> is actually calling <code>obj.send(None)</code> internally.<h2>How to stop or rest summer for summing up.</h2><p>Coroutine can be <a href=https://docs.python.org/3/reference/datamodel.html#coroutine.close>closed</a> just like a generator which has been exhausted. Coroutine can be auto closed when it goes out of scope. Clean up action can be taken when coroutine by catching <code>GeneratorExit</code> exception.<div class=codehilite><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre><span class=normal> 1</span>
+<span class=normal> 2</span>
+<span class=normal> 3</span>
+<span class=normal> 4</span>
+<span class=normal> 5</span>
+<span class=normal> 6</span>
+<span class=normal> 7</span>
+<span class=normal> 8</span>
+<span class=normal> 9</span>
+<span class=normal>10</span>
+<span class=normal>11</span>
+<span class=normal>12</span>
+<span class=normal>13</span>
+<span class=normal>14</span>
+<span class=normal>15</span>
+<span class=normal>16</span>
+<span class=normal>17</span>
+<span class=normal>18</span>
+<span class=normal>19</span>
+<span class=normal>20</span>
+<span class=normal>21</span>
+<span class=normal>22</span>
+<span class=normal>23</span>
+<span class=normal>24</span>
+<span class=normal>25</span>
+<span class=normal>26</span>
+<span class=normal>27</span>
+<span class=normal>28</span>
+<span class=normal>29</span>
+<span class=normal>30</span>
+<span class=normal>31</span>
+<span class=normal>32</span>
+<span class=normal>33</span></pre></div><td class=code><div><pre><span></span><span class=k>class</span> <span class=nc>Reset</span><span class=p>(</span><span class=ne>Exception</span><span class=p>):</span>
+    <span class=k>pass</span>
 
+<span class=nd>@safety_wrapper</span>
+<span class=k>def</span> <span class=nf>summer_v4</span><span class=p>(</span><span class=n>total_init</span><span class=o>=</span><span class=mi>0</span><span class=p>):</span>
+    <span class=n>total</span> <span class=o>=</span> <span class=n>total_init</span>
+    <span class=k>while</span> <span class=kc>True</span><span class=p>:</span>
+        <span class=k>try</span><span class=p>:</span>
+            <span class=n>z</span> <span class=o>=</span> <span class=k>yield</span> <span class=n>total</span>
+            <span class=n>total</span> <span class=o>+=</span> <span class=n>z</span> <span class=k>if</span> <span class=n>z</span> <span class=k>else</span> <span class=mi>0</span>
+        <span class=k>except</span> <span class=n>Reset</span><span class=p>:</span>
+            <span class=n>total</span> <span class=o>=</span> <span class=mi>0</span>
+        <span class=k>except</span> <span class=ne>GeneratorExit</span><span class=p>:</span>
+            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>"total=</span><span class=si>{</span><span class=n>total</span><span class=si>}</span><span class=s2>"</span><span class=p>)</span>
+            <span class=k>return</span>
 
-<p>Object can be called as function by implementing <code>__call__</code> function.
-This allow calling the object like any other function in python.
-Calling the object will call the <code>__call__</code> method with the argument specified.</p>
-<h2>Summer using coroutine and globals</h2>
-<p>In previous example we used a single state which is updated when the object is called.
-This could also be achieved by using coroutine with similar interface.</p>
-<p>Coroutine looks similar to function in python but the differ in certain ways.
-They can store state and <code>yield</code> the output instead of <code>return</code>-ing the output.
-In this regard they are closer to generator rather than function.</p>
-<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
-<span class="normal"> 2</span>
-<span class="normal"> 3</span>
-<span class="normal"> 4</span>
-<span class="normal"> 5</span>
-<span class="normal"> 6</span>
-<span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><span class="k">def</span> <span class="nf">summer_v1</span><span class="p">(</span><span class="n">total_init</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="k">global</span> <span class="n">total</span>
-    <span class="n">total</span> <span class="o">=</span> <span class="n">total_init</span>
-    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">z</span> <span class="o">=</span> <span class="k">yield</span>
-        <span class="n">total</span> <span class="o">+=</span> <span class="n">z</span> <span class="k">if</span> <span class="n">z</span> <span class="k">else</span> <span class="mi">0</span>
+<span class=n>summer</span> <span class=o>=</span> <span class=n>summer_v4</span><span class=p>()</span>
+<span class=k>assert</span> <span class=n>summer</span><span class=o>.</span><span class=n>send</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span> <span class=o>==</span> <span class=mi>10</span>
+<span class=n>summer</span><span class=o>.</span><span class=n>close</span><span class=p>()</span>  <span class=c1># prints `total=10`</span>
 
-<span class="n">summer</span> <span class="o">=</span> <span class="n">summer_v1</span><span class="p">()</span>
-<span class="nb">next</span><span class="p">(</span><span class="n">summer</span><span class="p">)</span>
-<span class="n">summer</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="k">assert</span> <span class="n">total</span> <span class="o">==</span> <span class="mi">10</span>
-</pre></div></td></tr></table></div>
+<span class=n>exception</span> <span class=o>=</span> <span class=kc>False</span>
+<span class=k>try</span><span class=p>:</span>
+    <span class=n>summer</span><span class=o>.</span><span class=n>send</span><span class=p>(</span><span class=mi>11</span><span class=p>)</span>
+<span class=k>except</span> <span class=ne>StopIteration</span><span class=p>:</span>
+    <span class=n>exception</span> <span class=o>=</span> <span class=kc>True</span>
 
+<span class=k>assert</span> <span class=n>exception</span>
 
-<p>In the above example you see that we are using <code>global</code> variable to access the state.
-The coroutine returns a coroutine, this is initialized by calling <code>next</code> on the same.
-The initialization of coroutine will run the code till first yield.
-Once initialized the coroutine, input can be sent by using <a href="https://docs.python.org/3/reference/datamodel.html#coroutine.send">send</a> interface.
-The value enters the coroutine at <code>yield</code> and can be used by the coroutine as it see fit.</p>
-<h2>No global please!!!</h2>
-<p>In previous example globals was used to access the state.
-This would mean having two coroutine would not be possible at same time.
-The problem can be avoided if coroutine could return the value of the state.
-The <code>yield</code> can be followed by value that can be returned by <code>send</code> interface.</p>
-<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
-<span class="normal"> 2</span>
-<span class="normal"> 3</span>
-<span class="normal"> 4</span>
-<span class="normal"> 5</span>
-<span class="normal"> 6</span>
-<span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span>
-<span class="normal">12</span></pre></div></td><td class="code"><div><pre><span></span><span class="k">def</span> <span class="nf">summer_v2</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="n">total</span> <span class="o">=</span> <span class="n">total</span>
-    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">z</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">total</span>
-        <span class="n">total</span> <span class="o">+=</span> <span class="n">z</span> <span class="k">if</span> <span class="n">z</span> <span class="k">else</span> <span class="mi">0</span>
-
-<span class="n">summer</span> <span class="o">=</span> <span class="n">summer_v2</span><span class="p">()</span>
-<span class="n">summer_again</span> <span class="o">=</span> <span class="n">summer_v2</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
-<span class="k">assert</span> <span class="nb">next</span><span class="p">(</span><span class="n">summer</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
-<span class="k">assert</span> <span class="nb">next</span><span class="p">(</span><span class="n">summer_again</span><span class="p">)</span> <span class="o">==</span> <span class="mi">12</span>
-<span class="k">assert</span> <span class="n">summer</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="mi">10</span>
-<span class="k">assert</span> <span class="n">summer_again</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="mi">22</span>
-</pre></div></td></tr></table></div>
-
-
-<h2>Automatic Initialization of coroutine</h2>
-<p>The initialization of coroutine from coroutine is needed before sending values.
-Sending value before initialization will raise exception.
-The message will be <code>TypeError: can't send non-None value to a just-started coroutine</code>.
-To avoid such accident we can decorate the coroutine with a <code>safety_wrapper</code>.</p>
-<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
-<span class="normal"> 2</span>
-<span class="normal"> 3</span>
-<span class="normal"> 4</span>
-<span class="normal"> 5</span>
-<span class="normal"> 6</span>
-<span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span>
-<span class="normal">12</span>
-<span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span></pre></div></td><td class="code"><div><pre><span></span><span class="k">def</span> <span class="nf">safety_wrapper</span><span class="p">(</span><span class="n">cr</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;the safety wrapper&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">init_cr</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">dec_cr</span> <span class="o">=</span> <span class="n">cr</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="n">dec_cr</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">dec_cr</span>
-    <span class="k">return</span> <span class="n">init_cr</span>
-
-<span class="nd">@safety_wrapper</span>
-<span class="k">def</span> <span class="nf">summer_v3</span><span class="p">(</span><span class="n">total_init</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="n">total</span> <span class="o">=</span> <span class="n">total_init</span>
-    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">z</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">total</span>
-        <span class="n">total</span> <span class="o">+=</span> <span class="n">z</span> <span class="k">if</span> <span class="n">z</span> <span class="k">else</span> <span class="mi">0</span>
-
-<span class="n">summer</span> <span class="o">=</span> <span class="n">summer_v3</span><span class="p">()</span>
-<span class="k">assert</span> <span class="n">summer</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="mi">10</span>
-</pre></div></td></tr></table></div>
-
-
-<p>Note in the example we are not using <code>next</code> instead we are using <code>obj.send(None)</code>.
-Using <code>next</code> is actually calling <code>obj.send(None)</code> internally.</p>
-<h2>How to stop or rest summer for summing up.</h2>
-<p>Coroutine can be <a href="https://docs.python.org/3/reference/datamodel.html#coroutine.close">closed</a> just like a generator which has been exhausted.
-Coroutine can be auto closed when it goes out of scope.
-Clean up action can be taken when coroutine by catching <code>GeneratorExit</code> exception.</p>
-<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
-<span class="normal"> 2</span>
-<span class="normal"> 3</span>
-<span class="normal"> 4</span>
-<span class="normal"> 5</span>
-<span class="normal"> 6</span>
-<span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span>
-<span class="normal">12</span>
-<span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span>
-<span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span>
-<span class="normal">28</span>
-<span class="normal">29</span>
-<span class="normal">30</span>
-<span class="normal">31</span>
-<span class="normal">32</span>
-<span class="normal">33</span></pre></div></td><td class="code"><div><pre><span></span><span class="k">class</span> <span class="nc">Reset</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="k">pass</span>
-
-<span class="nd">@safety_wrapper</span>
-<span class="k">def</span> <span class="nf">summer_v4</span><span class="p">(</span><span class="n">total_init</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="n">total</span> <span class="o">=</span> <span class="n">total_init</span>
-    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">z</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">total</span>
-            <span class="n">total</span> <span class="o">+=</span> <span class="n">z</span> <span class="k">if</span> <span class="n">z</span> <span class="k">else</span> <span class="mi">0</span>
-        <span class="k">except</span> <span class="n">Reset</span><span class="p">:</span>
-            <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">except</span> <span class="ne">GeneratorExit</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;total=</span><span class="si">{</span><span class="n">total</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="k">return</span>
-
-<span class="n">summer</span> <span class="o">=</span> <span class="n">summer_v4</span><span class="p">()</span>
-<span class="k">assert</span> <span class="n">summer</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="mi">10</span>
-<span class="n">summer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>  <span class="c1"># prints `total=10`</span>
-
-<span class="n">exception</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="n">summer</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>
-<span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
-    <span class="n">exception</span> <span class="o">=</span> <span class="kc">True</span>
-
-<span class="k">assert</span> <span class="n">exception</span>
-
-<span class="n">summer_1</span> <span class="o">=</span> <span class="n">summer_v4</span><span class="p">()</span>
-<span class="k">assert</span> <span class="n">summer_1</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="mi">10</span>
-<span class="k">assert</span> <span class="n">summer_1</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="mi">20</span>
-<span class="k">assert</span> <span class="n">summer_1</span><span class="o">.</span><span class="n">throw</span><span class="p">(</span><span class="n">Reset</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
-<span class="k">assert</span> <span class="n">summer_1</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="mi">10</span>
-</pre></div></td></tr></table></div>
-
-
-<p>The coroutine is suppose <code>return</code> on <code>GeneratorExit</code> marking end of generator.
-If the coroutine <code>return</code> then <code>RuntimeError: generator ignored GeneratorExit</code> is raised.
-On <code>return</code> the coroutine has ended hence it will throw <code>StopIteration</code> if <code>send</code> is called.</p>
-<p>The coroutine also has a method <a href="https://docs.python.org/3/reference/datamodel.html#coroutine.throw">throw</a> which can be used to throw exception.
-This interface is used throw <code>Reset</code> exception which reset the state to <code>0</code>.</p>
-	</article>
-	</div>
-<div class="tags">
-    <span>Post Tags:</span>
-    <a href="tag/python.html">&nbsp;#python,</a>
-    <a href="tag/coroutine.html">&nbsp;#coroutine</a>
-</div><hr class="my-3">
-<div id="comments"></div>
-<script>
-  let commentUrl = "https://api.github.com/repos/sak96/sak96.github.io/issues/14/comments"
-  let issueUrl = "https://github.com/sak96/sak96.github.io/issues/14"
-  function PopulateComment(comments) {
-    commentsBlock = document.getElementById("comments");
-
-    // comments heading
-    let heading = document.createElement("div")
-    heading.innerText = "Comments"
-    commentsBlock.append(heading)
-
-    // comments placeholder
-    let commentsDiv = document.createElement("div")
-    commentsBlock.append(commentsDiv)
-
-    comments.forEach(comment => {
-      // username 
-      let username = document.createElement("span")
-      username.innerText = comment.user.login
-
-      // posting time
-      updateTime = document.createElement("small")
-      updateTime.innerText = "(" + comment.updated_at + ")"
-
-      // comment body
-      commentBody = document.createElement("div")
-      commentBody.innerText = comment.body
-
-      //line break
-      lineBreak = document.createElement("br")
-
-      // create comment box
-      commentBox = document.createElement("a")
-      commentBox.classList.add("item")
-      commentBox.append(username)
-      commentBox.append(updateTime)
-      commentBox.append(lineBreak)
-      commentBox.append(commentBody)
-      commentBox.href = comment.html_url
-
-      commentsDiv.append(commentBox)
-    });
-
-    // add comment
-    let addComment = document.createElement("a")
-    addComment.classList.add("item")
-    addComment.href = issueUrl
-    addComment.innerText = "Have some comments? Add comment ..."
-    commentsDiv.append(addComment)
-
-  }
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', commentUrl, true);
-  xhr.responseType = 'json';
-  xhr.onload = function () {
-    var status = xhr.status;
-    if (status === 200) {
-      console.log(PopulateComment(xhr.response));
-    } else {
-      console.log(xhr.response);
-    }
-  };
-  xhr.send();
-</script>
-        <script src="https://unpkg.com/mermaid@latest/dist/mermaid.min.js"></script>
-<hr>
-<div class="footer">
-    <span>Powered by:</span>
-    <a href="http://getpelican.com/">Pelican,</a>
-    <a href="https://github.com/pygments/pygments">Pygments,</a>
-    <a href="https://github.com/morhetz/gruvbox-contrib">Gruvbox</a>
-</div>  </div>
-</body>
-</html>
+<span class=n>summer_1</span> <span class=o>=</span> <span class=n>summer_v4</span><span class=p>()</span>
+<span class=k>assert</span> <span class=n>summer_1</span><span class=o>.</span><span class=n>send</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span> <span class=o>==</span> <span class=mi>10</span>
+<span class=k>assert</span> <span class=n>summer_1</span><span class=o>.</span><span class=n>send</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span> <span class=o>==</span> <span class=mi>20</span>
+<span class=k>assert</span> <span class=n>summer_1</span><span class=o>.</span><span class=n>throw</span><span class=p>(</span><span class=n>Reset</span><span class=p>)</span> <span class=o>==</span> <span class=mi>0</span>
+<span class=k>assert</span> <span class=n>summer_1</span><span class=o>.</span><span class=n>send</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span> <span class=o>==</span> <span class=mi>10</span>
+</pre></div></table></div><p>The coroutine is suppose <code>return</code> on <code>GeneratorExit</code> marking end of generator. If the coroutine <code>return</code> then <code>RuntimeError: generator ignored GeneratorExit</code> is raised. On <code>return</code> the coroutine has ended hence it will throw <code>StopIteration</code> if <code>send</code> is called.<p>The coroutine also has a method <a href=https://docs.python.org/3/reference/datamodel.html#coroutine.throw>throw</a> which can be used to throw exception. This interface is used throw <code>Reset</code> exception which reset the state to <code>0</code>.</article></div><div class=tags><span>Post Tags:</span><a href=tag/python.html> #python,</a><a href=tag/coroutine.html> #coroutine</a></div><hr class=my-3><div id=comments></div><script>var PopulateComment=(a=>{let e=`div`,f=`a`,g=`item`;commentsBlock=document.getElementById(`comments`);let b=document.createElement(e);b.innerText=`Comments`;commentsBlock.append(b);let c=document.createElement(e);commentsBlock.append(c);a.forEach(a=>{let b=document.createElement(`span`);b.innerText=a.user.login;updateTime=document.createElement(`small`);updateTime.innerText=`(`+ a.updated_at+ `)`;commentBody=document.createElement(e);commentBody.innerText=a.body;lineBreak=document.createElement(`br`);commentBox=document.createElement(f);commentBox.classList.add(g);commentBox.append(b);commentBox.append(updateTime);commentBox.append(lineBreak);commentBox.append(commentBody);commentBox.href=a.html_url;c.append(commentBox)});let d=document.createElement(f);d.classList.add(g);d.href=issueUrl;d.innerText=`Have some comments? Add comment ...`;c.append(d)});let commentUrl=`https://api.github.com/repos/sak96/sak96.github.io/issues/14/comments`;let issueUrl=`https://github.com/sak96/sak96.github.io/issues/14`;var xhr=new XMLHttpRequest();xhr.open(`GET`,commentUrl,!0);xhr.responseType=`json`;xhr.onload=(()=>{var a=xhr.status;if(a===200){console.log(PopulateComment(xhr.response))}else{console.log(xhr.response)}});xhr.send()</script><script src=https://unpkg.com/mermaid@latest/dist/mermaid.min.js></script><hr><div class=footer><span>Powered by:</span><a href=http://getpelican.com/>Pelican,</a><a href=https://github.com/pygments/pygments>Pygments,</a><a href=https://github.com/morhetz/gruvbox-contrib>Gruvbox</a></div></div>
