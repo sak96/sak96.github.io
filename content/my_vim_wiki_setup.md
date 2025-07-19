@@ -1,6 +1,7 @@
 +++
 title = "my vim wiki setup"
 date = 2021-11-09
+draft = true
 [taxonomies]
 tags = ["vim", "neovim", "plugin"]
 categories = ["vim"]

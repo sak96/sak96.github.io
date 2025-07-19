@@ -1,6 +1,7 @@
 +++
 title = "browser as scratch file editor"
 date = 2020-07-22
+draft = true
 [taxonomies]
 tags = ["story", "browser", "file"]
 categories = ["stories"]

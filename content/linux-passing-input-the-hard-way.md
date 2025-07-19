@@ -1,6 +1,7 @@
 +++
 title = "linux passing input the hard way"
 date = 2020-07-18
+draft = true
 [taxonomies]
 tags = ["story", "linux", "file"]
 categories = ["stories"]

@@ -1,6 +1,7 @@
 +++
 title = "debugging and patching docker"
 date = 2020-02-29
+draft = true
 [taxonomies]
 tags = ["patching", "debugging", "docker"]
 categories = ["notes"]

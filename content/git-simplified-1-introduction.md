@@ -1,6 +1,7 @@
 +++
 title = "git simplified 1 introduction"
 date = 2020-04-29
+draft = true
 [taxonomies]
 tags = ["version", "git", "information"]
 categories = ["vcs"]

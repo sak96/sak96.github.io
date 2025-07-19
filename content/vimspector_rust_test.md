@@ -1,6 +1,7 @@
 +++
 title = "vimspector rust test"
 date = 2023-07-12
+draft = true
 [taxonomies]
 tags = ["vim", "neovim", "plugin", "vimspector", "rust", "test"]
 categories = ["vim"]

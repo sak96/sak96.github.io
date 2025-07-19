@@ -1,6 +1,7 @@
 +++
 title = "summary writing documentation"
 date = 2020-02-22
+draft = true
 [taxonomies]
 tags = ["writing", "documentation", "programming"]
 categories = ["summary"]

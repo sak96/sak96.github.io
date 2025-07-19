@@ -1,6 +1,7 @@
 +++
 title = "debugging vim errors"
 date = 2022-04-25
+draft = true
 [taxonomies]
 tags = ["vim", "neovim", "debugging"]
 categories = ["vim"]

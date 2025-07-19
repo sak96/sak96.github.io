@@ -1,6 +1,7 @@
 +++
 title = "weird s3 list permission"
 date = 2021-06-20
+draft = true
 [taxonomies]
 tags = ["story", "s3", "security"]
 categories = ["stories"]

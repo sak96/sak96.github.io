@@ -1,6 +1,7 @@
 +++
 title = "summary write an excellent programming blog"
 date = 2020-02-15
+draft = true
 [taxonomies]
 tags = ["writing", "articles", "programming "]
 categories = ["summary"]

@@ -1,6 +1,7 @@
 +++
 title = "setting up wsl"
 date = 2020-08-20
+draft = true
 [taxonomies]
 tags = ["story", "wsl", "linux"]
 categories = ["wsl"]

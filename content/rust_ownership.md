@@ -1,6 +1,7 @@
 +++
 title = "rust ownership"
 date = 2020-12-20
+draft = true
 [taxonomies]
 tags = ["rust", "ownership"]
 categories = ["rust"]
