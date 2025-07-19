@@ -1,0 +1,72 @@
+# The base URL of the site; the only required configuration variable.
+base_url = "https://sak96.github.io/"
+
+# The site title and description; used in feeds by default.
+title = "Sanket's Blog"
+description = "A personal blog where I share my thoughts and experiences."
+
+# The site theme to use.
+theme = "radion"
+
+# When set to "true", the generated HTML files are minified.
+minify_html = true
+
+# When set to "true", a feed is automatically generated.
+generate_feeds = true
+
+# The default author for pages
+author = "Sanket Kamath"
+
+# The taxonomies to be rendered for the site and their configuration of the default languages
+taxonomies = [
+    { name = "tags", feed = true},
+    { name = "categories", feed = true},
+]
+
+# When set to "true", a search index is built from the pages and section
+# content for `default_language`.
+build_search_index = true
+
+[markdown]
+# When set to "true", all code blocks are highlighted.
+highlight_code = true
+
+# When set to "true", missing highlight languages are treated as errors. Defaults to false.
+error_on_missing_highlight = true
+
+# The theme to use for code highlighting.
+# See below for list of allowed values.
+highlight_theme = "dracula"
+
+# https://www.getzola.org/documentation/getting-started/configuration/#syntax-highlighting
+# highlight lang: https://www.getzola.org/documentation/content/syntax-highlighting/
+[search]
+# Search Bar
+index_format = "elasticlunr_json"
+
+[extra]
+# Top-menu
+radion_menu = [
+    {url = "$BASE_URL", name = "Home"},
+    {url = "$BASE_URL/categories", name = "Categories"},
+    {url = "$BASE_URL/tags", name = "Tags"},
+    {url = "$BASE_URL/about", name = "About Me"},
+]
+# Title
+radion_title = "Sanket's Blog"
+# Author
+author = "Sanket Kamath"
+# Disable Favicon
+favicon = false
+# GitHub
+github = "https://github.com/sak96"
+# Enhanced Code Block
+codeblock = true
+# Enable Search
+enable_search = true
+# Set Color Theme
+theme = "toggle"
+# Table of Contents
+toc = true
+# Disable Comment
+comments = false
