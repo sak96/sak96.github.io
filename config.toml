@@ -47,7 +47,7 @@ index_format = "elasticlunr_json"
 [extra]
 # Top-menu
 radion_menu = [
-    {url = "$BASE_URL", name = "Home"},
+    {url = "$BASE_URL/", name = "Home"},
     {url = "$BASE_URL/categories", name = "Categories"},
     {url = "$BASE_URL/tags", name = "Tags"},
     {url = "$BASE_URL/about", name = "About Me"},
