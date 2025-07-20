@@ -1,63 +1,36 @@
 +++
-title = "summary write an excellent programming blog"
+title = "A Guide to Effective Blog Posts"
 date = 2020-02-15
-draft = true
 [taxonomies]
-tags = ["writing", "articles", "programming "]
-categories = ["summary"]
+tags = [ "teach writing", "programming blog", "content creation" ]
+categories = ["Summary"]
 +++
-["Write An Excellent Programming Blog"](http://bit.ly/excellent-blog) talks about how to write tech-based articles. The Article categories articles, and details about how to write articles for given category, which provides guidelines for beginners to write articles.
+This article summarizes the key points from ["Write An Excellent Programming Blog"](http://bit.ly/excellent-blog) on how to craft compelling tech-based articles, offering detailed categories and beginner-friendly guidelines for writing across various tech domains.
+<!-- more -->
 
-## Types of articles.
+# Types of Articles
 
-### \* Story.
+- **Story**: Series of steps in an event, followed by a moral or lesson learned from that event.
+- **Opinion**: Presenting a hypothesis and providing evidence to support it. Also addressing potential questions and reiterating the hypothesis while being respectful.
+- **How-to Guides**: Step-by-step instructions on how to do something effectively.
+- **How Things Work**: Explaining the mechanics of complex processes in a clear and understandable manner, using thought-provoking subjects.
+- **Reviews**: Detailed experience of a product or service, highlighting its pros and cons. Analysis done without simplification, ending with beneficial information for readers.
 
-- Series of steps in event.
-- Moral of event.
+## How to Attract an Audience
 
-### \* Opinion.
+- **Aggregators**: Utilizing platforms that compile content from various sources.
+- **Weekly Feeds**: Publishing new content regularly on specific days of the week.
+- **Do Not Compete**: Avoiding direct competition in acquiring readership.
 
-- State hypothesis.
-- Provide evidence for hypothesis.
-- Response to possible question.
-- Restate the hypothesis.
-- Note: Do not hurt feeling.
+## Ways to Improve
 
-### \* How to Guides.
+- **Practice Writing**: Consistent practice is key in honing your skills.
+- **Style Influence**: Learn from authors whose style you admire and incorporate their techniques.
+- **Continuous Learning**: Regularly reading, analyzing, and applying what you learn to improve your craft.
+- **Feedback**: Seek reviews from editors or trusted friends before publishing.
 
-- Doing x is good for y problem.
-- Step for doing x.
+## Balancing Time for Writing
 
-### \* How things work.
-
-- Pick thought-provoking subject, say x.
-- Explain how x works.
-
-### \* Review.
-
-- I used x.
-- State your experience.
-- State Strength vs Weakness.
-- Have conclusion (using some criteria).
-- Analyze, do not say yes or no.
-- Concluded with info useful for reader.
-
-## How to get audience ?
-
-- Aggregators.
-- Weekly Feeds.
-- Do not compete for audience.
-
-## How to improve ?
-
-- Practice: write, write and write.
-- Pull style from your liked authors.
-- Read, analyze and apply.
-- Get editors or friend review.
-
-## How to make time to write ?
-
-- Choose exciting topics.
-- Write infrequently.
-- Practice with Short Reviews.
-
+- Select exciting topics that capture the reader's interest.
+- Write infrequently but with quality content.
+- Practice through short reviews and evaluations to maintain your momentum.
