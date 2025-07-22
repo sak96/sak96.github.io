@@ -1,7 +1,8 @@
 +++
 title = 'Guide to Documentation'
-date = 2023-10-05
-tags = ["documentation improvement", "writing skills", "programming best practices"]
+date = 2022-02-22
+[taxonomies]
+tags = ["test", "documentation improvement", "writing skills", "programming best practices"]
 categories = ["writing tips"]
 +++
 
