@@ -1,50 +1,44 @@
 +++
 title = "linux passing input the hard way"
 date = 2020-07-18
-draft = true
 [taxonomies]
 tags = ["story", "linux", "file"]
 categories = ["stories"]
 +++
-For people familiar with unix philosophy, ["Everything is a file"][everthing_is_file] is
-common phrase. Rarely do we get a case to use it in practice. This is one of those cases.
+For people familiar with Unix philosophy, ["Everything is a file"][everyting_is_file] is
+a common phrase. Rarely do we get a case to use it in practice. This is one of those cases.
 
 # Problem
 
-At work a pipeline which had to be run by `End of Day`, got stuck. After checking the
-logs, it looked like it was stuck waiting for a input prompt. The Prompts was suppose to
-be bypassed by setting environment variable. But recent changes had introduced a flaw.
+At work, a pipeline that needed to be run by the end of the day got stuck. After checking the 
+logs, it appeared to be waiting for an input prompt. The prompt was supposed to 
+be bypassed by setting an environment variable, but recent changes had introduced a flaw.
 
-The patch would take some time and this was a lengthy pipeline. So, we had to manually
-resume it. But the prompt was not directly available, as this was a process which was
-deeply nested within pipeline logic.
+Since the patch would take time and the pipeline was lengthy, we had to manually 
+resume it. However, the prompt wasn't directly available because this process was 
+deeply nested within the pipeline logic.
 
-# Solution in theory
+# Solution in Theory
 
-"Everything is a file" in unix. This includes directories, devices and even process.
-We leverage this fact to provide input to the process.
+"Everything is a file" in Unix includes directories, devices, and even processes.
+We can leverage this fact to provide input to a process.
 
-Process are directories under `/proc/` directory. Pid is unique number assigned to the
-process. These are used to name the process directory. Ex: `/proc/1234/` is directory
-representing process with pid `1234`.
+- **Processes are represented by directories under `/proc/`**: Each process has a unique PID 
+which names its directory. For example, `/proc/1234/` represents a process with PID 1234.
 
-In each process directory, files opened by the process are stored in `fd/` directory.
-File descriptors are numbers assigned to files unique to that process. These are used to
-name the files. Ex: `/proc/1234/fd/0` is file associated with file descriptors 0 of
-process with pid `1234`.
+- **Files associated with processes are stored in the `fd/` subdirectory of each process's 
+directory**: Each file descriptor is assigned a number unique to that process and is used to 
+name the files. For example, `/proc/1234/fd/0` corresponds to the standard input or prompt file 
+for the process with PID 1234.
 
-In normal cases file descriptor one is standard input or the file which is the prompt of
-the process. This was true in our case.
+- **In normal cases, file descriptor 1** (associated with standard input) contains the user's prompt. 
+This was applicable in our case.
 
-*Note*: There are to many interesting thing here to cover but lets concentrate on the
-solution.
+# Solution Demonstration
 
-# Implemented Solution
+To demonstrate, let us use the `cat` program.
 
-To demonstrate, let us use `cat` program.
-
-1. Run `cat` in a terminal. It wait for input.
-1. Run `echo "Hello World" >> "/proc/$(pidof -s cat)/fd/1"` to input to `cat` program.
+1. Run `cat` in a terminal. It will wait for input.
+2. Use the command `echo "Hello World" >> "/proc/$(pidof -s cat)/fd/1"` to "Hello World" to the `cat` program.
 
 [everthing_is_file]: https://en.wikipedia.org/wiki/Everything_is_a_file "everything is a file"
-
