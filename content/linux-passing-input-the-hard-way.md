@@ -1,5 +1,5 @@
 +++
-title = "linux passing input the hard way"
+title = "Linux Input Injection Through Unusual Methods"
 date = 2020-07-18
 [taxonomies]
 tags = ["story", "linux", "file"]
@@ -7,6 +7,7 @@ categories = ["stories"]
 +++
 For people familiar with Unix philosophy, ["Everything is a file"][everyting_is_file] is
 a common phrase. Rarely do we get a case to use it in practice. This is one of those cases.
+<!--more-->
 
 # Problem
 
