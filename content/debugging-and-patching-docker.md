@@ -1,13 +1,10 @@
 +++
-title = "debugging and patching docker"
+title = "Debugging and Patching Docker"
 date = 2020-02-29
 [taxonomies]
 tags = ["patching", "debugging", "docker"]
 categories = ["notes"]
 +++
-# Docker Debugging and Patching Guide
-
-## Overview
 
 Containerization technologies like Docker enable efficient deployment, portability, and scalability.
 This guide provides a structured approach to debugging and patching Docker containers, emphasizing technical precision and operational clarity.
