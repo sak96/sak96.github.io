@@ -1,5 +1,5 @@
 +++
-title = "Debugging and Patching Docker"
+title = "Docker Debugging & Patching Simplified"
 date = 2020-02-29
 [taxonomies]
 tags = ["patching", "debugging", "docker"]
