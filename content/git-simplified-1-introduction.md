@@ -1,34 +1,25 @@
 +++
-title = "git simplified 1 introduction"
+title = "Git Introduction"
 date = 2020-04-29
-draft = true
 [taxonomies]
 tags = ["version", "git", "information"]
 categories = ["vcs"]
 +++
-## Articles
+Git is a “content tracker” – it records how files change over time. Think of it as a detailed history of your project, noting when, where, and by whom changes were made. This enables key features like:
 
-This article is part of series which provides introduction to git internals.
+- Tracking who owns specific changes.
+- Backing up and reverting to older versions.
+- Synchronizing changes across multiple locations.
 
-1. [Git: Introduction]({filename}./2020-04-29_git-simplified-1-introduction.md)
+<!--more-->
 
-## Introduction
+Git’s underlying structure is a **Directed Acyclic Graph (DAG) of Hashes**.
+Each “hash” represents a specific version (or “commit”) of your content.
 
-Git is the stupid `content tracker` (as per it's [man page][git man page]).
-As a content tracker it tracks the modification of done to content.
-It acts like a diary for how/when/where content got modified.
+### Understanding the Directed Acyclic Graph (DAG)
 
-This help to enabled the following:
-
-- Track Ownership of changes.
-- Backup and Restore to certain older point.
-- Synchronization changes between multiple contents.
-
-Git keeps track of the whole system as **Directed Acyclic Graph of Hashes of commits**.
-Each hash represents a commit or state of content at given time.
-Lets dig bit deeper about the graph part.
-
-## Directed Acyclic Graph
+A DAG shows the relationships between different versions of your content.
+It’s like a family tree for your files:
 
 ```txt
 +-------+       +-------+       +-------+
@@ -37,44 +28,19 @@ Lets dig bit deeper about the graph part.
 +-------+       +-------+       +-------+
 ```
 
+- **Directed:** Changes flow from a version to its parent.
+- **Acyclic:** There are no loops – a version doesn’t directly influence itself.
 
+### Hashes and Cryptographic Security
 
-_Graph_ is structure which represents relation between objects using connection.
+The DAG is built using “hashes”.
+A hash function takes any size input and produces a fixed-size output.
+In Git, each piece of content is hashed, creating a unique fingerprint.
+Cryptographic hashes, like SHA-1 (used in older versions) and SHA-256, are particularly important because they are designed to be extremely difficult to reverse – meaning you can’t figure out the original content just from its hash.
 
-- The object in this case is _commits_.
-- The relationship in this case is _parent-child_ relationship.
-- There relation can be many to many.
-- Multiple child can share single parent.
-- Single child may be created by Multiple parents.
+### Commits: Snapshots of Content
 
-_Directed_ refers to the fact that these relationships have a direction.
-
-- The direction in this case is from child to parent.
-- The arrow head points to the direction.
-
-_Acyclic_ means the graph does not have cycles or loops.
-
-- More information at [wiki][wiki dag].
-
-## Hash
-
-The Directed Acyclic Graph is made of Hashes.
-Hash function map variable size input to fixed size output.
-Here each content has different size, you hash them you to get fixed sized output.
-The fixed sized output is the hash of the input.
-
-Cryptographic Hashes are hash which are hard to reverse.
-You cannot guess input from getting output of the hash.
-In case of git _sha-1_ is used for hashing.
-In recent version _sha-256_ is used as per [hash function transition article][hashes]).
-
-## Commit
-
-The snapshot of content at any point of time is called commit.
-Even though content refers to folder level of content.
-The changes are maintained at file level.
-So the commit contains details of these changes.
-More about commit will be covered in next chapter.
+A “commit” is a snapshot of your content at a specific point in time. Even though Git tracks changes at a file level, the commit itself records all the details of those alterations. We’ll delve deeper into commits in the next section.
 
 ## Resources
 
@@ -83,9 +49,7 @@ More about commit will be covered in next chapter.
 1. [wiki: Directed acyclic graph][wiki dag]
 1. [Hash Function Transition][hashes]
 
-[//]: # "resource links"
 [git man page]: https://linux.die.net/man/1/git "git man page"
+[hashes]: https://git-scm.com/docs/hash-function-transition/2.18.0 "Hashes"
 [torvalds on git]: https://www.youtube.com/watch?v=4XpnKHJAok8 "Torvalds on git"
 [wiki dag]: https://en.wikipedia.org/wiki/Directed_acyclic_graph "Wikipedia: DAG"
-[hashes]: https://git-scm.com/docs/hash-function-transition/2.18.0 "Hashes"
-
