@@ -1,44 +1,28 @@
 +++
-title = "browser as scratch file editor"
+title = "Browser Scratch File Editor"
 date = 2020-07-22
-draft = true
 [taxonomies]
 tags = ["story", "browser", "file"]
 categories = ["stories"]
 +++
-When browsing internet you may find a need to write down some temporary notes. I call it
-scratch files. Opening text editor for editing these scratch files is too much pain or
-just too much of context swap.
+Developers often require ephemeral scratch files for temporary note-taking during workflow without the overhead of context switching.
+To address this need, a browser-native text editor solution leverages [data URLs][data_url] to create lightweight, on-the-fly text editors.
 
-# In Browser Temporary File Editor
+The implementation utilizes the `data:text/html,<html contenteditable>` format, where the browser renders an editable HTML element directly within the URL.
+This approach eliminates external dependency on text editors or file systems, providing immediate access to a text input field when the URL is opened in a browser tab.
 
-Here is the in-browser scratch file editor.
+Key considerations include:
 
-`data:text/html,<html contenteditable>`
+- Content persistence is limited to the current browser tab session
+- Browser extensions can enable content preservation for long-term use cases
+- The solution is ideal for short-term documentation during development workflows
 
-Go ahead copy paste it to url bar. Bookmark it, if required.
+This technique offers a context-aware alternative to traditional text editors for temporary note capture, reducing workflow disruption while maintaining immediate accessibility to temporary text content.
 
-# The Details
+The scratch file editor url is `data:text/html,<html contenteditable>`.
 
-To use browser as text editor, I leverage [data urls][data_url]. Data url are used to
-embed small documents into the url. The above url embedded html page which acts as
-editor.
+# Resources
 
-The format is `data:[<mediatype>][;base64],<data>`.
-
-- Media type specifies the mime type of file.
-- Base 64 is optional and added if data is base64 encoded
-- followed by the content of file.
-
-Our url is `data:text/html,<html contenteditable>`.
-
-- Mime type is `text/html`. We are embedding html page.
-- data is html page. The html tag is `contenteditable`.
-- No need to close the html tag as it is corrected by browser.
-
-**Note**: The content is lost if you close the tab. Try a extensions if you don't want
-to lose the contents.
+- [Data Urls][data_url]
 
 [data_url]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs
-"data url"
-
