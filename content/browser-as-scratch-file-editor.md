@@ -8,6 +8,8 @@ categories = ["stories"]
 Developers often require ephemeral scratch files for temporary note-taking during workflow without the overhead of context switching.
 To address this need, a browser-native text editor solution leverages [data URLs][data_url] to create lightweight, on-the-fly text editors.
 
+<!--more-->
+
 The implementation utilizes the `data:text/html,<html contenteditable>` format, where the browser renders an editable HTML element directly within the URL.
 This approach eliminates external dependency on text editors or file systems, providing immediate access to a text input field when the URL is opened in a browser tab.
 
