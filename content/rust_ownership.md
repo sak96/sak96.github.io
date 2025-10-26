@@ -1,126 +1,68 @@
 +++
-title = "rust ownership"
+title = "Rust Ownership"
 date = 2020-12-20
-draft = true
 [taxonomies]
 tags = ["rust", "ownership"]
 categories = ["rust"]
 +++
+
 <!-- cSpell:ignore sbrk, malloc -->
 
-This article explains my understanding of rust ownership concepts.
-Article will only give simplistic overview and might not hold water in all cases.
+Program execution requires persistent storage of intermediate results to support sequential instruction execution.
+This stateful memory must be carefully managed across concurrent program executions, a task traditionally handled by operating systems through system calls (e.g., `brk`/`sbrk`).
+Programming languages provide abstractions over these mechanisms to enable safer memory management strategies.
 
-## Memory Management
+<!--more-->
 
-Program (or Software) is set of instruction, followed by machine to solve some problem.
-Some instruction may be based on output of instruction executed in the past.
-So the program needs to store output instruction for use by later instructions.
-The storage is called memory (or state) of program.
+#### Memory Management Paradigms
 
-But typical machines run more than one program simultaneously or interleaving-ly.
-So memory needs to be managed between programs.
-This herculean task is undertaken by the operating system through system calls (brk/sbrk).
+1. **Programmer-Managed (e.g., C)**:
+   The programmer explicitly allocates and deallocates memory via functions like `malloc` and `free`.
+   This approach grants fine-grained control but introduces risks such as **use-after-free** (accessing freed memory) and **double frees** (freed memory reclaimed twice).
+   These issues can cause undefined behavior or security vulnerabilities.
 
-Programing Language provide abstraction over these memory management calls (sbrk/brk).
-Few Approach are briefed below.
+1. **Runtime-Managed (e.g., Python)**:
+   Runtimes maintain memory through reference counting: when a variable references memory, the count increments; when the variable goes out of scope, the count decrements.
+   Memory is freed when the count reaches zero.
+   Cycle detection (references mutually holding each other) requires **stop-the-world pauses** during garbage collection, resulting in performance overhead.
+   Such pauses can cause latency spikes in production systems.
 
-### Programmer Specified
+1. **Compiler-Enforced (e.g., Rust)**:
+   Rust leverages compile-time analysis to manage memory safely without runtime overhead.
+   This approach eliminates common pitfalls through **ownership semantics**, which define strict rules for memory lifetime and borrowing.
 
-> Example: C
+#### Ownership: Core Mechanism
 
-Programer uses **malloc** to ask for memory and **free** to free the memory.
-These function are abstraction on top of brk/sbrk system calls.
-This provides greater control which comes with possibility making mistakes.
+Rust's ownership model is designed to solve the limitations of runtime-based memory management by ensuring **compile-time safety** through predictable memory lifetimes.
+Unlike reference counting systems, ownership:
 
-If you free memory when it is in use, it is called **use after free**.
-If you free memory when it is in already freed it is called **double free**.
-These things can cause program to behave weirdly (could be exploited).
+- **Explicitly governs memory lifetimes**:
+  Each memory region has a single owner.
+  When the owner goes out of scope, the memory is automatically deallocated.
+- **Enforces transfer semantics**:
+  Ownership transfers via *move* operations, ensuring memory is reclaimed only when the new owner goes out of scope.
+- **Prevents invalid references**:
+  Borrowing mechanisms (read-only v/s mutable) ensure references are always valid at compile time.
 
-### Runtime Assisted
+#### Borrowing: Safe Sharing
 
-> Example: Python
+Borrowing allows temporary sharing of owned memory without transferring ownership.
+The compiler enforces:
 
-Program is run on top of a runtime which manages memory on behalf of the program.
+- **Read-only borrows** (immutable references):
+  Multiple borrows are permitted.
+- **Write borrows** (mutable references):
+  Only one borrow is allowed at a time.
+  This prevents re-entrancy issues and ensures data consistency.
 
-The most common way is keep **count of references** to memory.
-When variable reference a memory it count is incremented.
-When this variable is no longer in use the memory count is decremented.
-When reference count goes to zero that means no one is referencing the memory.
-This means memory can be freed.
+This design guarantees that:
 
-But there is issue of **cycle** that is two references referencing each other.
-Which means that there reference count is never going back to zero.
-To resolve this, runtime regularly check for such references by stopping the program.
-The program is stopped to avoid updating of reference count during the check.
-These are the infamous **Stop the World** pauses.
+1. All borrowers access valid memory
+1. Mutability conflicts are resolved at compile time
+1. No data races occur without explicit unsafe code
 
-This means runtime add negatively to performance.
-Any improvement to performance will require understanding of runtime.
-Most common issues is variable accidentally holding to data which is no longer required
-(_closures_ which hold references large data, which is kept but never going to executed).
+#### Why Ownership Works
 
-### Compiler Assisted
-
-> Example: Rust
-
-Compiler analyses the code and inserts memory management code at appropriate position.
-
-The most common way is to do a **life time analysis** of variable.
-Compiler checks for usage of variable (usually the reference) in code.
-If the variable is not used after certain point compiler inserts _free_ logic there.
-
-One way to implement this is by creating a copy of variable on each reference.
-This way the chain of reference is linear and can be dropped once variable is dropped.
-But this may lead to large memory consumptions.
-One of the other ways is Rust ownership model.
-
-## Ownership
-
-### Why Ownership?
-
-_Life time analysis_ requires to determine all runtime reference at compile time.
-This is hard problem as you need to analysis all possible runtime outcomes.
-
-Having protocol to allow programmer to restrict unwanted outcomes can help the analysis.
-This restricts number of runtime outcomes and hence reduces compiler's work.
-This protocol is the rust ownership model.
-
-### What is Ownership?
-
-Ownership is a concept where a memory is linked to a owner (variable).
-This allows compiler to free the memory when owner is no longer in use.
-When a owner is no longer in use we call it is **out of scope**.
-In short, Ownership is assigning memory's life time to life time of it's owner.
-
-This concept seems simple but is very constraining for programmers.
-To provide flexibility concepts like **move** and **borrow** are used.
-
-### What is Move?
-
-Move is concept of transferring ownership of memory from one owner to other owner.
-This means the memory is not freed when the _previous_ owner goes _out of scope_.
-But the memory is freed when the _new_ owner goes _out of scope_.
-
-### What is Borrow?
-
-Most cases in program we may want to share the memory between two variable.
-This means we may want to have _two owner_ for a memory.
-This makes it confusing for the compiler about when to free the memory.
-
-Instead variable are allowed to share by **borrowing** memory from the owner.
-This means there is only one owner for a given memory.
-The compiler still frees the memory when owner goes out of scope.
-If borrower has access to memory after owner goes out of scope compiler throws error.
-This makes sure all borrower have access to valid memory in compiled program.
-
-Compiler treats borrow differently based on whether it is read only or write.
-In _read only (immutable)_ borrow case there can be multiple borrowers for a memory.
-But for _write (mutable)_ borrow only single borrower is allowed.
-This means write borrow also disallows read only borrow and vice versa.
-
-Reasoning for _single mutable borrow_ is for safety in case of complex data structures.
-Say for a vector write may free internal memory pointed by other borrower.
-This leads to the other borrower using freed memory.
-Once the mutable borrower goes out of scope the memory is available for re-sharing.
-
+Ownership resolves the "reference tracking problem" by restricting runtime outcomes to a finite set of scenarios.
+By requiring explicit ownership transfers and borrow checks at compile time, Rust eliminates classically unsafe patterns (e.g., dangling pointers, data races) without runtime overhead.
+This enables high-performance applications with guaranteed memory safety.
