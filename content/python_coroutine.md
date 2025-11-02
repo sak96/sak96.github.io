@@ -83,20 +83,6 @@ assert summer.send(10) == 10
 assert summer_again.send(10) == 22
 ```
 
-### State-Isolated Implementation
-
-To eliminate global state dependencies, we implement state isolation within the coroutine:
-
-```python
-class StatefulSummer:
-    def __init__(self):
-        self.total = 0
-
-    def update(self, m=0):
-        self.total += m
-        return self.total
-```
-
 ### Automated Initialization Pattern
 
 Co-routines require explicit initialization with `.send(None)` or `next`.
@@ -127,9 +113,14 @@ assert summer.send(10) == 10
 
 Coroutine has advanced feature other than [send](https://docs.python.org/3/reference/datamodel.html#coroutine.send) like:
 
-- [close](https://docs.python.org/3/reference/datamodel.html#coroutine.close)
-- [throw](https://docs.python.org/3/reference/datamodel.html#coroutine.throw)
-- [send](https://docs.python.org/3/reference/datamodel.html#coroutine.send)
+- [close](https://docs.python.org/3/reference/datamodel.html#coroutine.close):
+  Terminates the coroutine execution, causing subsequent `send` operations to raise `StopIteration` exceptions.
+  This ensures the coroutine enters a finalized state.
+  Specialized action like clean-up can be take by handling `Generation Exit` Exception.
+
+- [throw](https://docs.python.org/3/reference/datamodel.html#coroutine.throw):
+  Enables the propagation of exceptions within the coroutine context.
+  This feature can be leverage to specialized action.
 
 ```python
 class Reset(Exception):
