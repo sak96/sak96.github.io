@@ -6,7 +6,10 @@ tags = ["css", "theme", "html", "dark", "rust", "system-preferences", "data-attr
 categories = ["css"]
 +++
 
-Dark themes provide significant benefits for user experience and accessibility, particularly for users who experience eye strain from bright displays. This document details a robust approach to implementing theme switching in Rust web applications without relying on heavy UI frameworks.
+Dark themes provide significant benefits for user experience and accessibility, particularly for users who experience eye strain from bright displays
+This document details a robust approach to implementing theme switching in Rust web applications without relying on heavy UI frameworks.
+
+<!--more-->
 
 ## CSS-Based Theme Implementation
 
