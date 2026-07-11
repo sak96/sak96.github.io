@@ -73,7 +73,7 @@ This solution requires **string sanitization of usernames** to avoid substring c
 
 ## Key Takeaways
 
-1. **Never rush security implementations** – Prefix-based listing policies require thorough validation
+1. **Never rush security implementations**  -  Prefix-based listing policies require thorough validation
 1. **Prioritize flat namespace awareness** over hierarchical abstractions when designing S3 access policies
 1. **Sanitize user identifiers** to prevent substring-based access leakage (e.g., ensure usernames do not share prefixes)
 1. **Validate edge cases** through concrete examples before deploying policies
