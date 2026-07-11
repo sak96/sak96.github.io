@@ -1,0 +1,26 @@
+{% import "macros/navbar.html" as macros %}
+{% import "macros/footer.html" as footer_macros %}
+{% import "macros/theme.html" as theme %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{{ config.title }}{% endblock %}</title>
+  {% if not config.extra.favicon %}
+  <link rel="icon" href="{{ get_url(path='images/favicon.svg') }}">
+  {% endif %}
+  <link rel="stylesheet" href="{{ get_url(path='css/style.css') }}">
+  {% block head %}{% endblock %}
+  {{ theme::theme_init() }}
+</head>
+<body>
+  {{ macros::navbar() }}
+  <div class="content">
+    {% block content %}{% endblock %}
+  </div>
+  {{ footer_macros::footer() }}
+  {{ theme::theme_toggle() }}
+  {% block scripts %}{% endblock %}
+</body>
+</html>

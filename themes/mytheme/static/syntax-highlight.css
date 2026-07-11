@@ -1,0 +1,232 @@
+/*
+ * Syntax highlighting for dark and light themes
+ * Uses --syn-* CSS variables for theme switching
+ */
+
+:root {
+  --syn-bg: #32302F;
+  --syn-hl: #3C383660;
+  --syn-fg: #EBDBB2;
+  --syn-red: #FB4934;
+  --syn-green: #B8BB26;
+  --syn-blue: #83A598;
+  --syn-orange: #FE8019;
+  --syn-yellow: #FABD2F;
+  --syn-purple: #D3869B;
+  --syn-aqua: #8EC07C;
+  --syn-brace: #D5C4A1;
+  --syn-punct: #A89984;
+  --syn-ln: #665C54;
+  --syn-fg3: #BDAE93;
+  --syn-header: #458588;
+  --syn-comment: #928374;
+  --syn-invalid: #CC241D;
+  --syn-deleted: #D65D0E;
+  --syn-deprecated: #B16286;
+  --syn-method: #689D6A;
+  --syn-quote: #98971A;
+}
+
+[data-theme="light"] {
+  --syn-bg: #F2E5BC;
+  --syn-hl: #EBDBB260;
+  --syn-fg: #3C3836;
+  --syn-red: #9D0006;
+  --syn-green: #79740E;
+  --syn-blue: #076678;
+  --syn-orange: #AF3A03;
+  --syn-yellow: #B57614;
+  --syn-purple: #8F3F71;
+  --syn-aqua: #427B58;
+  --syn-brace: #504945;
+  --syn-punct: #7C6F64;
+  --syn-ln: #BDAE93;
+  --syn-fg3: #665C54;
+}
+
+.z-code {
+  color: var(--syn-fg);
+  background-color: var(--syn-bg);
+}
+
+.z-hl {
+  background-color: var(--syn-hl);
+}
+
+.giallo-ln {
+  color: var(--syn-ln);
+}
+
+.z-emphasis { font-style: italic; }
+.z-strong { font-weight: bold; }
+.z-header { color: var(--syn-header); }
+.z-comment { color: var(--syn-comment); font-style: italic; }
+.z-constant { color: var(--syn-purple); }
+.z-invalid { color: var(--syn-invalid); }
+.z-storage { color: var(--syn-red); }
+.z-string { color: var(--syn-green); }
+.z-object { color: var(--syn-fg); }
+.z-keyword { color: var(--syn-red); }
+.z-brace { color: var(--syn-brace); }
+.z-variable { color: var(--syn-blue); }
+.z-prototype { color: var(--syn-purple); }
+.z-punctuation { color: var(--syn-punct); }
+.z-\2a url\2a { text-decoration: underline; }
+.z-\2a link\2a { text-decoration: underline; }
+.z-\2a uri\2a { text-decoration: underline; }
+.z-support.z-constant { color: var(--syn-purple); }
+.z-variable.z-arguments { color: var(--syn-purple); }
+.z-constant.z-rgb-value { color: var(--syn-deleted); }
+.z-punctuation.z-tag { color: var(--syn-aqua); }
+.z-invalid.z-illegal { color: var(--syn-invalid); }
+.z-invalid.z-deprecated { color: var(--syn-deprecated); }
+.z-meta.z-selector { color: var(--syn-fg); }
+.z-meta.z-preprocessor { color: var(--syn-orange); }
+.z-storage.z-type { color: var(--syn-yellow); }
+.z-storage.z-modifier { color: var(--syn-orange); }
+.z-string.z-tag { color: var(--syn-green); }
+.z-string.z-value { color: var(--syn-green); }
+.z-string.z-regexp { color: var(--syn-green); }
+.z-string.z-escape { color: var(--syn-red); }
+.z-string.z-quasi { color: var(--syn-aqua); }
+.z-string.z-entity { color: var(--syn-green); }
+.z-module.z-node { color: var(--syn-blue); }
+.z-keyword.z-control { color: var(--syn-red); }
+.z-keyword.z-operator { color: var(--syn-aqua); }
+.z-metatag.z-php { color: var(--syn-orange); }
+.z-meta.z-return-type { color: var(--syn-yellow); }
+.z-meta.z-cast { color: var(--syn-yellow); }
+.z-support.z-type { color: var(--syn-yellow); }
+.z-variable.z-class { color: var(--syn-yellow); }
+.z-variable.z-this { color: var(--syn-purple); }
+.z-support.z-variable { color: var(--syn-purple); }
+.z-entity.z-name { color: var(--syn-yellow); }
+.z-entity.z-static { color: var(--syn-yellow); }
+.z-entity.z-function { color: var(--syn-aqua); }
+.z-variable.z-parameter { color: var(--syn-blue); }
+.z-variable.z-name { color: var(--syn-blue); }
+.z-variable.z-other { color: var(--syn-blue); }
+.z-punctuation.z-quoted { color: var(--syn-fg); }
+.z-punctuation.z-quasi { color: var(--syn-red); }
+.z-markup.z-underline { text-decoration: underline; }
+.z-markup.z-bold { color: var(--syn-orange); font-weight: bold; }
+.z-markup.z-heading { color: var(--syn-orange); font-weight: bold; }
+.z-markup.z-italic { font-style: italic; }
+.z-markup.z-inserted { color: var(--syn-green); }
+.z-markup.z-deleted { color: var(--syn-deleted); }
+.z-markup.z-changed { color: var(--syn-orange); }
+.z-support.z-property-value { color: var(--syn-orange); }
+.z-punctuation.z-tag { color: var(--syn-aqua); font-weight: bold; }
+.z-variable.z-language { color: var(--syn-orange); }
+.z-keyword.z-package { color: var(--syn-aqua); }
+.z-keyword.z-import { color: var(--syn-aqua); }
+.z-keyword.z-interface { color: var(--syn-blue); }
+.z-keyword.z-struct { color: var(--syn-blue); }
+.z-string.z-double { color: var(--syn-green); }
+.z-punctuation.z-definition.z-comment { color: var(--syn-comment); font-style: italic; }
+.z-entity.z-name.z-selector { color: var(--syn-aqua); }
+.z-entity.z-other.z-attribute-name { color: var(--syn-yellow); }
+.z-entity.z-name.z-tag { color: var(--syn-aqua); }
+.z-meta.z-preprocessor.z-string { color: var(--syn-green); }
+.z-meta.z-preprocessor.z-numeric { color: var(--syn-green); }
+.z-meta.z-header.z-diff { color: var(--syn-orange); }
+.z-support.z-type.z-property-name { color: var(--syn-method); }
+.z-keyword.z-control.z-module { color: var(--syn-aqua); }
+.z-keyword.z-control.z-less { color: var(--syn-aqua); }
+.z-keyword.z-operator.z-new { color: var(--syn-orange); }
+.z-keyword.z-other.z-unit { color: var(--syn-green); }
+.z-support.z-function.z-git-rebase { color: var(--syn-method); }
+.z-constant.z-sha.z-git-rebase { color: var(--syn-green); }
+.z-meta.z-type.z-name { color: var(--syn-yellow); }
+.z-meta.z-return.z-type { color: var(--syn-yellow); }
+.z-meta.z-type.z-annotation { color: var(--syn-yellow); }
+.z-storage.z-type.z-cs { color: var(--syn-yellow); }
+.z-entity.z-name.z-function { color: var(--syn-blue); }
+.z-entity.z-name.z-class { color: var(--syn-yellow); }
+.z-entity.z-name.z-type { color: var(--syn-fg); }
+.z-support.z-function.z-builtin { color: var(--syn-orange); }
+.z-entity.z-name.z-method { color: var(--syn-method); }
+.z-meta.z-function.z-python { color: var(--syn-aqua); }
+.z-storage.z-modifier.z-declaration { color: var(--syn-red); }
+.z-meta.z-function-call.z-generic { color: var(--syn-blue); }
+.z-meta.z-function-call.z-arguments { color: var(--syn-brace); }
+.z-constant.z-other.z-caps { font-weight: bold; }
+.z-keyword.z-operator.z-logical { color: var(--syn-red); }
+.z-punctuation.z-definition.z-logical-expression { color: var(--syn-orange); }
+.z-keyword.z-control.z-directive { color: var(--syn-aqua); }
+.z-support.z-function.z-C99 { color: var(--syn-yellow); }
+.z-meta.z-function.z-cs { color: var(--syn-green); }
+.z-meta.z-scope.z-prerequisites { color: var(--syn-yellow); }
+.z-storage.z-type.z-java { color: var(--syn-yellow); }
+.z-storage.z-type.z-annotation { color: var(--syn-blue); font-weight: bold; }
+.z-meta.z-function-parameters.z-lisp { color: var(--syn-yellow); }
+.z-markup.z-underline.z-link { color: var(--syn-purple); }
+.z-markup.z-inline.z-raw { color: var(--syn-aqua); }
+.z-markup.z-fenced_code.z-block { color: var(--syn-aqua); }
+.z-support.z-property-value.z-scss { color: var(--syn-deleted); }
+.z-constant.z-rgb-value.z-scss { color: var(--syn-deleted); }
+.z-punctuation.z-definition.z-tag { color: var(--syn-blue); }
+.z-support.z-class.z-latex { color: var(--syn-aqua); }
+.z-variable.z-parameter.z-java { color: var(--syn-green); font-weight: bold; }
+.z-variable.z-other.z-object { color: var(--syn-fg); }
+.z-support.z-function.z-transform { color: var(--syn-red); }
+.z-support.z-function.z-timing-function { color: var(--syn-red); }
+.z-support.z-function.z-misc { color: var(--syn-red); }
+.z-entity.z-name.z-tag { color: var(--syn-aqua); font-weight: bold; }
+.z-entity.z-name.z-import { color: var(--syn-green); }
+.z-entity.z-name.z-filename { color: var(--syn-orange); }
+.z-support.z-function.z-powershell { color: var(--syn-yellow); }
+.z-entity.z-name.z-function.z-static { color: var(--syn-aqua); }
+.z-entity.z-name.z-function.z-function-call { color: var(--syn-aqua); }
+.z-entity.z-name.z-method.z-function-call { color: var(--syn-method); }
+.z-entity.z-name.z-static.z-function-call { color: var(--syn-method); }
+.z-meta.z-parameter.z-type.z-variable { color: var(--syn-blue); }
+.z-string.z-constant.z-other.z-placeholder { color: var(--syn-blue); }
+.z-entity.z-name.z-function.z-python { color: var(--syn-aqua); }
+.z-storage.z-type.z-function.z-python { color: var(--syn-red); }
+.z-storage.z-type.z-class.z-python { color: var(--syn-red); }
+.z-storage.z-type.z-string.z-python { color: var(--syn-red); }
+.z-entity.z-name.z-function.z-decorator { color: var(--syn-yellow); font-weight: bold; }
+.z-string.z-interpolated.z-dollar.z-shell { color: var(--syn-aqua); }
+.z-string.z-interpolated.z-backtick.z-shell { color: var(--syn-aqua); }
+.z-entity.z-name.z-function.z-cs { color: var(--syn-green); }
+.z-keyword.z-other.z-using.z-cs { color: var(--syn-aqua); }
+.z-variable.z-other.z-readwrite.z-cs { color: var(--syn-aqua); }
+.z-keyword.z-other.z-this.z-cs { color: var(--syn-purple); }
+.z-keyword.z-other.z-base.z-cs { color: var(--syn-purple); }
+.z-entity.z-name.z-function.z-target { color: var(--syn-green); font-weight: bold; }
+.z-storage.z-modifier.z-import.z-java { color: var(--syn-fg3); }
+.z-storage.z-modifier.z-package.z-java { color: var(--syn-fg3); }
+.z-keyword.z-other.z-import.z-java { color: var(--syn-aqua); }
+.z-keyword.z-other.z-package.z-java { color: var(--syn-aqua); }
+.z-keyword.z-other.z-documentation.z-javadoc { color: var(--syn-aqua); }
+.z-markup.z-punctuation.z-quote.z-beginning { color: var(--syn-quote); }
+.z-markup.z-punctuation.z-list.z-beginning { color: var(--syn-blue); }
+.z-string.z-quoted.z-double.z-json { color: var(--syn-blue); }
+.z-entity.z-other.z-attribute-name.z-css { color: var(--syn-orange); }
+.z-support.z-type.z-property-name.z-css { color: var(--syn-orange); }
+.z-entity.z-other.z-attribute-name.z-class { color: var(--syn-green); }
+.z-keyword.z-control.z-cucumber.z-table { color: var(--syn-blue); }
+.z-support.z-function.z-be.z-latex { color: var(--syn-red); }
+.z-support.z-function.z-general.z-tex { color: var(--syn-red); }
+.z-support.z-function.z-section.z-latex { color: var(--syn-red); }
+.z-support.z-function.z-textbf.z-latex { color: var(--syn-red); }
+.z-support.z-function.z-textit.z-latex { color: var(--syn-red); }
+.z-support.z-function.z-texttt.z-latex { color: var(--syn-red); }
+.z-support.z-function.z-emph.z-latex { color: var(--syn-red); }
+.z-support.z-function.z-url.z-latex { color: var(--syn-red); }
+.z-keyword.z-control.z-preamble.z-latex { color: var(--syn-purple); }
+.z-keyword.z-control.z-include.z-latex { color: var(--syn-purple); }
+.z-variable.z-other.z-definition.z-java { color: var(--syn-fg); }
+.z-entity.z-name.z-section.z-markdown { color: var(--syn-purple); font-weight: bold; }
+.z-variable.z-other.z-member.z-powershell { color: var(--syn-orange); }
+.z-support.z-function.z-attribute.z-powershell { color: var(--syn-fg3); }
+.z-variable.z-other.z-readwrite.z-powershell { color: var(--syn-orange); }
+.z-entity.z-name.z-class.z-static.z-function { color: var(--syn-yellow); }
+.z-storage.z-type.z-function.z-async.z-python { color: var(--syn-red); }
+.z-entity.z-name.z-type.z-namespace.z-cs { color: var(--syn-green); }
+.z-entity.z-name.z-variable.z-field.z-cs { color: var(--syn-aqua); }
+.z-entity.z-name.z-variable.z-local.z-cs { color: var(--syn-aqua); }
+.z-string.z-other.z-link.z-title.z-markdown { color: var(--syn-comment); text-decoration: underline; }
+.z-support.z-class.z-math.z-block.z-tex { color: var(--syn-orange); }
+.z-support.z-class.z-math.z-block.z-environment.z-latex { color: var(--syn-orange); }

@@ -1,0 +1,129 @@
+{% extends "layouts/base.html" %}
+{% import "macros/article_card.html" as card %}
+{% import "macros/paginator.html" as pg %}
+{% import "macros/empty_state.html" as empty %}
+
+{% block title %}{{ config.title }}{% endblock %}
+
+{% block content %}
+<div id="blog-listing">
+<h1>{{ config.title }}</h1>
+<small>{{ config.description }}</small>
+
+{% if paginator.pages %}
+{% for page in paginator.pages %}
+{{ card::article_card(page=page) }}
+{% endfor %}
+{{ pg::paginator(paginator=paginator) }}
+{% else %}
+{{ empty::empty_state() }}
+{% endif %}
+</div>
+
+<div id="search-page">
+<h1>Search</h1>
+<input type="text" class="search-input" placeholder="Search..." id="page-search-input">
+<div class="search-results" id="page-search-results"></div>
+<div id="search-pagination"></div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+{% if config.extra.enable_search %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/elasticlunr/0.9.6/elasticlunr.min.js"></script>
+<script src="{{ get_url(path='js/search.js') }}"></script>
+<script>
+(function () {
+  var allResults = [];
+  var currentPage = 1;
+  var perPage = 10;
+  var searchInput = document.getElementById("page-search-input");
+  var searchResults = document.getElementById("page-search-results");
+  var paginationEl = document.getElementById("search-pagination");
+  var blogListing = document.getElementById("blog-listing");
+  var searchPage = document.getElementById("search-page");
+
+  function getUrlParam(name) {
+    var params = new URLSearchParams(window.location.search);
+    return params.get(name) || "";
+  }
+
+  function setUrlParam(name, value) {
+    var params = new URLSearchParams(window.location.search);
+    if (value) { params.set(name, value); } else { params.delete(name); }
+    var newUrl = window.location.pathname + (params.toString() ? "?" + params.toString() : "");
+    window.history.replaceState({}, "", newUrl);
+  }
+
+  function renderPagination(totalPages) {
+    if (totalPages <= 1) { paginationEl.innerHTML = ""; return; }
+    var html = "";
+    if (currentPage > 1) {
+      html += '<a href="#" data-page="' + (currentPage - 1) + '">&lt; Prev</a>';
+    } else {
+      html += '<span class="disabled">&lt; Prev</span>';
+    }
+    for (var i = 1; i <= totalPages; i++) {
+      if (i === currentPage) {
+        html += '<span class="pg-current">' + i + '</span>';
+      } else {
+        html += '<a href="#" data-page="' + i + '">' + i + '</a>';
+      }
+    }
+    if (currentPage < totalPages) {
+      html += '<a href="#" data-page="' + (currentPage + 1) + '">Next &gt;</a>';
+    } else {
+      html += '<span class="disabled">Next &gt;</span>';
+    }
+    paginationEl.innerHTML = html;
+    paginationEl.querySelectorAll("a").forEach(function (a) {
+      a.addEventListener("click", function (e) {
+        e.preventDefault();
+        currentPage = parseInt(a.getAttribute("data-page"));
+        setUrlParam("page", currentPage > 1 ? currentPage : "");
+        renderResults();
+      });
+    });
+  }
+
+  function renderResults() {
+    searchResults.style.display = "block";
+    if (allResults.length === 0) {
+      searchResults.innerHTML = "<p>No results found.</p>";
+      paginationEl.innerHTML = "";
+      return;
+    }
+    var totalPages = Math.ceil(allResults.length / perPage);
+    if (currentPage > totalPages) currentPage = totalPages;
+    var start = (currentPage - 1) * perPage;
+    var end = start + perPage;
+    var pageResults = allResults.slice(start, end);
+    var html = "";
+    pageResults.forEach(function (r) {
+      var doc = SearchApp.getDoc(r.ref);
+      html += SearchApp.renderResult(doc, r.ref);
+    });
+    searchResults.innerHTML = html;
+    renderPagination(totalPages);
+  }
+
+  function performSearch(query) {
+    if (!query) { searchResults.innerHTML = ""; paginationEl.innerHTML = ""; return; }
+    allResults = SearchApp.search(query);
+    currentPage = parseInt(getUrlParam("page")) || 1;
+    renderResults();
+  }
+
+  SearchApp.init(function () {
+    var q = getUrlParam("q");
+    if (q) {
+      blogListing.style.display = "none";
+      searchPage.style.display = "block";
+      searchInput.value = q;
+      performSearch(q);
+    }
+  });
+})();
+</script>
+{% endif %}
+{% endblock scripts %}

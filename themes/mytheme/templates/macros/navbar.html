@@ -1,0 +1,38 @@
+{% import "macros/search.html" as search_macros %}
+
+{% macro navbar() %}
+<nav class="navbar">
+  <div class="nav-header">
+    <a href="{{ config.base_url }}">{{ config.extra.radion_title | default(value=config.title) }}</a>
+    {% if config.extra.enable_search %}
+    {{ search_macros::search() }}
+    {% endif %}
+  </div>
+
+  <div class="nav-start">
+    {% for item in config.extra.radion_menu %}
+    <a href="{{ item.url | replace(from='$BASE_URL', to=config.base_url) }}">{{ item.name }}</a>
+    {% endfor %}
+    {% if config.extra.atom_feed and config.extra.atom_feed.enable %}
+    <a href="{{ config.extra.atom_feed.url | replace(from='$BASE_URL', to=config.base_url) }}">Atom</a>
+    {% endif %}
+  </div>
+
+  <div class="nav-end">
+    <button id="theme-toggle"></button>
+    <button class="nav-hamburger" popovertarget="nav-popover">|||</button>
+  </div>
+
+  <div id="nav-popover" popover>
+    {% for item in config.extra.radion_menu %}
+    <a href="{{ item.url | replace(from='$BASE_URL', to=config.base_url) }}">{{ item.name }}</a>
+    {% endfor %}
+    {% if config.extra.atom_feed and config.extra.atom_feed.enable %}
+    <a href="{{ config.extra.atom_feed.url | replace(from='$BASE_URL', to=config.base_url) }}">Atom</a>
+    {% endif %}
+  </div>
+</nav>
+{% if config.extra.enable_search %}
+{{ search_macros::search_script() }}
+{% endif %}
+{% endmacro navbar %}

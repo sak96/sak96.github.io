@@ -1,0 +1,12 @@
+{% macro tags(page) %}
+{% if page.taxonomies %}
+<div class="tags">
+  <span>Post Tags:</span>
+  {% for taxonomy, terms in page.taxonomies %}
+  {% for term in terms %}
+  <a href="{{ get_taxonomy_url(name=term, kind=taxonomy) }}">&nbsp;#{{ term }}{% if not loop.last %},{% endif %}</a>
+  {% endfor %}
+  {% endfor %}
+</div>
+{% endif %}
+{% endmacro tags %}

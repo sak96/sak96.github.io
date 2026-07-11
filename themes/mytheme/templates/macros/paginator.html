@@ -1,0 +1,29 @@
+{% macro paginator(paginator) %}
+<div class="paginator">
+  {% if paginator.previous %}
+  <a href="{{ paginator.first }}">&lt;&lt;<span> First</span></a>
+  {% else %}
+  <span class="disabled">&lt;&lt;<span> First</span></span>
+  {% endif %}
+
+  {% if paginator.previous %}
+  <a href="{{ paginator.previous }}">&lt;<span> Prev</span></a>
+  {% else %}
+  <span class="disabled">&lt;<span> Prev</span></span>
+  {% endif %}
+
+  <span>&hellip;</span>
+
+  {% if paginator.next %}
+  <a href="{{ paginator.next }}"><span>Next </span>&gt;</a>
+  {% else %}
+  <span class="disabled"><span>Next </span>&gt;</span>
+  {% endif %}
+
+  {% if paginator.next %}
+  <a href="{{ paginator.last }}"><span>Last </span>&gt;&gt;</a>
+  {% else %}
+  <span class="disabled"><span>Last </span>&gt;&gt;</span>
+  {% endif %}
+</div>
+{% endmacro paginator %}

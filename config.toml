@@ -6,7 +6,7 @@ title = "Sanket's Blog"
 description = "A personal blog where I share my thoughts and experiences."
 
 # The site theme to use.
-theme = "radion"
+theme = "mytheme"
 
 # When set to "true", the generated HTML files are minified.
 minify_html = true
@@ -21,6 +21,7 @@ author = "Sanket Kamath"
 taxonomies = [
     { name = "tags", feed = true},
     { name = "categories", feed = true},
+    { name = "authors", feed = true},
 ]
 
 # When set to "true", a search index is built from the pages and section
@@ -28,18 +29,12 @@ taxonomies = [
 build_search_index = true
 
 [markdown]
-# When set to "true", all code blocks are highlighted.
-highlight_code = true
+insert_anchor_links = "left"
 
-# When set to "true", missing highlight languages are treated as errors. Defaults to false.
-error_on_missing_highlight = true
+[markdown.highlighting]
+style = "class"
+theme = "gruvbox-dark-soft"
 
-# The theme to use for code highlighting.
-# See below for list of allowed values.
-highlight_theme = "dracula"
-
-# https://www.getzola.org/documentation/getting-started/configuration/#syntax-highlighting
-# highlight lang: https://www.getzola.org/documentation/content/syntax-highlighting/
 [search]
 # Search Bar
 index_format = "elasticlunr_json"
@@ -68,5 +63,7 @@ enable_search = true
 theme = "toggle"
 # Table of Contents
 toc = true
+# Atom Feed
+atom_feed = {enable = true, url = "$BASE_URL/atom.xml"}
 # Disable Comment
 comments = false

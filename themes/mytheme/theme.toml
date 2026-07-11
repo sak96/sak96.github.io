@@ -1,0 +1,37 @@
+name = "mytheme"
+description = "Gruvbox-inspired blog theme with dark/light mode, pagination, tags, search"
+license = "MIT"
+min_version = "0.19"
+
+[extra]
+# Top navigation menu
+radion_menu = [
+    {url = "$BASE_URL/", name = "Home"},
+    {url = "$BASE_URL/categories", name = "Categories"},
+    {url = "$BASE_URL/tags", name = "Tags"},
+    {url = "$BASE_URL/about", name = "About Me"},
+]
+# Site title
+radion_title = "Sanket's Blog"
+# Author
+author = "Sanket Kamath"
+# Disable Favicon
+favicon = false
+# GitHub
+github = "https://github.com/sak96"
+# Enhanced Code Block
+codeblock = true
+# Enable Search
+enable_search = true
+# Set Color Theme
+theme = "toggle"
+# Table of Contents
+toc = true
+# Atom Feed
+atom_feed = {enable = true, url = "$BASE_URL/atom.xml"}
+# Disable Comment
+comments = false
+
+[author]
+name = "Sanket Kamath"
+homepage = "https://sak96.github.io/"

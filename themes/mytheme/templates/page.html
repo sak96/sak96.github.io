@@ -1,0 +1,28 @@
+{% extends "layouts/base.html" %}
+{% import "macros/toc.html" as toc %}
+{% import "macros/tags.html" as tags %}
+
+{% block title %}{{ page.title }} - {{ config.title }}{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="/syntax-highlight.css">
+{% endblock head %}
+
+{% block content %}
+<h1>{{ page.title }}</h1>
+<small class="page-meta">Read time: {{ (page.word_count / 228) | round(method="ceil") | int }} min</small>
+<small class="page-meta">Written on {{ page.date | date(format="%B %d, %Y") }}</small>
+
+{% if page.toc and config.extra.toc %}
+<details class="toc">
+  <summary class="toc-title">Table of Contents</summary>
+  {{ toc::toc_render(items=page.toc) }}
+</details>
+{% endif %}
+
+<article>
+  {{ page.content | safe }}
+</article>
+
+{{ tags::tags(page=page) }}
+{% endblock content %}

@@ -1,0 +1,21 @@
+{% extends "layouts/base.html" %}
+{% import "macros/empty_state.html" as empty %}
+
+{% block title %}{{ taxonomy.name | capitalize }} - {{ config.title }}{% endblock %}
+
+{% block content %}
+<h2>{{ taxonomy.name | capitalize }}</h2>
+
+{% if terms %}
+<ul class="taxonomy-list">
+  {% for term in terms %}
+  <li>
+    <a href="{{ get_taxonomy_url(name=term.name, kind=taxonomy.name) }}">{{ term.name }}</a>
+    <span class="count">({{ term.pages | length }})</span>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+{{ empty::empty_state() }}
+{% endif %}
+{% endblock content %}

@@ -1,0 +1,46 @@
+{% macro search() %}
+<input type="text" placeholder="Search..." id="search-input">
+<div id="search-results" popover></div>
+{% endmacro search %}
+
+{% macro search_script() %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/elasticlunr/0.9.6/elasticlunr.min.js"></script>
+<script src="{{ get_url(path='js/search.js') }}"></script>
+<script>
+(function () {
+  var searchInput = document.getElementById("search-input");
+  var searchResults = document.getElementById("search-results");
+
+  function showResults() { try { searchResults.showPopover(); } catch(e) {} }
+  function hideResults() { try { searchResults.hidePopover(); } catch(e) {} }
+
+  function performSearch(query) {
+    if (!query) { searchResults.innerHTML = ""; hideResults(); return; }
+    var results = SearchApp.search(query);
+    if (results.length === 0) {
+      searchResults.innerHTML = "<p>No results found.</p>";
+      showResults();
+      return;
+    }
+    var html = "";
+    results.forEach(function (r) {
+      var doc = SearchApp.getDoc(r.ref);
+      html += SearchApp.renderResult(doc, r.ref);
+    });
+    searchResults.innerHTML = html;
+    showResults();
+  }
+
+  SearchApp.init();
+  searchInput.addEventListener("input", function (e) { performSearch(e.target.value); });
+  searchInput.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && searchInput.value.trim()) {
+      window.location.href = "/?q=" + encodeURIComponent(searchInput.value.trim());
+    }
+  });
+  searchInput.addEventListener("focus", function (e) {
+    if (searchInput.value) performSearch(searchInput.value);
+  });
+})();
+</script>
+{% endmacro search_script %}

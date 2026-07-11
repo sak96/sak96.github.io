@@ -1,0 +1,24 @@
+{% macro theme_init() %}
+<script>
+  let t = localStorage.getItem("theme");
+  if (t === "light" || (!t && matchMedia("(prefers-color-scheme: light)").matches))
+    document.documentElement.setAttribute("data-theme", "light");
+  else
+    document.documentElement.setAttribute("data-theme", "dark");
+</script>
+{% endmacro theme_init %}
+
+{% macro theme_toggle() %}
+<script>
+  document.querySelector("#theme-toggle").addEventListener("click", function () {
+    let current = document.documentElement.getAttribute("data-theme");
+    if (current === "light") {
+      document.documentElement.setAttribute("data-theme", "dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.setAttribute("data-theme", "light");
+      localStorage.setItem("theme", "light");
+    }
+  });
+</script>
+{% endmacro theme_toggle %}
