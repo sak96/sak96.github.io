@@ -82,4 +82,6 @@ This approach aligns with AWS best practices while addressing the unique challen
 
 # Resource
 
--
+- [AWS S3 IAM Permissions](https://docs.aws.amazon.com/AmazonS3/latest/userguide/using-with-s3-actions.html)
+- [S3 ListBucket API](https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListBucket.html)
+- [IAM Policy Conditions - s3:prefix](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html#condition-keys-s3)
