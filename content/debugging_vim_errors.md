@@ -2,8 +2,8 @@
 title = "Debugging Guide for Vim Errors"
 date = 2022-04-25
 [taxonomies]
-tags = ["vim", "neovim", "debugging"]
-categories = ["vim"]
+tags = ["vim", "debugging", "tutorial"]
+categories = ["devtools"]
 +++
 
 Vim's default configuration presents significant debugging challenges due to its minimalistic design.

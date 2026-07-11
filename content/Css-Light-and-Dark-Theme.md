@@ -2,7 +2,7 @@
 title = "Css Light and Dark Theme"
 date = 2023-03-28
 [taxonomies]
-tags = ["css", "theme", "html", "dark", "rust", "system-preferences", "data-attributes"]
+tags = ["css", "dark-mode", "tutorial"]
 categories = ["css"]
 +++
 

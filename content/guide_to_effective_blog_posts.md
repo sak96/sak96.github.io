@@ -2,8 +2,8 @@
 title = "A Guide to Effective Blog Posts"
 date = 2020-02-15
 [taxonomies]
-tags = [ "teach writing", "programming blog", "content creation" ]
-categories = ["writing tips"]
+tags = ["writing", "guide", "tutorial"]
+categories = ["writing"]
 +++
 This article summarizes the key points from ["Write An Excellent Programming Blog"](http://bit.ly/excellent-blog) on how to craft compelling tech-based articles, offering detailed categories and beginner-friendly guidelines for writing across various tech domains.
 <!-- more -->

@@ -2,7 +2,7 @@
 title = "Python Coroutine"
 date = 2023-03-08
 [taxonomies]
-tags = ["python", "coroutine "]
+tags = ["python", "concurrency", "tutorial"]
 categories = ["python"]
 +++
 

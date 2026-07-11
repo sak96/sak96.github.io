@@ -2,7 +2,7 @@
 title = "Linux Input Injection Through Unusual Methods"
 date = 2020-07-18
 [taxonomies]
-tags = ["story", "linux", "file"]
+tags = ["linux", "debugging", "story"]
 categories = ["stories"]
 +++
 For people familiar with Unix philosophy, ["Everything is a file"][everyting_is_file] is

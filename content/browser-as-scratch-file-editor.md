@@ -2,7 +2,7 @@
 title = "Browser Scratch File Editor"
 date = 2020-07-22
 [taxonomies]
-tags = ["story", "browser", "file"]
+tags = ["browser", "story", "productivity"]
 categories = ["stories"]
 +++
 Developers often require ephemeral scratch files for temporary note-taking during workflow without the overhead of context switching.

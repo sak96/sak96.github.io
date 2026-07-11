@@ -2,8 +2,8 @@
 title = 'Guide to Documentation'
 date = 2020-02-22
 [taxonomies]
-tags = ["test", "documentation improvement", "writing skills", "programming best practices"]
-categories = ["writing tips"]
+tags = ["writing", "guide", "tutorial"]
+categories = ["writing"]
 +++
 
 The article ["What nobody tells you about documentation"](https://www.divio.com/blog/documentation) details how to write manuals for software, covering various components, their purposes, content, scope, and roles in simplifying the documentation process.

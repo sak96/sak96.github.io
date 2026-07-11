@@ -2,8 +2,8 @@
 title = "Docker Debugging & Patching Simplified"
 date = 2020-02-29
 [taxonomies]
-tags = ["patching", "debugging", "docker"]
-categories = ["notes"]
+tags = ["docker", "debugging", "tutorial"]
+categories = ["devtools"]
 +++
 
 Containerization technologies like Docker enable efficient deployment, portability, and scalability.

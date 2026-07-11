@@ -3,8 +3,8 @@ title = "Note Taking Methods"
 date = 2024-01-10
 draft = true
 [taxonomies]
-tags = ["note"]
-categories = ["ideas"]
+tags = ["notes", "productivity", "tutorial"]
+categories = ["stories"]
 +++
 Why take notes
 Type of notes

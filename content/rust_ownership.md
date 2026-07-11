@@ -2,7 +2,7 @@
 title = "Rust Ownership"
 date = 2020-12-20
 [taxonomies]
-tags = ["rust", "ownership"]
+tags = ["rust", "memory", "tutorial"]
 categories = ["rust"]
 +++
 
