@@ -4,6 +4,8 @@ date = 2020-04-29
 [taxonomies]
 tags = ["git", "vcs", "tutorial"]
 categories = ["devtools"]
+[extra]
+github_issue = 4
 +++
 Git is a “content tracker” – it records how files change over time. Think of it as a detailed history of your project, noting when, where, and by whom changes were made. This enables key features like:
 

@@ -4,6 +4,8 @@ date = 2020-12-20
 [taxonomies]
 tags = ["rust", "memory", "tutorial"]
 categories = ["rust"]
+[extra]
+github_issue = 10
 +++
 
 <!-- cSpell:ignore sbrk, malloc -->

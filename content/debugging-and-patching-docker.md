@@ -4,6 +4,8 @@ date = 2020-02-29
 [taxonomies]
 tags = ["docker", "debugging", "tutorial"]
 categories = ["devtools"]
+[extra]
+github_issue = 3
 +++
 
 Containerization technologies like Docker enable efficient deployment, portability, and scalability.

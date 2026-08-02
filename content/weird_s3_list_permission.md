@@ -4,6 +4,8 @@ date = 2021-06-20
 [taxonomies]
 tags = ["aws", "story", "security"]
 categories = ["stories"]
+[extra]
+github_issue = 11
 +++
 
 S3's file storage system employs a flat namespace architecture, where all objects are stored as key-value pairs without hierarchical folders.

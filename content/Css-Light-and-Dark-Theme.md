@@ -4,6 +4,8 @@ date = 2023-03-28
 [taxonomies]
 tags = ["css", "dark-mode", "tutorial"]
 categories = ["css"]
+[extra]
+github_issue = 15
 +++
 
 Dark themes provide significant benefits for user experience and accessibility, particularly for users who experience eye strain from bright displays

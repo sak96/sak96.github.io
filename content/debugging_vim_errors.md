@@ -4,6 +4,8 @@ date = 2022-04-25
 [taxonomies]
 tags = ["vim", "debugging", "tutorial"]
 categories = ["devtools"]
+[extra]
+github_issue = 13
 +++
 
 Vim's default configuration presents significant debugging challenges due to its minimalistic design.

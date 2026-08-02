@@ -4,6 +4,8 @@ date = 2023-03-08
 [taxonomies]
 tags = ["python", "concurrency", "tutorial"]
 categories = ["python"]
+[extra]
+github_issue = 14
 +++
 
 Consider the problem of maintaining a running sum of integers, which we will refer to as the `Summer` problem (a nod to the season).

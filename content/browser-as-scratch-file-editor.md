@@ -4,6 +4,8 @@ date = 2020-07-22
 [taxonomies]
 tags = ["browser", "story", "productivity"]
 categories = ["stories"]
+[extra]
+github_issue = 7
 +++
 Developers often require ephemeral scratch files for temporary note-taking during workflow without the overhead of context switching.
 To address this need, a browser-native text editor solution leverages [data URLs][data_url] to create lightweight, on-the-fly text editors.

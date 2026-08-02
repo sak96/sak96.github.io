@@ -4,6 +4,8 @@ date = 2020-07-18
 [taxonomies]
 tags = ["linux", "debugging", "story"]
 categories = ["stories"]
+[extra]
+github_issue = 6
 +++
 For people familiar with Unix philosophy, ["Everything is a file"][everyting_is_file] is
 a common phrase. Rarely do we get a case to use it in practice. This is one of those cases.

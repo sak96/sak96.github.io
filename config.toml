@@ -55,6 +55,8 @@ author = "Sanket Kamath"
 favicon = false
 # GitHub
 github = "https://github.com/sak96"
+github_repo = "sak96/sak96.github.io"
+
 # Enhanced Code Block
 codeblock = true
 # Enable Search

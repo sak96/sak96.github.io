@@ -4,6 +4,8 @@ date = 2020-02-22
 [taxonomies]
 tags = ["writing", "guide", "tutorial"]
 categories = ["writing"]
+[extra]
+github_issue = 2
 +++
 
 The article ["What nobody tells you about documentation"](https://www.divio.com/blog/documentation) details how to write manuals for software, covering various components, their purposes, content, scope, and roles in simplifying the documentation process.

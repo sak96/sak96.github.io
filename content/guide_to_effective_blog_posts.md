@@ -4,6 +4,8 @@ date = 2020-02-15
 [taxonomies]
 tags = ["writing", "guide", "tutorial"]
 categories = ["writing"]
+[extra]
+github_issue = 1
 +++
 This article summarizes the key points from ["Write An Excellent Programming Blog"](http://bit.ly/excellent-blog) on how to craft compelling tech-based articles, offering detailed categories and beginner-friendly guidelines for writing across various tech domains.
 <!-- more -->
