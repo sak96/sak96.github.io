@@ -25,4 +25,29 @@
 </article>
 
 {{ tags::tags(page=page) }}
+
+{% if page.extra.github_issue %}
+  {% if config.extra.github_repo %}
+<hr>
+<h3>Discussion <small><a href="https://github.com/{{ config.extra.github_repo }}/issues/{{ page.extra.github_issue }}" target="_blank">view on github →</a></small></h3>
+<div id="github-comments" data-repo="{{ config.extra.github_repo }}" data-issue="{{ page.extra.github_issue }}"></div>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const el = document.getElementById('github-comments');
+  if (!el) return;
+  const repo = el.dataset.repo;
+  const issue = el.dataset.issue;
+  try {
+    const res = await fetch(`https://api.github.com/repos/${repo}/issues/${issue}/comments?per_page=5`);
+    if (!res.ok) return;
+    const comments = await res.json();
+    if (!comments.length) return;
+    el.innerHTML = comments.map(c => `<hr><div><h3>${c.user.login} <small>(${new Date(c.created_at).toLocaleDateString()})</small></h3><div>${c.body.substring(0,280)}${c.body.length>280?'...' :''}</div></div>`).join('');
+  } catch (e) { console.log('GitHub comments failed:', e); }
+});
+</script>
+  {% else %}
+    {{ throw(message="github_issue is set in " ~ page.relative_path ~ " but github_repo is not set in config.toml") }}
+  {% endif %}
+{% endif %}
 {% endblock content %}
