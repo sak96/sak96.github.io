@@ -1,6 +1,6 @@
 {% extends "layouts/base.html" %}
 
-{% block title %}{{ page.title }} - {{ config.title }}{% endblock %}
+{% block title %}{% if page.draft %}[Draft] {% endif %}{{ page.title }} - {{ config.title }}{% endblock %}
 
 {% block content %}
 <article>
