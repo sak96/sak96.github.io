@@ -1,12 +1,11 @@
 +++
 title = "Bean's Satirical Journey for Perfect Coffee"
 date = 2026-08-22
-draft = true
 [taxonomies]
 tags = ["Satire", "Story", "SoftwareDevelopment"]
 categories = ["stories"]
 [extra]
-github_issue = 7
+github_issue = 17
 +++
 
 Bean awoke to the activation of his vibe-coded application, Latte Vibes.
