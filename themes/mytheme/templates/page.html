@@ -2,10 +2,6 @@
 
 {% block title %}{% if page.draft %}[Draft] {% endif %}{{ page.title }} - {{ config.title }}{% endblock %}
 
-{% block head %}
-<link rel="stylesheet" href="/syntax-highlight.css">
-{% endblock head %}
-
 {% block content %}
 <h1>{% if page.draft %}[Draft] {% endif %}{{ page.title }}</h1>
 <small class="page-meta">Read time: {{ (page.word_count / 228) | round(method="ceil") | int }} min</small>

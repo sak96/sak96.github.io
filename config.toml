@@ -36,7 +36,8 @@ insert_anchor_links = "left"
 
 [markdown.highlighting]
 style = "class"
-theme = "gruvbox-dark-soft"
+light_theme = "gruvbox-light-soft"
+dark_theme = "gruvbox-dark-soft"
 
 [search]
 # Search Bar
@@ -59,16 +60,3 @@ favicon = false
 # GitHub
 github = "https://github.com/sak96"
 github_repo = "sak96/sak96.github.io"
-
-# Enhanced Code Block
-codeblock = true
-# Enable Search
-enable_search = true
-# Set Color Theme
-theme = "toggle"
-# Table of Contents
-toc = true
-# Atom Feed
-atom_feed = {enable = true, url = "$BASE_URL/atom.xml"}
-# Disable Comment
-comments = false
