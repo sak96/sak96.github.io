@@ -1,0 +1,149 @@
+<!doctype html><html lang=en><head><meta charset=UTF-8><meta content="width=device-width,initial-scale=1.0" name=viewport><title>Python Coroutine - Sanket's Blog</title><link href=https://sak96.github.io/images/favicon.svg rel=icon><link href=https://sak96.github.io/css/style.css rel=stylesheet><link href=https://sak96.github.io/giallo-light.css id=giallo-light rel=stylesheet><link disabled href=https://sak96.github.io/giallo-dark.css id=giallo-dark rel=stylesheet><script>let t = localStorage.getItem("theme");
+  let theme = t === "light" || (!t && matchMedia("(prefers-color-scheme: light)").matches) ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", theme);
+  document.querySelector("#giallo-light").disabled = theme !== "light";
+  document.querySelector("#giallo-dark").disabled = theme !== "dark";</script><body><nav class=navbar><div class=nav-header><a href=https://sak96.github.io/>Sanket's Blog</a><input id=search-input placeholder=Search...><div id=search-results popover></div></div><div class=nav-start><a href=https://sak96.github.io//>Home</a><a href=https://sak96.github.io//categories>Categories</a><a href=https://sak96.github.io//tags>Tags</a><a href=https://sak96.github.io//about>About Me</a><a href=https://sak96.github.io//atom.xml>Atom</a></div><div class=nav-end><button id=theme-toggle></button><button class=nav-hamburger popovertarget=nav-popover>|||</button></div><div id=nav-popover popover><a href=https://sak96.github.io//>Home</a><a href=https://sak96.github.io//categories>Categories</a><a href=https://sak96.github.io//tags>Tags</a><a href=https://sak96.github.io//about>About Me</a><a href=https://sak96.github.io//atom.xml>Atom</a></div></nav><script src=https://cdnjs.cloudflare.com/ajax/libs/elasticlunr/0.9.6/elasticlunr.min.js></script><script src=https://sak96.github.io/js/search.js></script><script>(function () {
+  var searchInput = document.getElementById("search-input");
+  var searchResults = document.getElementById("search-results");
+
+  function showResults() { try { searchResults.showPopover(); } catch(e) {} }
+  function hideResults() { try { searchResults.hidePopover(); } catch(e) {} }
+
+  function performSearch(query) {
+    if (!query) { searchResults.innerHTML = ""; hideResults(); return; }
+    var results = SearchApp.search(query);
+    if (results.length === 0) {
+      searchResults.innerHTML = "<p>No results found.</p>";
+      showResults();
+      return;
+    }
+    var html = "";
+    results.forEach(function (r) {
+      var doc = SearchApp.getDoc(r.ref);
+      html += SearchApp.renderResult(doc, r.ref);
+    });
+    searchResults.innerHTML = html;
+    showResults();
+  }
+
+  SearchApp.init();
+  searchInput.addEventListener("input", function (e) { performSearch(e.target.value); });
+  searchInput.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && searchInput.value.trim()) {
+      window.location.href = "/?q=" + encodeURIComponent(searchInput.value.trim());
+    }
+  });
+  searchInput.addEventListener("focus", function (e) {
+    if (searchInput.value) performSearch(searchInput.value);
+  });
+})();</script><div class=content><h1>Python Coroutine</h1><small class=page-meta>Read time: 2 min</small><small class=page-meta>Written on March 08, 2023</small><details class=toc><summary class=toc-title>Table of Contents</summary> <ul><li><a href=https://sak96.github.io/blog/python-coroutine/#traditional-class-based-solution>Traditional Class-Based Solution</a><li><a href=https://sak96.github.io/blog/python-coroutine/#callable-objects-based-solution>Callable-Objects Based Solution</a><li><a href=https://sak96.github.io/blog/python-coroutine/#co-routines-with-global-state-based-solution>Co-Routines with Global State Based Solution</a><li><a href=https://sak96.github.io/blog/python-coroutine/#stateful-co-routines-based-solution>Stateful Co-Routines Based Solution</a><li><a href=https://sak96.github.io/blog/python-coroutine/#automated-initialization-pattern>Automated Initialization Pattern</a><li><a href=https://sak96.github.io/blog/python-coroutine/#advance-co-routine-handling>Advance Co-routine Handling</a></ul></details><article><p>Consider the problem of maintaining a running sum of integers, which we will refer to as the <code>Summer</code> problem (a nod to the season). We will demonstrate how co-routines work by trying to implement running sum.</p><span id=continue-reading></span><h3 id=traditional-class-based-solution>Traditional Class-Based Solution<a aria-label="Anchor link for: traditional-class-based-solution" class=zola-anchor href=#traditional-class-based-solution>🔗</a></h3><p>The simplest approach uses a class with explicit <code>add</code> and <code>sum</code> methods to maintain a running total:<pre class="giallo z-l-code z-d-code"><code data-lang=python><span class=giallo-l><span class="z-l-12 z-d-17">class</span><span class="z-l-15 z-d-16"> Summer</span><span class="z-l-8 z-d-7">:</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">    def</span><span class="z-l-2 z-d-4"> __init__</span><span class="z-l-8 z-d-7">(</span><span class="z-l-1 z-d-3">self</span><span class="z-l-8 z-d-7">,</span><span class="z-l-1 z-d-3"> total</span><span class="z-l-2 z-d-4">=</span><span class="z-l-9 z-d-12">0</span><span class="z-l-8 z-d-7">)</span><span class="z-l-8 z-d-7">:</span></span>
+<span class=giallo-l><span class="z-l-1 z-d-3">        self</span><span class="z-l-8 z-d-7">.</span><span>total</span><span class="z-l-2 z-d-4"> =</span><span> total</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">    def</span><span class="z-l-2 z-d-4"> add</span><span class="z-l-8 z-d-7">(</span><span class="z-l-1 z-d-3">self</span><span class="z-l-8 z-d-7">,</span><span class="z-l-1 z-d-3"> m</span><span class="z-l-2 z-d-4">=</span><span class="z-l-9 z-d-12">0</span><span class="z-l-8 z-d-7">)</span><span class="z-l-8 z-d-7">:</span></span>
+<span class=giallo-l><span class="z-l-1 z-d-3">        self</span><span class="z-l-8 z-d-7">.</span><span>total</span><span class="z-l-2 z-d-4"> +=</span><span> m</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">    def</span><span class="z-l-13 z-d-18"> sum</span><span class="z-l-8 z-d-7">(</span><span class="z-l-1 z-d-3">self</span><span class="z-l-8 z-d-7">)</span><span class="z-l-8 z-d-7">:</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">        return</span><span class="z-l-1 z-d-3"> self</span><span class="z-l-8 z-d-7">.</span><span>total</span></span>
+<span class=giallo-l></span>
+<span class=giallo-l><span>summer</span><span class="z-l-2 z-d-4"> =</span><span class="z-l-1 z-d-3"> Summer</span><span class="z-l-8 z-d-7">(</span><span class="z-l-8 z-d-7">)</span></span>
+<span class=giallo-l><span>summer</span><span class="z-l-8 z-d-7">.</span><span class="z-l-1 z-d-3">add</span><span class="z-l-8 z-d-7">(</span><span class="z-l-9 z-d-12">10</span><span class="z-l-8 z-d-7">)</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">assert</span><span> summer</span><span class="z-l-8 z-d-7">.</span><span class="z-l-1 z-d-3">sum</span><span class="z-l-8 z-d-7">(</span><span class="z-l-8 z-d-7">)</span><span class="z-l-2 z-d-4"> ==</span><span class="z-l-9 z-d-12"> 10</span></span></code></pre><h3 id=callable-objects-based-solution>Callable-Objects Based Solution<a aria-label="Anchor link for: callable-objects-based-solution" class=zola-anchor href=#callable-objects-based-solution>🔗</a></h3><p>To reduce object complexity, we can implement <code>__call__</code> method that both updates the sum and returns the current value.<pre class="giallo z-l-code z-d-code"><code data-lang=python><span class=giallo-l><span class="z-l-12 z-d-17">class</span><span class="z-l-15 z-d-16"> SummerV0</span><span class="z-l-8 z-d-7">:</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">    def</span><span class="z-l-2 z-d-4"> __init__</span><span class="z-l-8 z-d-7">(</span><span class="z-l-1 z-d-3">self</span><span class="z-l-8 z-d-7">,</span><span class="z-l-1 z-d-3"> total</span><span class="z-l-2 z-d-4">=</span><span class="z-l-9 z-d-12">0</span><span class="z-l-8 z-d-7">)</span><span class="z-l-8 z-d-7">:</span></span>
+<span class=giallo-l><span class="z-l-1 z-d-3">        self</span><span class="z-l-8 z-d-7">.</span><span>total</span><span class="z-l-2 z-d-4"> =</span><span> total</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">    def</span><span class="z-l-2 z-d-4"> __call__</span><span class="z-l-8 z-d-7">(</span><span class="z-l-1 z-d-3">self</span><span class="z-l-8 z-d-7">,</span><span class="z-l-1 z-d-3"> m</span><span class="z-l-2 z-d-4">=</span><span class="z-l-9 z-d-12">0</span><span class="z-l-8 z-d-7">)</span><span class="z-l-8 z-d-7">:</span></span>
+<span class=giallo-l><span class="z-l-1 z-d-3">        self</span><span class="z-l-8 z-d-7">.</span><span>total</span><span class="z-l-2 z-d-4"> +=</span><span> m</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">        return</span><span class="z-l-1 z-d-3"> self</span><span class="z-l-8 z-d-7">.</span><span>total</span></span>
+<span class=giallo-l></span>
+<span class=giallo-l><span>summer</span><span class="z-l-2 z-d-4"> =</span><span class="z-l-1 z-d-3"> SummerV0</span><span class="z-l-8 z-d-7">(</span><span class="z-l-8 z-d-7">)</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">assert</span><span class="z-l-1 z-d-3"> summer</span><span class="z-l-8 z-d-7">(</span><span class="z-l-9 z-d-12">10</span><span class="z-l-8 z-d-7">)</span><span class="z-l-2 z-d-4"> ==</span><span class="z-l-9 z-d-12"> 10</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">assert</span><span class="z-l-1 z-d-3"> summer</span><span class="z-l-8 z-d-7">(</span><span class="z-l-8 z-d-7">)</span><span class="z-l-2 z-d-4"> ==</span><span class="z-l-9 z-d-12"> 10</span></span></code></pre><h3 id=co-routines-with-global-state-based-solution>Co-Routines with Global State Based Solution<a aria-label="Anchor link for: co-routines-with-global-state-based-solution" class=zola-anchor href=#co-routines-with-global-state-based-solution>🔗</a></h3><p>A coroutine implementation can be written using global state for maintaining the running sum:<pre class="giallo z-l-code z-d-code"><code data-lang=python><span class=giallo-l><span class="z-l-12 z-d-17">def</span><span class="z-l-2 z-d-4"> summer_v1</span><span class="z-l-8 z-d-7">(</span><span class="z-l-1 z-d-3">total_init</span><span class="z-l-2 z-d-4">=</span><span class="z-l-9 z-d-12">0</span><span class="z-l-8 z-d-7">)</span><span class="z-l-8 z-d-7">:</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">    global</span><span> total</span></span>
+<span class=giallo-l><span>    total</span><span class="z-l-2 z-d-4"> =</span><span> total_init</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">    while</span><span class="z-l-9 z-d-12"> True</span><span class="z-l-8 z-d-7">:</span></span>
+<span class=giallo-l><span>        z</span><span class="z-l-2 z-d-4"> =</span><span class="z-l-12 z-d-17"> yield</span></span>
+<span class=giallo-l><span>        total</span><span class="z-l-2 z-d-4"> +=</span><span> z</span><span class="z-l-12 z-d-17"> if</span><span> z</span><span class="z-l-12 z-d-17"> else</span><span class="z-l-9 z-d-12"> 0</span></span>
+<span class=giallo-l></span>
+<span class=giallo-l><span>summer</span><span class="z-l-2 z-d-4"> =</span><span class="z-l-1 z-d-3"> summer_v1</span><span class="z-l-8 z-d-7">(</span><span class="z-l-8 z-d-7">)</span></span>
+<span class=giallo-l><span class="z-l-13 z-d-18">next</span><span class="z-l-8 z-d-7">(</span><span class="z-l-4 z-d-13">summer</span><span class="z-l-8 z-d-7">)</span></span>
+<span class=giallo-l><span>summer</span><span class="z-l-8 z-d-7">.</span><span class="z-l-1 z-d-3">send</span><span class="z-l-8 z-d-7">(</span><span class="z-l-9 z-d-12">10</span><span class="z-l-8 z-d-7">)</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">assert</span><span> total</span><span class="z-l-2 z-d-4"> ==</span><span class="z-l-9 z-d-12"> 10</span></span></code></pre><h3 id=stateful-co-routines-based-solution>Stateful Co-Routines Based Solution<a aria-label="Anchor link for: stateful-co-routines-based-solution" class=zola-anchor href=#stateful-co-routines-based-solution>🔗</a></h3><p>A coroutine implementation can store state in local variable as well:<pre class="giallo z-l-code z-d-code"><code data-lang=python><span class=giallo-l><span class="z-l-12 z-d-17">def</span><span class="z-l-2 z-d-4"> summer_v2</span><span class="z-l-8 z-d-7">(</span><span class="z-l-1 z-d-3">total</span><span class="z-l-2 z-d-4">=</span><span class="z-l-9 z-d-12">0</span><span class="z-l-8 z-d-7">)</span><span class="z-l-8 z-d-7">:</span></span>
+<span class=giallo-l><span>    total</span><span class="z-l-2 z-d-4"> =</span><span> total</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">    while</span><span class="z-l-9 z-d-12"> True</span><span class="z-l-8 z-d-7">:</span></span>
+<span class=giallo-l><span>        z</span><span class="z-l-2 z-d-4"> =</span><span class="z-l-12 z-d-17"> yield</span><span> total</span></span>
+<span class=giallo-l><span>        total</span><span class="z-l-2 z-d-4"> +=</span><span> z</span><span class="z-l-12 z-d-17"> if</span><span> z</span><span class="z-l-12 z-d-17"> else</span><span class="z-l-9 z-d-12"> 0</span></span>
+<span class=giallo-l></span>
+<span class=giallo-l><span>summer</span><span class="z-l-2 z-d-4"> =</span><span class="z-l-1 z-d-3"> summer_v2</span><span class="z-l-8 z-d-7">(</span><span class="z-l-8 z-d-7">)</span></span>
+<span class=giallo-l><span>summer_again</span><span class="z-l-2 z-d-4"> =</span><span class="z-l-1 z-d-3"> summer_v2</span><span class="z-l-8 z-d-7">(</span><span class="z-l-9 z-d-12">12</span><span class="z-l-8 z-d-7">)</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">assert</span><span class="z-l-13 z-d-18"> next</span><span class="z-l-8 z-d-7">(</span><span class="z-l-4 z-d-13">summer</span><span class="z-l-8 z-d-7">)</span><span class="z-l-2 z-d-4"> ==</span><span class="z-l-9 z-d-12"> 0</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">assert</span><span class="z-l-13 z-d-18"> next</span><span class="z-l-8 z-d-7">(</span><span class="z-l-4 z-d-13">summer_again</span><span class="z-l-8 z-d-7">)</span><span class="z-l-2 z-d-4"> ==</span><span class="z-l-9 z-d-12"> 12</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">assert</span><span> summer</span><span class="z-l-8 z-d-7">.</span><span class="z-l-1 z-d-3">send</span><span class="z-l-8 z-d-7">(</span><span class="z-l-9 z-d-12">10</span><span class="z-l-8 z-d-7">)</span><span class="z-l-2 z-d-4"> ==</span><span class="z-l-9 z-d-12"> 10</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">assert</span><span> summer_again</span><span class="z-l-8 z-d-7">.</span><span class="z-l-1 z-d-3">send</span><span class="z-l-8 z-d-7">(</span><span class="z-l-9 z-d-12">10</span><span class="z-l-8 z-d-7">)</span><span class="z-l-2 z-d-4"> ==</span><span class="z-l-9 z-d-12"> 22</span></span></code></pre><h3 id=automated-initialization-pattern>Automated Initialization Pattern<a aria-label="Anchor link for: automated-initialization-pattern" class=zola-anchor href=#automated-initialization-pattern>🔗</a></h3><p>Co-routines require explicit initialization with <code>.send(None)</code> or <code>next</code>. Otherwise it raise Exception <code>TypeError: can't send non-None value to a just-started coroutine</code>. This can be avoided using decorators as follows:<pre class="giallo z-l-code z-d-code"><code data-lang=python><span class=giallo-l><span class="z-l-12 z-d-17">def</span><span class="z-l-2 z-d-4"> safety_wrapper</span><span class="z-l-8 z-d-7">(</span><span class="z-l-1 z-d-3">cr</span><span class="z-l-8 z-d-7">)</span><span class="z-l-8 z-d-7">:</span></span>
+<span class=giallo-l><span class="z-l-8 z-d-7">    """</span><span class="z-l-7 z-d-9">the safety wrapper</span><span class="z-l-8 z-d-7">"""</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">    def</span><span class="z-l-2 z-d-4"> init_cr</span><span class="z-l-8 z-d-7">(</span><span class="z-l-2 z-d-4">*</span><span class="z-l-1 z-d-3">args</span><span class="z-l-8 z-d-7">,</span><span class="z-l-2 z-d-4"> **</span><span class="z-l-1 z-d-3">kwargs</span><span class="z-l-8 z-d-7">)</span><span class="z-l-8 z-d-7">:</span></span>
+<span class=giallo-l><span>        dec_cr</span><span class="z-l-2 z-d-4"> =</span><span class="z-l-1 z-d-3"> cr</span><span class="z-l-8 z-d-7">(</span><span class="z-l-2 z-d-4">*</span><span class="z-l-4 z-d-13">args</span><span class="z-l-8 z-d-7">,</span><span class="z-l-2 z-d-4"> **</span><span class="z-l-4 z-d-13">kwargs</span><span class="z-l-8 z-d-7">)</span></span>
+<span class=giallo-l><span>        dec_cr</span><span class="z-l-8 z-d-7">.</span><span class="z-l-1 z-d-3">send</span><span class="z-l-8 z-d-7">(</span><span class="z-l-9 z-d-12">None</span><span class="z-l-8 z-d-7">)</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">        return</span><span> dec_cr</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">    return</span><span> init_cr</span></span>
+<span class=giallo-l></span>
+<span class=giallo-l><span class="z-l-8 z-l-b z-d-7 z-d-b">@</span><span class="z-l-15 z-l-b z-d-16 z-d-b">safety_wrapper</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">def</span><span class="z-l-2 z-d-4"> summer_v3</span><span class="z-l-8 z-d-7">(</span><span class="z-l-1 z-d-3">total_init</span><span class="z-l-2 z-d-4">=</span><span class="z-l-9 z-d-12">0</span><span class="z-l-8 z-d-7">)</span><span class="z-l-8 z-d-7">:</span></span>
+<span class=giallo-l><span>    total</span><span class="z-l-2 z-d-4"> =</span><span> total_init</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">    while</span><span class="z-l-9 z-d-12"> True</span><span class="z-l-8 z-d-7">:</span></span>
+<span class=giallo-l><span>        z</span><span class="z-l-2 z-d-4"> =</span><span class="z-l-12 z-d-17"> yield</span><span> total</span></span>
+<span class=giallo-l><span>        total</span><span class="z-l-2 z-d-4"> +=</span><span> z</span><span class="z-l-12 z-d-17"> if</span><span> z</span><span class="z-l-12 z-d-17"> else</span><span class="z-l-9 z-d-12"> 0</span></span>
+<span class=giallo-l></span>
+<span class=giallo-l><span>summer</span><span class="z-l-2 z-d-4"> =</span><span class="z-l-1 z-d-3"> summer_v3</span><span class="z-l-8 z-d-7">(</span><span class="z-l-8 z-d-7">)</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">assert</span><span> summer</span><span class="z-l-8 z-d-7">.</span><span class="z-l-1 z-d-3">send</span><span class="z-l-8 z-d-7">(</span><span class="z-l-9 z-d-12">10</span><span class="z-l-8 z-d-7">)</span><span class="z-l-2 z-d-4"> ==</span><span class="z-l-9 z-d-12"> 10</span></span></code></pre><h3 id=advance-co-routine-handling>Advance Co-routine Handling<a aria-label="Anchor link for: advance-co-routine-handling" class=zola-anchor href=#advance-co-routine-handling>🔗</a></h3><p>Coroutine has advanced feature other than <a href=https://docs.python.org/3/reference/datamodel.html#coroutine.send rel=external>send</a> like:<ul><li><p><a href=https://docs.python.org/3/reference/datamodel.html#coroutine.close rel=external>close</a>: Terminates the coroutine execution, causing subsequent <code>send</code> operations to raise <code>StopIteration</code> exceptions. This ensures the coroutine enters a finalized state. Specialized action like clean-up can be take by handling <code>Generation Exit</code> Exception.</p><li><p><a href=https://docs.python.org/3/reference/datamodel.html#coroutine.throw rel=external>throw</a>: Enables the propagation of exceptions within the coroutine context. This feature can be leverage to specialized action.</p></ul><pre class="giallo z-l-code z-d-code"><code data-lang=python><span class=giallo-l><span class="z-l-12 z-d-17">class</span><span class="z-l-15 z-d-16"> Reset</span><span class="z-l-8 z-d-7">(</span><span class="z-l-15 z-d-16">Exception</span><span class="z-l-8 z-d-7">)</span><span class="z-l-8 z-d-7">:</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">    pass</span></span>
+<span class=giallo-l></span>
+<span class=giallo-l><span class="z-l-8 z-l-b z-d-7 z-d-b">@</span><span class="z-l-15 z-l-b z-d-16 z-d-b">safety_wrapper</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">def</span><span class="z-l-2 z-d-4"> summer_v4</span><span class="z-l-8 z-d-7">(</span><span class="z-l-1 z-d-3">total_init</span><span class="z-l-2 z-d-4">=</span><span class="z-l-9 z-d-12">0</span><span class="z-l-8 z-d-7">)</span><span class="z-l-8 z-d-7">:</span></span>
+<span class=giallo-l><span>    total</span><span class="z-l-2 z-d-4"> =</span><span> total_init</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">    while</span><span class="z-l-9 z-d-12"> True</span><span class="z-l-8 z-d-7">:</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">        try</span><span class="z-l-8 z-d-7">:</span></span>
+<span class=giallo-l><span>            z</span><span class="z-l-2 z-d-4"> =</span><span class="z-l-12 z-d-17"> yield</span><span> total</span></span>
+<span class=giallo-l><span>            total</span><span class="z-l-2 z-d-4"> +=</span><span> z</span><span class="z-l-12 z-d-17"> if</span><span> z</span><span class="z-l-12 z-d-17"> else</span><span class="z-l-9 z-d-12"> 0</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">        except</span><span> Reset</span><span class="z-l-8 z-d-7">:</span></span>
+<span class=giallo-l><span>            total</span><span class="z-l-2 z-d-4"> =</span><span class="z-l-9 z-d-12"> 0</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">        except</span><span class="z-l-15 z-d-16"> GeneratorExit</span><span class="z-l-8 z-d-7">:</span></span>
+<span class=giallo-l><span class="z-l-13 z-d-18">            print</span><span class="z-l-8 z-d-7">(</span><span class="z-l-12 z-d-17">f</span><span class="z-l-7 z-d-9">"</span><span class="z-l-7 z-d-9">total=</span><span class="z-l-9 z-d-12">{</span><span class="z-l-4 z-d-13">total</span><span class="z-l-9 z-d-12">}</span><span class="z-l-7 z-d-9">"</span><span class="z-l-8 z-d-7">)</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">            return</span></span>
+<span class=giallo-l></span>
+<span class=giallo-l><span>summer</span><span class="z-l-2 z-d-4"> =</span><span class="z-l-1 z-d-3"> summer_v4</span><span class="z-l-8 z-d-7">(</span><span class="z-l-8 z-d-7">)</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">assert</span><span> summer</span><span class="z-l-8 z-d-7">.</span><span class="z-l-1 z-d-3">send</span><span class="z-l-8 z-d-7">(</span><span class="z-l-9 z-d-12">10</span><span class="z-l-8 z-d-7">)</span><span class="z-l-2 z-d-4"> ==</span><span class="z-l-9 z-d-12"> 10</span></span>
+<span class=giallo-l><span>summer</span><span class="z-l-8 z-d-7">.</span><span class="z-l-1 z-d-3">close</span><span class="z-l-8 z-d-7">(</span><span class="z-l-8 z-d-7">)</span><span class="z-l-10 z-l-i z-d-5 z-d-i">  #</span><span class="z-l-10 z-l-i z-d-5 z-d-i"> prints `total=10`</span></span>
+<span class=giallo-l></span>
+<span class=giallo-l><span>exception</span><span class="z-l-2 z-d-4"> =</span><span class="z-l-9 z-d-12"> False</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">try</span><span class="z-l-8 z-d-7">:</span></span>
+<span class=giallo-l><span>    summer</span><span class="z-l-8 z-d-7">.</span><span class="z-l-1 z-d-3">send</span><span class="z-l-8 z-d-7">(</span><span class="z-l-9 z-d-12">11</span><span class="z-l-8 z-d-7">)</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">except</span><span class="z-l-15 z-d-16"> StopIteration</span><span class="z-l-8 z-d-7">:</span></span>
+<span class=giallo-l><span>    exception</span><span class="z-l-2 z-d-4"> =</span><span class="z-l-9 z-d-12"> True</span></span>
+<span class=giallo-l></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">assert</span><span> exception</span></span>
+<span class=giallo-l></span>
+<span class=giallo-l><span>summer_1</span><span class="z-l-2 z-d-4"> =</span><span class="z-l-1 z-d-3"> summer_v4</span><span class="z-l-8 z-d-7">(</span><span class="z-l-8 z-d-7">)</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">assert</span><span> summer_1</span><span class="z-l-8 z-d-7">.</span><span class="z-l-1 z-d-3">send</span><span class="z-l-8 z-d-7">(</span><span class="z-l-9 z-d-12">10</span><span class="z-l-8 z-d-7">)</span><span class="z-l-2 z-d-4"> ==</span><span class="z-l-9 z-d-12"> 10</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">assert</span><span> summer_1</span><span class="z-l-8 z-d-7">.</span><span class="z-l-1 z-d-3">send</span><span class="z-l-8 z-d-7">(</span><span class="z-l-9 z-d-12">10</span><span class="z-l-8 z-d-7">)</span><span class="z-l-2 z-d-4"> ==</span><span class="z-l-9 z-d-12"> 20</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">assert</span><span> summer_1</span><span class="z-l-8 z-d-7">.</span><span class="z-l-1 z-d-3">throw</span><span class="z-l-8 z-d-7">(</span><span class="z-l-4 z-d-13">Reset</span><span class="z-l-8 z-d-7">)</span><span class="z-l-2 z-d-4"> ==</span><span class="z-l-9 z-d-12"> 0</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">assert</span><span> summer_1</span><span class="z-l-8 z-d-7">.</span><span class="z-l-1 z-d-3">send</span><span class="z-l-8 z-d-7">(</span><span class="z-l-9 z-d-12">10</span><span class="z-l-8 z-d-7">)</span><span class="z-l-2 z-d-4"> ==</span><span class="z-l-9 z-d-12"> 10</span></span></code></pre></article><div class=tags><span>Post Tags:</span><a href=https://sak96.github.io/categories/python/> #python</a><a href=https://sak96.github.io/tags/python/> #python,</a><a href=https://sak96.github.io/tags/concurrency/> #concurrency,</a><a href=https://sak96.github.io/tags/tutorial/> #tutorial</a></div><hr><h3>Discussion <small><a href=https://github.com/sak96/sak96.github.io/issues/14 target=_blank>view on github →</a></small></h3><div data-issue=14 data-repo=sak96/sak96.github.io id=github-comments></div><script>document.addEventListener('DOMContentLoaded', async () => {
+  const el = document.getElementById('github-comments');
+  if (!el) return;
+  const repo = el.dataset.repo;
+  const issue = el.dataset.issue;
+  try {
+    const res = await fetch(`https://api.github.com/repos/${repo}/issues/${issue}/comments?per_page=5`);
+    if (!res.ok) return;
+    const comments = await res.json();
+    if (!comments.length) return;
+    el.innerHTML = comments.map(c => `<hr><div><h3>${c.user.login} <small>(${new Date(c.created_at).toLocaleDateString()})</small></h3><div>${c.body.substring(0,280)}${c.body.length>280?'...' :''}</div></div>`).join('');
+  } catch (e) { console.log('GitHub comments failed:', e); }
+});</script></div><div class=content><hr><div class=footer><span>Powered by:</span><a href=https://www.getzola.org/>Zola</a></div></div><script>document.querySelector("#theme-toggle").addEventListener("click", function () {
+    const html = document.documentElement;
+    const current = html.getAttribute("data-theme");
+    const theme = current === "light" ? "dark" : "light";
+
+    html.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+
+    document.querySelector("#giallo-light").disabled = theme !== "light";
+    document.querySelector("#giallo-dark").disabled = theme !== "dark";
+  });</script>

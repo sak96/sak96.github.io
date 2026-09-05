@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>Sanket&#39;s Blog - Story</title>
+    <subtitle>A personal blog where I share my thoughts and experiences.</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://sak96.github.io/tags/story/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://sak96.github.io/"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2026-08-22T00:00:00+00:00</updated>
+    <id>https://sak96.github.io/tags/story/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Bean&#39;s Satirical Journey for Perfect Coffee</title>
+        <published>2026-08-22T00:00:00+00:00</published>
+        <updated>2026-08-22T00:00:00+00:00</updated>
+        
+        <author>
+          <name>Sanket Kamath</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://sak96.github.io/blog/bean-caches-bureaucratic-brew/"/>
+        <id>https://sak96.github.io/blog/bean-caches-bureaucratic-brew/</id>
+        
+        <summary type="html">&lt;p&gt;Bean awoke to the activation of his vibe-coded application, Latte Vibes.
+It was meant to dispense perfection.
+Today&#39;s coffee tasted like raw static, a bitter assault on his senses.
+He checked the settings: one and a half spoons of sugar logged.
+This was the programmed calibration; he knew it was correct.&lt;/p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Weird S3 List Permission</title>
+        <published>2021-06-20T00:00:00+00:00</published>
+        <updated>2021-06-20T00:00:00+00:00</updated>
+        
+        <author>
+          <name>Sanket Kamath</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://sak96.github.io/blog/weird-s3-list-permission/"/>
+        <id>https://sak96.github.io/blog/weird-s3-list-permission/</id>
+        
+        <summary type="html">&lt;p&gt;S3&#39;s file storage system employs a flat namespace architecture, where all objects are stored as key-value pairs without hierarchical folders.
+While most interfaces simulate folder hierarchies using &lt;code&gt;/&lt;/code&gt; as a path delimiter, this abstraction can introduce security risks when designing access policies for list operations.&lt;/p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Browser Scratch File Editor</title>
+        <published>2020-07-22T00:00:00+00:00</published>
+        <updated>2020-07-22T00:00:00+00:00</updated>
+        
+        <author>
+          <name>Sanket Kamath</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://sak96.github.io/blog/browser-as-scratch-file-editor/"/>
+        <id>https://sak96.github.io/blog/browser-as-scratch-file-editor/</id>
+        
+        <summary type="html">&lt;p&gt;Developers often require ephemeral scratch files for temporary note-taking during workflow without the overhead of context switching.
+To address this need, a browser-native text editor solution leverages &lt;a rel=&quot;external&quot; href=&quot;https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs&quot;&gt;data URLs&lt;/a&gt; to create lightweight, on-the-fly text editors.&lt;/p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Linux Input Injection Through Unusual Methods</title>
+        <published>2020-07-18T00:00:00+00:00</published>
+        <updated>2020-07-18T00:00:00+00:00</updated>
+        
+        <author>
+          <name>Sanket Kamath</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://sak96.github.io/blog/linux-passing-input-the-hard-way/"/>
+        <id>https://sak96.github.io/blog/linux-passing-input-the-hard-way/</id>
+        
+        <summary type="html">&lt;p&gt;For people familiar with Unix philosophy, [&quot;Everything is a file&quot;][everyting_is_file] is
+a common phrase. Rarely do we get a case to use it in practice. This is one of those cases.&lt;/p&gt;</summary>
+        
+    </entry>
+</feed>

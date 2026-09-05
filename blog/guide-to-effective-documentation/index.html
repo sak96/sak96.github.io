@@ -1,0 +1,61 @@
+<!doctype html><html lang=en><head><meta charset=UTF-8><meta content="width=device-width,initial-scale=1.0" name=viewport><title>Guide to Documentation - Sanket's Blog</title><link href=https://sak96.github.io/images/favicon.svg rel=icon><link href=https://sak96.github.io/css/style.css rel=stylesheet><link href=https://sak96.github.io/giallo-light.css id=giallo-light rel=stylesheet><link disabled href=https://sak96.github.io/giallo-dark.css id=giallo-dark rel=stylesheet><script>let t = localStorage.getItem("theme");
+  let theme = t === "light" || (!t && matchMedia("(prefers-color-scheme: light)").matches) ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", theme);
+  document.querySelector("#giallo-light").disabled = theme !== "light";
+  document.querySelector("#giallo-dark").disabled = theme !== "dark";</script><body><nav class=navbar><div class=nav-header><a href=https://sak96.github.io/>Sanket's Blog</a><input id=search-input placeholder=Search...><div id=search-results popover></div></div><div class=nav-start><a href=https://sak96.github.io//>Home</a><a href=https://sak96.github.io//categories>Categories</a><a href=https://sak96.github.io//tags>Tags</a><a href=https://sak96.github.io//about>About Me</a><a href=https://sak96.github.io//atom.xml>Atom</a></div><div class=nav-end><button id=theme-toggle></button><button class=nav-hamburger popovertarget=nav-popover>|||</button></div><div id=nav-popover popover><a href=https://sak96.github.io//>Home</a><a href=https://sak96.github.io//categories>Categories</a><a href=https://sak96.github.io//tags>Tags</a><a href=https://sak96.github.io//about>About Me</a><a href=https://sak96.github.io//atom.xml>Atom</a></div></nav><script src=https://cdnjs.cloudflare.com/ajax/libs/elasticlunr/0.9.6/elasticlunr.min.js></script><script src=https://sak96.github.io/js/search.js></script><script>(function () {
+  var searchInput = document.getElementById("search-input");
+  var searchResults = document.getElementById("search-results");
+
+  function showResults() { try { searchResults.showPopover(); } catch(e) {} }
+  function hideResults() { try { searchResults.hidePopover(); } catch(e) {} }
+
+  function performSearch(query) {
+    if (!query) { searchResults.innerHTML = ""; hideResults(); return; }
+    var results = SearchApp.search(query);
+    if (results.length === 0) {
+      searchResults.innerHTML = "<p>No results found.</p>";
+      showResults();
+      return;
+    }
+    var html = "";
+    results.forEach(function (r) {
+      var doc = SearchApp.getDoc(r.ref);
+      html += SearchApp.renderResult(doc, r.ref);
+    });
+    searchResults.innerHTML = html;
+    showResults();
+  }
+
+  SearchApp.init();
+  searchInput.addEventListener("input", function (e) { performSearch(e.target.value); });
+  searchInput.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && searchInput.value.trim()) {
+      window.location.href = "/?q=" + encodeURIComponent(searchInput.value.trim());
+    }
+  });
+  searchInput.addEventListener("focus", function (e) {
+    if (searchInput.value) performSearch(searchInput.value);
+  });
+})();</script><div class=content><h1>Guide to Documentation</h1><small class=page-meta>Read time: 2 min</small><small class=page-meta>Written on February 22, 2020</small><details class=toc><summary class=toc-title>Table of Contents</summary> <ul><li><a href=https://sak96.github.io/blog/guide-to-effective-documentation/#types-of-documentation>Types of Documentation.</a> <ul><li><a href=https://sak96.github.io/blog/guide-to-effective-documentation/#tutorial>Tutorial.</a> <ul><li><a href=https://sak96.github.io/blog/guide-to-effective-documentation/#applying-best-practices>Applying Best Practices:</a><li><a href=https://sak96.github.io/blog/guide-to-effective-documentation/#avoiding-missteps>Avoiding Missteps:</a></ul><li><a href=https://sak96.github.io/blog/guide-to-effective-documentation/#how-to-guides>How-to Guides.</a> <ul><li><a href=https://sak96.github.io/blog/guide-to-effective-documentation/#applying-best-practices-1>Applying Best Practices:</a><li><a href=https://sak96.github.io/blog/guide-to-effective-documentation/#avoiding-missteps-1>Avoiding Missteps:</a></ul><li><a href=https://sak96.github.io/blog/guide-to-effective-documentation/#explanation>Explanation.</a> <ul><li><a href=https://sak96.github.io/blog/guide-to-effective-documentation/#applying-best-practices-2>Applying Best Practices:</a><li><a href=https://sak96.github.io/blog/guide-to-effective-documentation/#avoiding-missteps-2>Avoiding Missteps:</a></ul><li><a href=https://sak96.github.io/blog/guide-to-effective-documentation/#reference-documents>Reference Documents.</a> <ul><li><a href=https://sak96.github.io/blog/guide-to-effective-documentation/#applying-best-practices-3>Applying Best Practices:</a></ul></ul></ul></details><article><p>The article <a href=https://www.divio.com/blog/documentation rel=external>"What nobody tells you about documentation"</a> details how to write manuals for software, covering various components, their purposes, content, scope, and roles in simplifying the documentation process.</p><span id=continue-reading></span><h2 id=types-of-documentation>Types of Documentation.<a aria-label="Anchor link for: types-of-documentation" class=zola-anchor href=#types-of-documentation>🔗</a></h2><h3 id=tutorial>Tutorial.<a aria-label="Anchor link for: tutorial" class=zola-anchor href=#tutorial>🔗</a></h3><ul><li><strong>Example:</strong> README.<li><strong>Target Audience:</strong> Beginner.<li><strong>Objective:</strong> To learn.<li><strong>Purpose:</strong> Practical + Educational.</ul><h4 id=applying-best-practices>Applying Best Practices:<a aria-label="Anchor link for: applying-best-practices" class=zola-anchor href=#applying-best-practices>🔗</a></h4><ul><li>Simplify your software's entry point for any user (setup and installation details should be included).<li>Organize into multiple tasks, suitable for beginners with simple instructions.<li>Ensure the content is straightforward to reward users with knowledge securely.<li>Maintain full functionality to foster confidence in learners.</ul><h4 id=avoiding-missteps>Avoiding Missteps:<a aria-label="Anchor link for: avoiding-missteps" class=zola-anchor href=#avoiding-missteps>🔗</a></h4><ul><li>Only include necessary explanations to avoid complexity.<li>Keep tutorials concise by avoiding unnecessary details.</ul><h3 id=how-to-guides>How-to Guides.<a aria-label="Anchor link for: how-to-guides" class=zola-anchor href=#how-to-guides>🔗</a></h3><ul><li><strong>Example:</strong> How to print an integer.<li><strong>Target Audience:</strong> Intermediate.<li><strong>Objective:</strong> Goal achievement.<li><strong>Purpose:</strong> Practical + For professional use.</ul><h4 id=applying-best-practices-1>Applying Best Practices:<a aria-label="Anchor link for: applying-best-practices-1" class=zola-anchor href=#applying-best-practices-1>🔗</a></h4><ul><li>Ensure the guide is fully functional (include test cases if applicable).<li>Provide a clear, search-friendly heading for better visibility.<li>Create flexibility to account for slight variations in user needs.</ul><h4 id=avoiding-missteps-1>Avoiding Missteps:<a aria-label="Anchor link for: avoiding-missteps-1" class=zola-anchor href=#avoiding-missteps-1>🔗</a></h4><ul><li>Refrain from linking to API documentation excessively.<li>Simplify content if installation or setup steps are not necessary at this level.</ul><h3 id=explanation>Explanation.<a aria-label="Anchor link for: explanation" class=zola-anchor href=#explanation>🔗</a></h3><ul><li><strong>Example:</strong> API Documentation.<li><strong>Target Audience:</strong> Experienced Users.<li><strong>Objective:</strong> Detailed Understanding.<li><strong>Purpose:</strong> Educational.</ul><h4 id=applying-best-practices-2>Applying Best Practices:<a aria-label="Anchor link for: applying-best-practices-2" class=zola-anchor href=#applying-best-practices-2>🔗</a></h4><ul><li>Present documentation as code-based content, ideally auto-generated for consistency and accuracy.<li>Provide practical examples where necessary to illustrate tough cases or advanced features.<li>Maintain a consistent structure for enhanced readability.</ul><h4 id=avoiding-missteps-2>Avoiding Missteps:<a aria-label="Anchor link for: avoiding-missteps-2" class=zola-anchor href=#avoiding-missteps-2>🔗</a></h4><ul><li>Focus on technical aspects; avoid explaining design decisions unless they are crucial for understanding.<li>Do not guide users towards achieving a specific goal (focus on how-to guides).</ul><h3 id=reference-documents>Reference Documents.<a aria-label="Anchor link for: reference-documents" class=zola-anchor href=#reference-documents>🔗</a></h3><ul><li><strong>Example:</strong> White Paper.<li><strong>Target Audience:</strong> Advanced Experts.<li><strong>Objective:</strong> Informational.<li><strong>Purpose:</strong> Deep and Comprehensive Understanding.</ul><h4 id=applying-best-practices-3>Applying Best Practices:<a aria-label="Anchor link for: applying-best-practices-3" class=zola-anchor href=#applying-best-practices-3>🔗</a></h4><ul><li>Include design decisions, including alternatives for clarity.<li>Provide historical context to deepen understanding.<li>Present good practices and discuss or explore detailed contents.</ul></article><div class=tags><span>Post Tags:</span><a href=https://sak96.github.io/categories/writing/> #writing</a><a href=https://sak96.github.io/tags/writing/> #writing,</a><a href=https://sak96.github.io/tags/guide/> #guide,</a><a href=https://sak96.github.io/tags/tutorial/> #tutorial</a></div><hr><h3>Discussion <small><a href=https://github.com/sak96/sak96.github.io/issues/2 target=_blank>view on github →</a></small></h3><div data-issue=2 data-repo=sak96/sak96.github.io id=github-comments></div><script>document.addEventListener('DOMContentLoaded', async () => {
+  const el = document.getElementById('github-comments');
+  if (!el) return;
+  const repo = el.dataset.repo;
+  const issue = el.dataset.issue;
+  try {
+    const res = await fetch(`https://api.github.com/repos/${repo}/issues/${issue}/comments?per_page=5`);
+    if (!res.ok) return;
+    const comments = await res.json();
+    if (!comments.length) return;
+    el.innerHTML = comments.map(c => `<hr><div><h3>${c.user.login} <small>(${new Date(c.created_at).toLocaleDateString()})</small></h3><div>${c.body.substring(0,280)}${c.body.length>280?'...' :''}</div></div>`).join('');
+  } catch (e) { console.log('GitHub comments failed:', e); }
+});</script></div><div class=content><hr><div class=footer><span>Powered by:</span><a href=https://www.getzola.org/>Zola</a></div></div><script>document.querySelector("#theme-toggle").addEventListener("click", function () {
+    const html = document.documentElement;
+    const current = html.getAttribute("data-theme");
+    const theme = current === "light" ? "dark" : "light";
+
+    html.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+
+    document.querySelector("#giallo-light").disabled = theme !== "light";
+    document.querySelector("#giallo-dark").disabled = theme !== "dark";
+  });</script>

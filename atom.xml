@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>Sanket&#39;s Blog</title>
+    <subtitle>A personal blog where I share my thoughts and experiences.</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://sak96.github.io/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://sak96.github.io/"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2026-08-22T00:00:00+00:00</updated>
+    <id>https://sak96.github.io/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Bean&#39;s Satirical Journey for Perfect Coffee</title>
+        <published>2026-08-22T00:00:00+00:00</published>
+        <updated>2026-08-22T00:00:00+00:00</updated>
+        
+        <author>
+          <name>Sanket Kamath</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://sak96.github.io/blog/bean-caches-bureaucratic-brew/"/>
+        <id>https://sak96.github.io/blog/bean-caches-bureaucratic-brew/</id>
+        
+        <summary type="html">&lt;p&gt;Bean awoke to the activation of his vibe-coded application, Latte Vibes.
+It was meant to dispense perfection.
+Today&#39;s coffee tasted like raw static, a bitter assault on his senses.
+He checked the settings: one and a half spoons of sugar logged.
+This was the programmed calibration; he knew it was correct.&lt;/p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Css Light and Dark Theme</title>
+        <published>2023-03-28T00:00:00+00:00</published>
+        <updated>2023-03-28T00:00:00+00:00</updated>
+        
+        <author>
+          <name>Sanket Kamath</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://sak96.github.io/blog/css-light-and-dark-theme/"/>
+        <id>https://sak96.github.io/blog/css-light-and-dark-theme/</id>
+        
+        <summary type="html">&lt;p&gt;Dark themes provide significant benefits for user experience and accessibility, particularly for users who experience eye strain from bright displays
+This document details a robust approach to implementing theme switching in Rust web applications without relying on heavy UI frameworks.&lt;/p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Python Coroutine</title>
+        <published>2023-03-08T00:00:00+00:00</published>
+        <updated>2023-03-08T00:00:00+00:00</updated>
+        
+        <author>
+          <name>Sanket Kamath</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://sak96.github.io/blog/python-coroutine/"/>
+        <id>https://sak96.github.io/blog/python-coroutine/</id>
+        
+        <summary type="html">&lt;p&gt;Consider the problem of maintaining a running sum of integers, which we will refer to as the &lt;code&gt;Summer&lt;/code&gt; problem (a nod to the season).
+We will demonstrate how co-routines work by trying to implement running sum.&lt;/p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Debugging Guide for Vim Errors</title>
+        <published>2022-04-25T00:00:00+00:00</published>
+        <updated>2022-04-25T00:00:00+00:00</updated>
+        
+        <author>
+          <name>Sanket Kamath</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://sak96.github.io/blog/debugging-vim-errors/"/>
+        <id>https://sak96.github.io/blog/debugging-vim-errors/</id>
+        
+        <summary type="html">&lt;p&gt;Vim&#39;s default configuration presents significant debugging challenges due to its minimalistic design.
+While plugins substantially enhance Vim&#39;s capabilities, they can introduce complex error scenarios that require systematic troubleshooting techniques. This guide provides a structured approach to diagnosing and resolving Vim-related issues.&lt;/p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Weird S3 List Permission</title>
+        <published>2021-06-20T00:00:00+00:00</published>
+        <updated>2021-06-20T00:00:00+00:00</updated>
+        
+        <author>
+          <name>Sanket Kamath</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://sak96.github.io/blog/weird-s3-list-permission/"/>
+        <id>https://sak96.github.io/blog/weird-s3-list-permission/</id>
+        
+        <summary type="html">&lt;p&gt;S3&#39;s file storage system employs a flat namespace architecture, where all objects are stored as key-value pairs without hierarchical folders.
+While most interfaces simulate folder hierarchies using &lt;code&gt;/&lt;/code&gt; as a path delimiter, this abstraction can introduce security risks when designing access policies for list operations.&lt;/p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Rust Ownership</title>
+        <published>2020-12-20T00:00:00+00:00</published>
+        <updated>2020-12-20T00:00:00+00:00</updated>
+        
+        <author>
+          <name>Sanket Kamath</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://sak96.github.io/blog/rust-ownership/"/>
+        <id>https://sak96.github.io/blog/rust-ownership/</id>
+        
+        <summary type="html">&lt;!-- cSpell:ignore sbrk, malloc --&gt;
+&lt;p&gt;Program execution requires persistent storage of intermediate results to support sequential instruction execution.
+This stateful memory must be carefully managed across concurrent program executions, a task traditionally handled by operating systems through system calls (e.g., &lt;code&gt;brk&lt;/code&gt;/&lt;code&gt;sbrk&lt;/code&gt;).
+Programming languages provide abstractions over these mechanisms to enable safer memory management strategies.&lt;/p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Browser Scratch File Editor</title>
+        <published>2020-07-22T00:00:00+00:00</published>
+        <updated>2020-07-22T00:00:00+00:00</updated>
+        
+        <author>
+          <name>Sanket Kamath</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://sak96.github.io/blog/browser-as-scratch-file-editor/"/>
+        <id>https://sak96.github.io/blog/browser-as-scratch-file-editor/</id>
+        
+        <summary type="html">&lt;p&gt;Developers often require ephemeral scratch files for temporary note-taking during workflow without the overhead of context switching.
+To address this need, a browser-native text editor solution leverages &lt;a rel=&quot;external&quot; href=&quot;https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs&quot;&gt;data URLs&lt;/a&gt; to create lightweight, on-the-fly text editors.&lt;/p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Linux Input Injection Through Unusual Methods</title>
+        <published>2020-07-18T00:00:00+00:00</published>
+        <updated>2020-07-18T00:00:00+00:00</updated>
+        
+        <author>
+          <name>Sanket Kamath</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://sak96.github.io/blog/linux-passing-input-the-hard-way/"/>
+        <id>https://sak96.github.io/blog/linux-passing-input-the-hard-way/</id>
+        
+        <summary type="html">&lt;p&gt;For people familiar with Unix philosophy, [&quot;Everything is a file&quot;][everyting_is_file] is
+a common phrase. Rarely do we get a case to use it in practice. This is one of those cases.&lt;/p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Git Introduction</title>
+        <published>2020-04-29T00:00:00+00:00</published>
+        <updated>2020-04-29T00:00:00+00:00</updated>
+        
+        <author>
+          <name>Sanket Kamath</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://sak96.github.io/blog/git-simplified-1-introduction/"/>
+        <id>https://sak96.github.io/blog/git-simplified-1-introduction/</id>
+        
+        <summary type="html">&lt;p&gt;Git is a “content tracker” – it records how files change over time. Think of it as a detailed history of your project, noting when, where, and by whom changes were made. This enables key features like:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Tracking who owns specific changes.&lt;/li&gt;
+&lt;li&gt;Backing up and reverting to older versions.&lt;/li&gt;
+&lt;li&gt;Synchronizing changes across multiple locations.&lt;/li&gt;
+&lt;/ul&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Docker Debugging &amp; Patching Simplified</title>
+        <published>2020-02-29T00:00:00+00:00</published>
+        <updated>2020-02-29T00:00:00+00:00</updated>
+        
+        <author>
+          <name>Sanket Kamath</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://sak96.github.io/blog/debugging-and-patching-docker/"/>
+        <id>https://sak96.github.io/blog/debugging-and-patching-docker/</id>
+        
+        <summary type="html">&lt;p&gt;Containerization technologies like Docker enable efficient deployment, portability, and scalability.
+This guide provides a structured approach to debugging and patching Docker containers, emphasizing technical precision and operational clarity.&lt;/p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Guide to Documentation</title>
+        <published>2020-02-22T00:00:00+00:00</published>
+        <updated>2020-02-22T00:00:00+00:00</updated>
+        
+        <author>
+          <name>Sanket Kamath</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://sak96.github.io/blog/guide-to-effective-documentation/"/>
+        <id>https://sak96.github.io/blog/guide-to-effective-documentation/</id>
+        
+        <summary type="html">&lt;p&gt;The article &lt;a rel=&quot;external&quot; href=&quot;https://www.divio.com/blog/documentation&quot;&gt;&quot;What nobody tells you about documentation&quot;&lt;/a&gt; details how to write manuals for software, covering various components, their purposes, content, scope, and roles in simplifying the documentation process.&lt;/p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>A Guide to Effective Blog Posts</title>
+        <published>2020-02-15T00:00:00+00:00</published>
+        <updated>2020-02-15T00:00:00+00:00</updated>
+        
+        <author>
+          <name>Sanket Kamath</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://sak96.github.io/blog/guide-to-effective-blog-posts/"/>
+        <id>https://sak96.github.io/blog/guide-to-effective-blog-posts/</id>
+        
+        <summary type="html">&lt;p&gt;This article summarizes the key points from &lt;a rel=&quot;external&quot; href=&quot;http://bit.ly/excellent-blog&quot;&gt;&quot;Write An Excellent Programming Blog&quot;&lt;/a&gt; on how to craft compelling tech-based articles, offering detailed categories and beginner-friendly guidelines for writing across various tech domains.&lt;/p&gt;</summary>
+        
+    </entry>
+</feed>

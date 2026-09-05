@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>Sanket&#39;s Blog - productivity</title>
+    <subtitle>A personal blog where I share my thoughts and experiences.</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://sak96.github.io/tags/productivity/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://sak96.github.io/"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2020-07-22T00:00:00+00:00</updated>
+    <id>https://sak96.github.io/tags/productivity/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Browser Scratch File Editor</title>
+        <published>2020-07-22T00:00:00+00:00</published>
+        <updated>2020-07-22T00:00:00+00:00</updated>
+        
+        <author>
+          <name>Sanket Kamath</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://sak96.github.io/blog/browser-as-scratch-file-editor/"/>
+        <id>https://sak96.github.io/blog/browser-as-scratch-file-editor/</id>
+        
+        <summary type="html">&lt;p&gt;Developers often require ephemeral scratch files for temporary note-taking during workflow without the overhead of context switching.
+To address this need, a browser-native text editor solution leverages &lt;a rel=&quot;external&quot; href=&quot;https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs&quot;&gt;data URLs&lt;/a&gt; to create lightweight, on-the-fly text editors.&lt;/p&gt;</summary>
+        
+    </entry>
+</feed>

@@ -1,0 +1,79 @@
+<!doctype html><html lang=en><head><meta charset=UTF-8><meta content="width=device-width,initial-scale=1.0" name=viewport><title>Weird S3 List Permission - Sanket's Blog</title><link href=https://sak96.github.io/images/favicon.svg rel=icon><link href=https://sak96.github.io/css/style.css rel=stylesheet><link href=https://sak96.github.io/giallo-light.css id=giallo-light rel=stylesheet><link disabled href=https://sak96.github.io/giallo-dark.css id=giallo-dark rel=stylesheet><script>let t = localStorage.getItem("theme");
+  let theme = t === "light" || (!t && matchMedia("(prefers-color-scheme: light)").matches) ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", theme);
+  document.querySelector("#giallo-light").disabled = theme !== "light";
+  document.querySelector("#giallo-dark").disabled = theme !== "dark";</script><body><nav class=navbar><div class=nav-header><a href=https://sak96.github.io/>Sanket's Blog</a><input id=search-input placeholder=Search...><div id=search-results popover></div></div><div class=nav-start><a href=https://sak96.github.io//>Home</a><a href=https://sak96.github.io//categories>Categories</a><a href=https://sak96.github.io//tags>Tags</a><a href=https://sak96.github.io//about>About Me</a><a href=https://sak96.github.io//atom.xml>Atom</a></div><div class=nav-end><button id=theme-toggle></button><button class=nav-hamburger popovertarget=nav-popover>|||</button></div><div id=nav-popover popover><a href=https://sak96.github.io//>Home</a><a href=https://sak96.github.io//categories>Categories</a><a href=https://sak96.github.io//tags>Tags</a><a href=https://sak96.github.io//about>About Me</a><a href=https://sak96.github.io//atom.xml>Atom</a></div></nav><script src=https://cdnjs.cloudflare.com/ajax/libs/elasticlunr/0.9.6/elasticlunr.min.js></script><script src=https://sak96.github.io/js/search.js></script><script>(function () {
+  var searchInput = document.getElementById("search-input");
+  var searchResults = document.getElementById("search-results");
+
+  function showResults() { try { searchResults.showPopover(); } catch(e) {} }
+  function hideResults() { try { searchResults.hidePopover(); } catch(e) {} }
+
+  function performSearch(query) {
+    if (!query) { searchResults.innerHTML = ""; hideResults(); return; }
+    var results = SearchApp.search(query);
+    if (results.length === 0) {
+      searchResults.innerHTML = "<p>No results found.</p>";
+      showResults();
+      return;
+    }
+    var html = "";
+    results.forEach(function (r) {
+      var doc = SearchApp.getDoc(r.ref);
+      html += SearchApp.renderResult(doc, r.ref);
+    });
+    searchResults.innerHTML = html;
+    showResults();
+  }
+
+  SearchApp.init();
+  searchInput.addEventListener("input", function (e) { performSearch(e.target.value); });
+  searchInput.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && searchInput.value.trim()) {
+      window.location.href = "/?q=" + encodeURIComponent(searchInput.value.trim());
+    }
+  });
+  searchInput.addEventListener("focus", function (e) {
+    if (searchInput.value) performSearch(searchInput.value);
+  });
+})();</script><div class=content><h1>Weird S3 List Permission</h1><small class=page-meta>Read time: 2 min</small><small class=page-meta>Written on June 20, 2021</small><details class=toc><summary class=toc-title>Table of Contents</summary> <ul><li><a href=https://sak96.github.io/blog/weird-s3-list-permission/#list-operation-behavior-in-flat-namespaces>List Operation Behavior in Flat Namespaces</a><li><a href=https://sak96.github.io/blog/weird-s3-list-permission/#critical-security-vulnerability-in-policy-design>Critical Security Vulnerability in Policy Design</a><li><a href=https://sak96.github.io/blog/weird-s3-list-permission/#mitigation-strategy>Mitigation Strategy</a><li><a href=https://sak96.github.io/blog/weird-s3-list-permission/#key-takeaways>Key Takeaways</a><li><a href=https://sak96.github.io/blog/weird-s3-list-permission/#resource>Resource</a></ul></details><article><p>S3's file storage system employs a flat namespace architecture, where all objects are stored as key-value pairs without hierarchical folders. While most interfaces simulate folder hierarchies using <code>/</code> as a path delimiter, this abstraction can introduce security risks when designing access policies for list operations.</p><span id=continue-reading></span><h2 id=list-operation-behavior-in-flat-namespaces>List Operation Behavior in Flat Namespaces<a aria-label="Anchor link for: list-operation-behavior-in-flat-namespaces" class=zola-anchor href=#list-operation-behavior-in-flat-namespaces>🔗</a></h2><p>In traditional folder hierarchies, listing a directory reveals child files and subdirectories. S3's flat structure requires a different interpretation:<ul><li><strong>Files</strong> begin with a prefix <em>and</em> do not contain a <code>/</code><li><strong>Directories</strong> begin with a prefix <em>and</em> end with a <code>/</code></ul><p>This mapping ensures expected behavior when using prefix-based listing (e.g., <code>s3:prefix</code> conditions in IAM policies).<h2 id=critical-security-vulnerability-in-policy-design>Critical Security Vulnerability in Policy Design<a aria-label="Anchor link for: critical-security-vulnerability-in-policy-design" class=zola-anchor href=#critical-security-vulnerability-in-policy-design>🔗</a></h2><p>When implementing secure home directory storage in S3 (where user home paths follow <code>home/${username}</code>), the following policy is initially used:<pre class="giallo z-l-code z-d-code"><code data-lang=json><span class=giallo-l><span class="z-l-8 z-d-7">{</span></span>
+<span class=giallo-l><span class="z-l-8 z-d-7">  "</span><span class="z-l-6 z-d-2">Effect</span><span class="z-l-8 z-d-7">"</span><span class="z-l-8 z-d-7">:</span><span class="z-l-8 z-d-7"> "</span><span class="z-l-1 z-d-3">Allow</span><span class="z-l-8 z-d-7">"</span><span class="z-l-8 z-d-7">,</span></span>
+<span class=giallo-l><span class="z-l-8 z-d-7">  "</span><span class="z-l-6 z-d-2">Action</span><span class="z-l-8 z-d-7">"</span><span class="z-l-8 z-d-7">:</span><span class="z-l-8 z-d-7"> "</span><span class="z-l-1 z-d-3">s3:ListBucket</span><span class="z-l-8 z-d-7">"</span><span class="z-l-8 z-d-7">,</span></span>
+<span class=giallo-l><span class="z-l-8 z-d-7">  "</span><span class="z-l-6 z-d-2">Resource</span><span class="z-l-8 z-d-7">"</span><span class="z-l-8 z-d-7">:</span><span class="z-l-8 z-d-7"> "</span><span class="z-l-1 z-d-3">arn:aws:s3:::bucket-name</span><span class="z-l-8 z-d-7">"</span><span class="z-l-8 z-d-7">,</span></span>
+<span class=giallo-l><span class="z-l-8 z-d-7">  "</span><span class="z-l-6 z-d-2">Condition</span><span class="z-l-8 z-d-7">"</span><span class="z-l-8 z-d-7">:</span><span class="z-l-8 z-d-7"> {</span></span>
+<span class=giallo-l><span class="z-l-8 z-d-7">    "</span><span class="z-l-6 z-d-2">StringLike</span><span class="z-l-8 z-d-7">"</span><span class="z-l-8 z-d-7">:</span><span class="z-l-8 z-d-7"> {</span></span>
+<span class=giallo-l><span class="z-l-8 z-d-7">      "</span><span class="z-l-6 z-d-2">s3:prefix</span><span class="z-l-8 z-d-7">"</span><span class="z-l-8 z-d-7">:</span><span class="z-l-8 z-d-7"> [</span><span class="z-l-8 z-d-7">"</span><span class="z-l-8 z-d-7">"</span><span class="z-l-8 z-d-7">,</span><span class="z-l-8 z-d-7"> "</span><span class="z-l-1 z-d-3">home/</span><span class="z-l-8 z-d-7">"</span><span class="z-l-8 z-d-7">,</span><span class="z-l-8 z-d-7"> "</span><span class="z-l-1 z-d-3">home/${aws:username}/*</span><span class="z-l-8 z-d-7">"</span><span class="z-l-8 z-d-7">]</span></span>
+<span class=giallo-l><span class="z-l-8 z-d-7">    }</span></span>
+<span class=giallo-l><span class="z-l-8 z-d-7">  }</span></span>
+<span class=giallo-l><span class="z-l-8 z-d-7">}</span></span></code></pre><p>This policy permits listing contents <em>under</em> a user's home directory. However, it fails to address two critical scenarios:<ol><li><strong>Missing trailing <code>/</code></strong>: Users may omit the trailing slash (e.g., <code>home/${username}</code>), enabling recursive listing of <em>other</em> users' directories<li><strong>Substring conflicts</strong>: If usernames are non-unique (e.g., <code>user</code> and <code>user_with_user_prefix</code>), listing one user's directory may inadvertently expose another's contents</ol><p><strong>Vulnerability Example</strong><p>When <code>user</code> lists their home directory without a trailing <code>/</code>, the S3 list operation may unexpectedly reveal: <code>home/user_with_user_prefix/...</code> This occurs because S3's flat namespace treats <code>user_with_user_prefix</code> as a valid prefix starting with the substring <code>user</code>.<h2 id=mitigation-strategy>Mitigation Strategy<a aria-label="Anchor link for: mitigation-strategy" class=zola-anchor href=#mitigation-strategy>🔗</a></h2><p>To prevent cross-user leakage, the policy must explicitly support both prefix patterns:<pre class="giallo z-l-code z-d-code"><code data-lang=json><span class=giallo-l><span class="z-l-8 z-d-7">{</span></span>
+<span class=giallo-l><span class="z-l-8 z-d-7">  "</span><span class="z-l-6 z-d-2">Effect</span><span class="z-l-8 z-d-7">"</span><span class="z-l-8 z-d-7">:</span><span class="z-l-8 z-d-7"> "</span><span class="z-l-1 z-d-3">Allow</span><span class="z-l-8 z-d-7">"</span><span class="z-l-8 z-d-7">,</span></span>
+<span class=giallo-l><span class="z-l-8 z-d-7">  "</span><span class="z-l-6 z-d-2">Action</span><span class="z-l-8 z-d-7">"</span><span class="z-l-8 z-d-7">:</span><span class="z-l-8 z-d-7"> "</span><span class="z-l-1 z-d-3">s3:ListBucket</span><span class="z-l-8 z-d-7">"</span><span class="z-l-8 z-d-7">,</span></span>
+<span class=giallo-l><span class="z-l-8 z-d-7">  "</span><span class="z-l-6 z-d-2">Resource</span><span class="z-l-8 z-d-7">"</span><span class="z-l-8 z-d-7">:</span><span class="z-l-8 z-d-7"> "</span><span class="z-l-1 z-d-3">arn:aws:s3:::bucket-name</span><span class="z-l-8 z-d-7">"</span><span class="z-l-8 z-d-7">,</span></span>
+<span class=giallo-l><span class="z-l-8 z-d-7">  "</span><span class="z-l-6 z-d-2">Condition</span><span class="z-l-8 z-d-7">"</span><span class="z-l-8 z-d-7">:</span><span class="z-l-8 z-d-7"> {</span></span>
+<span class=giallo-l><span class="z-l-8 z-d-7">    "</span><span class="z-l-6 z-d-2">StringLike</span><span class="z-l-8 z-d-7">"</span><span class="z-l-8 z-d-7">:</span><span class="z-l-8 z-d-7"> {</span></span>
+<span class=giallo-l><span class="z-l-8 z-d-7">      "</span><span class="z-l-6 z-d-2">s3:prefix</span><span class="z-l-8 z-d-7">"</span><span class="z-l-8 z-d-7">:</span><span class="z-l-8 z-d-7"> [</span><span class="z-l-8 z-d-7">"</span><span class="z-l-1 z-d-3">home/${aws:username}</span><span class="z-l-8 z-d-7">"</span><span class="z-l-8 z-d-7">,</span><span class="z-l-8 z-d-7"> "</span><span class="z-l-1 z-d-3">home/${aws:username}/*</span><span class="z-l-8 z-d-7">"</span><span class="z-l-8 z-d-7">]</span></span>
+<span class=giallo-l><span class="z-l-8 z-d-7">    }</span></span>
+<span class=giallo-l><span class="z-l-8 z-d-7">  }</span></span>
+<span class=giallo-l><span class="z-l-8 z-d-7">}</span></span></code></pre><p>This solution requires <strong>string sanitization of usernames</strong> to avoid substring conflicts.<h2 id=key-takeaways>Key Takeaways<a aria-label="Anchor link for: key-takeaways" class=zola-anchor href=#key-takeaways>🔗</a></h2><ol><li><strong>Never rush security implementations</strong> - Prefix-based listing policies require thorough validation<li><strong>Prioritize flat namespace awareness</strong> over hierarchical abstractions when designing S3 access policies<li><strong>Sanitize user identifiers</strong> to prevent substring-based access leakage (e.g., ensure usernames do not share prefixes)<li><strong>Validate edge cases</strong> through concrete examples before deploying policies</ol><p>This approach aligns with AWS best practices while addressing the unique challenges of S3's flat file model.<h1 id=resource>Resource<a aria-label="Anchor link for: resource" class=zola-anchor href=#resource>🔗</a></h1><ul><li><a href=https://docs.aws.amazon.com/AmazonS3/latest/userguide/using-with-s3-actions.html rel=external>AWS S3 IAM Permissions</a><li><a href=https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListBucket.html rel=external>S3 ListBucket API</a><li><a href=https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html#condition-keys-s3 rel=external>IAM Policy Conditions - s3:prefix</a></ul></article><div class=tags><span>Post Tags:</span><a href=https://sak96.github.io/categories/stories/> #stories</a><a href=https://sak96.github.io/tags/aws/> #aws,</a><a href=https://sak96.github.io/tags/story/> #story,</a><a href=https://sak96.github.io/tags/security/> #security</a></div><hr><h3>Discussion <small><a href=https://github.com/sak96/sak96.github.io/issues/11 target=_blank>view on github →</a></small></h3><div data-issue=11 data-repo=sak96/sak96.github.io id=github-comments></div><script>document.addEventListener('DOMContentLoaded', async () => {
+  const el = document.getElementById('github-comments');
+  if (!el) return;
+  const repo = el.dataset.repo;
+  const issue = el.dataset.issue;
+  try {
+    const res = await fetch(`https://api.github.com/repos/${repo}/issues/${issue}/comments?per_page=5`);
+    if (!res.ok) return;
+    const comments = await res.json();
+    if (!comments.length) return;
+    el.innerHTML = comments.map(c => `<hr><div><h3>${c.user.login} <small>(${new Date(c.created_at).toLocaleDateString()})</small></h3><div>${c.body.substring(0,280)}${c.body.length>280?'...' :''}</div></div>`).join('');
+  } catch (e) { console.log('GitHub comments failed:', e); }
+});</script></div><div class=content><hr><div class=footer><span>Powered by:</span><a href=https://www.getzola.org/>Zola</a></div></div><script>document.querySelector("#theme-toggle").addEventListener("click", function () {
+    const html = document.documentElement;
+    const current = html.getAttribute("data-theme");
+    const theme = current === "light" ? "dark" : "light";
+
+    html.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+
+    document.querySelector("#giallo-light").disabled = theme !== "light";
+    document.querySelector("#giallo-dark").disabled = theme !== "dark";
+  });</script>

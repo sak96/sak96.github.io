@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>Sanket&#39;s Blog - css</title>
+    <subtitle>A personal blog where I share my thoughts and experiences.</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://sak96.github.io/categories/css/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://sak96.github.io/"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-03-28T00:00:00+00:00</updated>
+    <id>https://sak96.github.io/categories/css/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Css Light and Dark Theme</title>
+        <published>2023-03-28T00:00:00+00:00</published>
+        <updated>2023-03-28T00:00:00+00:00</updated>
+        
+        <author>
+          <name>Sanket Kamath</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://sak96.github.io/blog/css-light-and-dark-theme/"/>
+        <id>https://sak96.github.io/blog/css-light-and-dark-theme/</id>
+        
+        <summary type="html">&lt;p&gt;Dark themes provide significant benefits for user experience and accessibility, particularly for users who experience eye strain from bright displays
+This document details a robust approach to implementing theme switching in Rust web applications without relying on heavy UI frameworks.&lt;/p&gt;</summary>
+        
+    </entry>
+</feed>

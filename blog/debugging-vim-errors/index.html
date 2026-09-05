@@ -1,0 +1,63 @@
+<!doctype html><html lang=en><head><meta charset=UTF-8><meta content="width=device-width,initial-scale=1.0" name=viewport><title>Debugging Guide for Vim Errors - Sanket's Blog</title><link href=https://sak96.github.io/images/favicon.svg rel=icon><link href=https://sak96.github.io/css/style.css rel=stylesheet><link href=https://sak96.github.io/giallo-light.css id=giallo-light rel=stylesheet><link disabled href=https://sak96.github.io/giallo-dark.css id=giallo-dark rel=stylesheet><script>let t = localStorage.getItem("theme");
+  let theme = t === "light" || (!t && matchMedia("(prefers-color-scheme: light)").matches) ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", theme);
+  document.querySelector("#giallo-light").disabled = theme !== "light";
+  document.querySelector("#giallo-dark").disabled = theme !== "dark";</script><body><nav class=navbar><div class=nav-header><a href=https://sak96.github.io/>Sanket's Blog</a><input id=search-input placeholder=Search...><div id=search-results popover></div></div><div class=nav-start><a href=https://sak96.github.io//>Home</a><a href=https://sak96.github.io//categories>Categories</a><a href=https://sak96.github.io//tags>Tags</a><a href=https://sak96.github.io//about>About Me</a><a href=https://sak96.github.io//atom.xml>Atom</a></div><div class=nav-end><button id=theme-toggle></button><button class=nav-hamburger popovertarget=nav-popover>|||</button></div><div id=nav-popover popover><a href=https://sak96.github.io//>Home</a><a href=https://sak96.github.io//categories>Categories</a><a href=https://sak96.github.io//tags>Tags</a><a href=https://sak96.github.io//about>About Me</a><a href=https://sak96.github.io//atom.xml>Atom</a></div></nav><script src=https://cdnjs.cloudflare.com/ajax/libs/elasticlunr/0.9.6/elasticlunr.min.js></script><script src=https://sak96.github.io/js/search.js></script><script>(function () {
+  var searchInput = document.getElementById("search-input");
+  var searchResults = document.getElementById("search-results");
+
+  function showResults() { try { searchResults.showPopover(); } catch(e) {} }
+  function hideResults() { try { searchResults.hidePopover(); } catch(e) {} }
+
+  function performSearch(query) {
+    if (!query) { searchResults.innerHTML = ""; hideResults(); return; }
+    var results = SearchApp.search(query);
+    if (results.length === 0) {
+      searchResults.innerHTML = "<p>No results found.</p>";
+      showResults();
+      return;
+    }
+    var html = "";
+    results.forEach(function (r) {
+      var doc = SearchApp.getDoc(r.ref);
+      html += SearchApp.renderResult(doc, r.ref);
+    });
+    searchResults.innerHTML = html;
+    showResults();
+  }
+
+  SearchApp.init();
+  searchInput.addEventListener("input", function (e) { performSearch(e.target.value); });
+  searchInput.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && searchInput.value.trim()) {
+      window.location.href = "/?q=" + encodeURIComponent(searchInput.value.trim());
+    }
+  });
+  searchInput.addEventListener("focus", function (e) {
+    if (searchInput.value) performSearch(searchInput.value);
+  });
+})();</script><div class=content><h1>Debugging Guide for Vim Errors</h1><small class=page-meta>Read time: 2 min</small><small class=page-meta>Written on April 25, 2022</small><details class=toc><summary class=toc-title>Table of Contents</summary> <ul><li><a href=https://sak96.github.io/blog/debugging-vim-errors/#error-message-management>Error Message Management</a><li><a href=https://sak96.github.io/blog/debugging-vim-errors/#stack-trace-analysis>Stack Trace Analysis</a><li><a href=https://sak96.github.io/blog/debugging-vim-errors/#debugging-workflow>Debugging Workflow</a><li><a href=https://sak96.github.io/blog/debugging-vim-errors/#logging-capabilities>Logging Capabilities</a><li><a href=https://sak96.github.io/blog/debugging-vim-errors/#resources>Resources</a></ul></details><article><p>Vim's default configuration presents significant debugging challenges due to its minimalistic design. While plugins substantially enhance Vim's capabilities, they can introduce complex error scenarios that require systematic troubleshooting techniques. This guide provides a structured approach to diagnosing and resolving Vim-related issues.</p><span id=continue-reading></span><h3 id=error-message-management>Error Message Management<a aria-label="Anchor link for: error-message-management" class=zola-anchor href=#error-message-management>🔗</a></h3><p>Vim's error messages are transient and may disappear after a key press. To inspect recent errors:<pre class="giallo z-l-code z-d-code"><code data-lang=viml><span class=giallo-l><span>:</span><span>echo</span><span> errmsg</span></span></code></pre><p>In normal mode, use <code>:messages</code> to view all historical messages. For persistent debugging, capture messages in a new buffer:<pre class="giallo z-l-code z-d-code"><code data-lang=viml><span class=giallo-l><span>:vnew | put</span><span class="z-l-2 z-d-4">=</span><span class="z-l-15 z-d-16">execute</span><span class="z-l-8 z-d-7">(</span><span class="z-l-7 z-d-9">'</span><span class="z-l-7 z-d-9">messages</span><span class="z-l-7 z-d-9">'</span><span class="z-l-8 z-d-7">)</span></span></code></pre><h3 id=stack-trace-analysis>Stack Trace Analysis<a aria-label="Anchor link for: stack-trace-analysis" class=zola-anchor href=#stack-trace-analysis>🔗</a></h3><p>Complex errors often manifest as stack traces. The following example illustrates how to interpret such messages:<pre class="giallo z-l-code z-d-code"><code data-lang=viml><span class=giallo-l><span class="z-l-15 z-d-16">Error</span><span> detected </span><span class="z-l-12 z-d-17">while</span><span> processing </span><span class="z-l-12 z-d-17">function</span><span class="z-l-8 z-d-7"> &lt;</span><span>SNR</span><span class="z-l-8 z-d-7">></span><span>163_on_exit_vim[</span><span class="z-l-9 z-d-12">15</span><span>]..</span><span class="z-l-9 z-d-12">1</span><span>:</span></span>
+<span class=giallo-l><span>line    </span><span class="z-l-9 z-d-12">1</span><span>:</span></span>
+<span class=giallo-l><span>E687: Less targets than List items</span></span></code></pre><p>The <code>&lt;SNR>163</code> and <code>[15]</code> components indicate that the 15 line in 163rd script triggered the error. Locate the responsible script using:<pre class="giallo z-l-code z-d-code"><code data-lang=viml><span class=giallo-l><span>:vnew | put</span><span class="z-l-2 z-d-4">=</span><span class="z-l-15 z-d-16">execute</span><span class="z-l-8 z-d-7">(</span><span class="z-l-7 z-d-9">'</span><span class="z-l-7 z-d-9">scriptnames</span><span class="z-l-7 z-d-9">'</span><span class="z-l-8 z-d-7">)</span></span></code></pre><p>The output may look like this:<pre class="giallo z-l-code z-d-code"><code data-lang=plain><span class=giallo-l><span>163: ~/.vim/plugged/vim-gitgutter/autoload/gitgutter/async.vim</span></span></code></pre><p>Navigate to the script file with <code>gf</code> on the path. Then inspect the function at the specified line (e.g., <code>15j</code>).<h3 id=debugging-workflow>Debugging Workflow<a aria-label="Anchor link for: debugging-workflow" class=zola-anchor href=#debugging-workflow>🔗</a></h3><p>Once the error location is identified, execute targeted debugging:<pre class="giallo z-l-code z-d-code"><code data-lang=viml><span class=giallo-l><span class="z-l-15 z-d-16">debug</span><span> echo</span><span class="z-l-15 z-d-16"> expand</span><span class="z-l-8 z-d-7">(</span><span class="z-l-7 z-d-9">'</span><span class="z-l-7 z-d-9">%:h</span><span class="z-l-7 z-d-9">'</span><span class="z-l-8 z-d-7">)</span></span></code></pre><p>or in neovim use:<pre class="giallo z-l-code z-d-code"><code data-lang=lua><span class=giallo-l><span class="z-l-1 z-d-3">vim</span><span>.</span><span>cmd</span><span>(</span><span class="z-l-8 z-d-7">"</span><span class="z-l-7 z-d-9">:debug echo expand('%:h')</span><span class="z-l-8 z-d-7">"</span><span>)</span></span></code></pre><p>This command enables interactive debugging with the following control commands:<table><thead><tr><th>Command<th>Action<tbody><tr><td><code>step</code><td>Execute command but step into functions<tr><td><code>next</code><td>Execute command but step over functions<tr><td><code>cont</code><td>Continue execution until next breakpoint<tr><td><code>quit</code><td>Stop execution immediately<tr><td><code>interrupt</code><td>Force pause until next command<tr><td><code>finish</code><td>Continue until current script/function completes<tr><td><code>breakadd</code>/<code>breakdel</code><td>Manage breakpoints with positional arguments</table><p>Breakpoints locations can specify as follows:<ul><li>here: Current position<li>file [line] [file]: Exact line in a file<li>func [line] [function]: Line in a specific function<li><code>*</code> for all breakpoints (used only for breakdel).</ul><h3 id=logging-capabilities>Logging Capabilities<a aria-label="Anchor link for: logging-capabilities" class=zola-anchor href=#logging-capabilities>🔗</a></h3><p>Vim includes built-in logging through verbose mode:<pre class="giallo z-l-code z-d-code"><code data-lang=shellscript><span class=giallo-l><span class="z-l-15 z-d-16">vim</span><span class="z-l-9 z-d-12"> -</span><span class="z-l-9 z-d-12">V9</span><span class="z-l-7 z-d-9"> myVim.log</span></span></code></pre><p>This command starts Vim in maximum verbosity, writing detailed logs to <code>myVim.log</code>. Comprehensive documentation exists in Vim's native help system and relevant Stack Exchange discussions.<h3 id=resources>Resources<a aria-label="Anchor link for: resources" class=zola-anchor href=#resources>🔗</a></h3><ul><li><a href=https://inlehmansterms.net/2014/10/31/debugging-vim/ rel=external>Debugging Vim Workflow</a><li><a href=https://stackoverflow.com/questions/51210172 rel=external>Vim Stack Trace Analysis</a><li><a href=https://stackoverflow.com/questions/3025615 rel=external>Vim Logging Implementation</a></ul></article><div class=tags><span>Post Tags:</span><a href=https://sak96.github.io/categories/devtools/> #devtools</a><a href=https://sak96.github.io/tags/vim/> #vim,</a><a href=https://sak96.github.io/tags/debugging/> #debugging,</a><a href=https://sak96.github.io/tags/tutorial/> #tutorial</a></div><hr><h3>Discussion <small><a href=https://github.com/sak96/sak96.github.io/issues/13 target=_blank>view on github →</a></small></h3><div data-issue=13 data-repo=sak96/sak96.github.io id=github-comments></div><script>document.addEventListener('DOMContentLoaded', async () => {
+  const el = document.getElementById('github-comments');
+  if (!el) return;
+  const repo = el.dataset.repo;
+  const issue = el.dataset.issue;
+  try {
+    const res = await fetch(`https://api.github.com/repos/${repo}/issues/${issue}/comments?per_page=5`);
+    if (!res.ok) return;
+    const comments = await res.json();
+    if (!comments.length) return;
+    el.innerHTML = comments.map(c => `<hr><div><h3>${c.user.login} <small>(${new Date(c.created_at).toLocaleDateString()})</small></h3><div>${c.body.substring(0,280)}${c.body.length>280?'...' :''}</div></div>`).join('');
+  } catch (e) { console.log('GitHub comments failed:', e); }
+});</script></div><div class=content><hr><div class=footer><span>Powered by:</span><a href=https://www.getzola.org/>Zola</a></div></div><script>document.querySelector("#theme-toggle").addEventListener("click", function () {
+    const html = document.documentElement;
+    const current = html.getAttribute("data-theme");
+    const theme = current === "light" ? "dark" : "light";
+
+    html.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+
+    document.querySelector("#giallo-light").disabled = theme !== "light";
+    document.querySelector("#giallo-dark").disabled = theme !== "dark";
+  });</script>

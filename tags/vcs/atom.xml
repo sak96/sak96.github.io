@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>Sanket&#39;s Blog - vcs</title>
+    <subtitle>A personal blog where I share my thoughts and experiences.</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://sak96.github.io/tags/vcs/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://sak96.github.io/"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2020-04-29T00:00:00+00:00</updated>
+    <id>https://sak96.github.io/tags/vcs/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Git Introduction</title>
+        <published>2020-04-29T00:00:00+00:00</published>
+        <updated>2020-04-29T00:00:00+00:00</updated>
+        
+        <author>
+          <name>Sanket Kamath</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://sak96.github.io/blog/git-simplified-1-introduction/"/>
+        <id>https://sak96.github.io/blog/git-simplified-1-introduction/</id>
+        
+        <summary type="html">&lt;p&gt;Git is a “content tracker” – it records how files change over time. Think of it as a detailed history of your project, noting when, where, and by whom changes were made. This enables key features like:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Tracking who owns specific changes.&lt;/li&gt;
+&lt;li&gt;Backing up and reverting to older versions.&lt;/li&gt;
+&lt;li&gt;Synchronizing changes across multiple locations.&lt;/li&gt;
+&lt;/ul&gt;</summary>
+        
+    </entry>
+</feed>

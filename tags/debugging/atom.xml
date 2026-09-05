@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>Sanket&#39;s Blog - debugging</title>
+    <subtitle>A personal blog where I share my thoughts and experiences.</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://sak96.github.io/tags/debugging/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://sak96.github.io/"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2022-04-25T00:00:00+00:00</updated>
+    <id>https://sak96.github.io/tags/debugging/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Debugging Guide for Vim Errors</title>
+        <published>2022-04-25T00:00:00+00:00</published>
+        <updated>2022-04-25T00:00:00+00:00</updated>
+        
+        <author>
+          <name>Sanket Kamath</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://sak96.github.io/blog/debugging-vim-errors/"/>
+        <id>https://sak96.github.io/blog/debugging-vim-errors/</id>
+        
+        <summary type="html">&lt;p&gt;Vim&#39;s default configuration presents significant debugging challenges due to its minimalistic design.
+While plugins substantially enhance Vim&#39;s capabilities, they can introduce complex error scenarios that require systematic troubleshooting techniques. This guide provides a structured approach to diagnosing and resolving Vim-related issues.&lt;/p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Linux Input Injection Through Unusual Methods</title>
+        <published>2020-07-18T00:00:00+00:00</published>
+        <updated>2020-07-18T00:00:00+00:00</updated>
+        
+        <author>
+          <name>Sanket Kamath</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://sak96.github.io/blog/linux-passing-input-the-hard-way/"/>
+        <id>https://sak96.github.io/blog/linux-passing-input-the-hard-way/</id>
+        
+        <summary type="html">&lt;p&gt;For people familiar with Unix philosophy, [&quot;Everything is a file&quot;][everyting_is_file] is
+a common phrase. Rarely do we get a case to use it in practice. This is one of those cases.&lt;/p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Docker Debugging &amp; Patching Simplified</title>
+        <published>2020-02-29T00:00:00+00:00</published>
+        <updated>2020-02-29T00:00:00+00:00</updated>
+        
+        <author>
+          <name>Sanket Kamath</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://sak96.github.io/blog/debugging-and-patching-docker/"/>
+        <id>https://sak96.github.io/blog/debugging-and-patching-docker/</id>
+        
+        <summary type="html">&lt;p&gt;Containerization technologies like Docker enable efficient deployment, portability, and scalability.
+This guide provides a structured approach to debugging and patching Docker containers, emphasizing technical precision and operational clarity.&lt;/p&gt;</summary>
+        
+    </entry>
+</feed>

@@ -1,0 +1,61 @@
+<!doctype html><html lang=en><head><meta charset=UTF-8><meta content="width=device-width,initial-scale=1.0" name=viewport><title>A Guide to Effective Blog Posts - Sanket's Blog</title><link href=https://sak96.github.io/images/favicon.svg rel=icon><link href=https://sak96.github.io/css/style.css rel=stylesheet><link href=https://sak96.github.io/giallo-light.css id=giallo-light rel=stylesheet><link disabled href=https://sak96.github.io/giallo-dark.css id=giallo-dark rel=stylesheet><script>let t = localStorage.getItem("theme");
+  let theme = t === "light" || (!t && matchMedia("(prefers-color-scheme: light)").matches) ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", theme);
+  document.querySelector("#giallo-light").disabled = theme !== "light";
+  document.querySelector("#giallo-dark").disabled = theme !== "dark";</script><body><nav class=navbar><div class=nav-header><a href=https://sak96.github.io/>Sanket's Blog</a><input id=search-input placeholder=Search...><div id=search-results popover></div></div><div class=nav-start><a href=https://sak96.github.io//>Home</a><a href=https://sak96.github.io//categories>Categories</a><a href=https://sak96.github.io//tags>Tags</a><a href=https://sak96.github.io//about>About Me</a><a href=https://sak96.github.io//atom.xml>Atom</a></div><div class=nav-end><button id=theme-toggle></button><button class=nav-hamburger popovertarget=nav-popover>|||</button></div><div id=nav-popover popover><a href=https://sak96.github.io//>Home</a><a href=https://sak96.github.io//categories>Categories</a><a href=https://sak96.github.io//tags>Tags</a><a href=https://sak96.github.io//about>About Me</a><a href=https://sak96.github.io//atom.xml>Atom</a></div></nav><script src=https://cdnjs.cloudflare.com/ajax/libs/elasticlunr/0.9.6/elasticlunr.min.js></script><script src=https://sak96.github.io/js/search.js></script><script>(function () {
+  var searchInput = document.getElementById("search-input");
+  var searchResults = document.getElementById("search-results");
+
+  function showResults() { try { searchResults.showPopover(); } catch(e) {} }
+  function hideResults() { try { searchResults.hidePopover(); } catch(e) {} }
+
+  function performSearch(query) {
+    if (!query) { searchResults.innerHTML = ""; hideResults(); return; }
+    var results = SearchApp.search(query);
+    if (results.length === 0) {
+      searchResults.innerHTML = "<p>No results found.</p>";
+      showResults();
+      return;
+    }
+    var html = "";
+    results.forEach(function (r) {
+      var doc = SearchApp.getDoc(r.ref);
+      html += SearchApp.renderResult(doc, r.ref);
+    });
+    searchResults.innerHTML = html;
+    showResults();
+  }
+
+  SearchApp.init();
+  searchInput.addEventListener("input", function (e) { performSearch(e.target.value); });
+  searchInput.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && searchInput.value.trim()) {
+      window.location.href = "/?q=" + encodeURIComponent(searchInput.value.trim());
+    }
+  });
+  searchInput.addEventListener("focus", function (e) {
+    if (searchInput.value) performSearch(searchInput.value);
+  });
+})();</script><div class=content><h1>A Guide to Effective Blog Posts</h1><small class=page-meta>Read time: 2 min</small><small class=page-meta>Written on February 15, 2020</small><details class=toc><summary class=toc-title>Table of Contents</summary> <ul><li><a href=https://sak96.github.io/blog/guide-to-effective-blog-posts/#types-of-articles>Types of Articles</a> <ul><li><a href=https://sak96.github.io/blog/guide-to-effective-blog-posts/#how-to-attract-an-audience>How to Attract an Audience</a><li><a href=https://sak96.github.io/blog/guide-to-effective-blog-posts/#ways-to-improve>Ways to Improve</a><li><a href=https://sak96.github.io/blog/guide-to-effective-blog-posts/#balancing-time-for-writing>Balancing Time for Writing</a></ul></ul></details><article><p>This article summarizes the key points from <a href=http://bit.ly/excellent-blog rel=external>"Write An Excellent Programming Blog"</a> on how to craft compelling tech-based articles, offering detailed categories and beginner-friendly guidelines for writing across various tech domains.</p><span id=continue-reading></span><h1 id=types-of-articles>Types of Articles<a aria-label="Anchor link for: types-of-articles" class=zola-anchor href=#types-of-articles>🔗</a></h1><ul><li><strong>Story</strong>: Series of steps in an event, followed by a moral or lesson learned from that event.<li><strong>Opinion</strong>: Presenting a hypothesis and providing evidence to support it. Also addressing potential questions and reiterating the hypothesis while being respectful.<li><strong>How-to Guides</strong>: Step-by-step instructions on how to do something effectively.<li><strong>How Things Work</strong>: Explaining the mechanics of complex processes in a clear and understandable manner, using thought-provoking subjects.<li><strong>Reviews</strong>: Detailed experience of a product or service, highlighting its pros and cons. Analysis done without simplification, ending with beneficial information for readers.</ul><h2 id=how-to-attract-an-audience>How to Attract an Audience<a aria-label="Anchor link for: how-to-attract-an-audience" class=zola-anchor href=#how-to-attract-an-audience>🔗</a></h2><ul><li><strong>Aggregators</strong>: Utilizing platforms that compile content from various sources.<li><strong>Weekly Feeds</strong>: Publishing new content regularly on specific days of the week.<li><strong>Do Not Compete</strong>: Avoiding direct competition in acquiring readership.</ul><h2 id=ways-to-improve>Ways to Improve<a aria-label="Anchor link for: ways-to-improve" class=zola-anchor href=#ways-to-improve>🔗</a></h2><ul><li><strong>Practice Writing</strong>: Consistent practice is key in honing your skills.<li><strong>Style Influence</strong>: Learn from authors whose style you admire and incorporate their techniques.<li><strong>Continuous Learning</strong>: Regularly reading, analyzing, and applying what you learn to improve your craft.<li><strong>Feedback</strong>: Seek reviews from editors or trusted friends before publishing.</ul><h2 id=balancing-time-for-writing>Balancing Time for Writing<a aria-label="Anchor link for: balancing-time-for-writing" class=zola-anchor href=#balancing-time-for-writing>🔗</a></h2><ul><li>Select exciting topics that capture the reader's interest.<li>Write infrequently but with quality content.<li>Practice through short reviews and evaluations to maintain your momentum.</ul></article><div class=tags><span>Post Tags:</span><a href=https://sak96.github.io/categories/writing/> #writing</a><a href=https://sak96.github.io/tags/writing/> #writing,</a><a href=https://sak96.github.io/tags/guide/> #guide,</a><a href=https://sak96.github.io/tags/tutorial/> #tutorial</a></div><hr><h3>Discussion <small><a href=https://github.com/sak96/sak96.github.io/issues/1 target=_blank>view on github →</a></small></h3><div data-issue=1 data-repo=sak96/sak96.github.io id=github-comments></div><script>document.addEventListener('DOMContentLoaded', async () => {
+  const el = document.getElementById('github-comments');
+  if (!el) return;
+  const repo = el.dataset.repo;
+  const issue = el.dataset.issue;
+  try {
+    const res = await fetch(`https://api.github.com/repos/${repo}/issues/${issue}/comments?per_page=5`);
+    if (!res.ok) return;
+    const comments = await res.json();
+    if (!comments.length) return;
+    el.innerHTML = comments.map(c => `<hr><div><h3>${c.user.login} <small>(${new Date(c.created_at).toLocaleDateString()})</small></h3><div>${c.body.substring(0,280)}${c.body.length>280?'...' :''}</div></div>`).join('');
+  } catch (e) { console.log('GitHub comments failed:', e); }
+});</script></div><div class=content><hr><div class=footer><span>Powered by:</span><a href=https://www.getzola.org/>Zola</a></div></div><script>document.querySelector("#theme-toggle").addEventListener("click", function () {
+    const html = document.documentElement;
+    const current = html.getAttribute("data-theme");
+    const theme = current === "light" ? "dark" : "light";
+
+    html.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+
+    document.querySelector("#giallo-light").disabled = theme !== "light";
+    document.querySelector("#giallo-dark").disabled = theme !== "dark";
+  });</script>

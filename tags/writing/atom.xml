@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>Sanket&#39;s Blog - writing</title>
+    <subtitle>A personal blog where I share my thoughts and experiences.</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://sak96.github.io/tags/writing/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://sak96.github.io/"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2020-02-22T00:00:00+00:00</updated>
+    <id>https://sak96.github.io/tags/writing/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Guide to Documentation</title>
+        <published>2020-02-22T00:00:00+00:00</published>
+        <updated>2020-02-22T00:00:00+00:00</updated>
+        
+        <author>
+          <name>Sanket Kamath</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://sak96.github.io/blog/guide-to-effective-documentation/"/>
+        <id>https://sak96.github.io/blog/guide-to-effective-documentation/</id>
+        
+        <summary type="html">&lt;p&gt;The article &lt;a rel=&quot;external&quot; href=&quot;https://www.divio.com/blog/documentation&quot;&gt;&quot;What nobody tells you about documentation&quot;&lt;/a&gt; details how to write manuals for software, covering various components, their purposes, content, scope, and roles in simplifying the documentation process.&lt;/p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>A Guide to Effective Blog Posts</title>
+        <published>2020-02-15T00:00:00+00:00</published>
+        <updated>2020-02-15T00:00:00+00:00</updated>
+        
+        <author>
+          <name>Sanket Kamath</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://sak96.github.io/blog/guide-to-effective-blog-posts/"/>
+        <id>https://sak96.github.io/blog/guide-to-effective-blog-posts/</id>
+        
+        <summary type="html">&lt;p&gt;This article summarizes the key points from &lt;a rel=&quot;external&quot; href=&quot;http://bit.ly/excellent-blog&quot;&gt;&quot;Write An Excellent Programming Blog&quot;&lt;/a&gt; on how to craft compelling tech-based articles, offering detailed categories and beginner-friendly guidelines for writing across various tech domains.&lt;/p&gt;</summary>
+        
+    </entry>
+</feed>

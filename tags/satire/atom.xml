@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>Sanket&#39;s Blog - Satire</title>
+    <subtitle>A personal blog where I share my thoughts and experiences.</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://sak96.github.io/tags/satire/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://sak96.github.io/"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2026-08-22T00:00:00+00:00</updated>
+    <id>https://sak96.github.io/tags/satire/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Bean&#39;s Satirical Journey for Perfect Coffee</title>
+        <published>2026-08-22T00:00:00+00:00</published>
+        <updated>2026-08-22T00:00:00+00:00</updated>
+        
+        <author>
+          <name>Sanket Kamath</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://sak96.github.io/blog/bean-caches-bureaucratic-brew/"/>
+        <id>https://sak96.github.io/blog/bean-caches-bureaucratic-brew/</id>
+        
+        <summary type="html">&lt;p&gt;Bean awoke to the activation of his vibe-coded application, Latte Vibes.
+It was meant to dispense perfection.
+Today&#39;s coffee tasted like raw static, a bitter assault on his senses.
+He checked the settings: one and a half spoons of sugar logged.
+This was the programmed calibration; he knew it was correct.&lt;/p&gt;</summary>
+        
+    </entry>
+</feed>

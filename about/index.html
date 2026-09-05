@@ -1,0 +1,49 @@
+<!doctype html><html lang=en><head><meta charset=UTF-8><meta content="width=device-width,initial-scale=1.0" name=viewport><title>Sanket Arun Kamath - Sanket's Blog</title><link href=https://sak96.github.io/images/favicon.svg rel=icon><link href=https://sak96.github.io/css/style.css rel=stylesheet><link href=https://sak96.github.io/giallo-light.css id=giallo-light rel=stylesheet><link disabled href=https://sak96.github.io/giallo-dark.css id=giallo-dark rel=stylesheet><script>let t = localStorage.getItem("theme");
+  let theme = t === "light" || (!t && matchMedia("(prefers-color-scheme: light)").matches) ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", theme);
+  document.querySelector("#giallo-light").disabled = theme !== "light";
+  document.querySelector("#giallo-dark").disabled = theme !== "dark";</script><body><nav class=navbar><div class=nav-header><a href=https://sak96.github.io/>Sanket's Blog</a><input id=search-input placeholder=Search...><div id=search-results popover></div></div><div class=nav-start><a href=https://sak96.github.io//>Home</a><a href=https://sak96.github.io//categories>Categories</a><a href=https://sak96.github.io//tags>Tags</a><a href=https://sak96.github.io//about>About Me</a><a href=https://sak96.github.io//atom.xml>Atom</a></div><div class=nav-end><button id=theme-toggle></button><button class=nav-hamburger popovertarget=nav-popover>|||</button></div><div id=nav-popover popover><a href=https://sak96.github.io//>Home</a><a href=https://sak96.github.io//categories>Categories</a><a href=https://sak96.github.io//tags>Tags</a><a href=https://sak96.github.io//about>About Me</a><a href=https://sak96.github.io//atom.xml>Atom</a></div></nav><script src=https://cdnjs.cloudflare.com/ajax/libs/elasticlunr/0.9.6/elasticlunr.min.js></script><script src=https://sak96.github.io/js/search.js></script><script>(function () {
+  var searchInput = document.getElementById("search-input");
+  var searchResults = document.getElementById("search-results");
+
+  function showResults() { try { searchResults.showPopover(); } catch(e) {} }
+  function hideResults() { try { searchResults.hidePopover(); } catch(e) {} }
+
+  function performSearch(query) {
+    if (!query) { searchResults.innerHTML = ""; hideResults(); return; }
+    var results = SearchApp.search(query);
+    if (results.length === 0) {
+      searchResults.innerHTML = "<p>No results found.</p>";
+      showResults();
+      return;
+    }
+    var html = "";
+    results.forEach(function (r) {
+      var doc = SearchApp.getDoc(r.ref);
+      html += SearchApp.renderResult(doc, r.ref);
+    });
+    searchResults.innerHTML = html;
+    showResults();
+  }
+
+  SearchApp.init();
+  searchInput.addEventListener("input", function (e) { performSearch(e.target.value); });
+  searchInput.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && searchInput.value.trim()) {
+      window.location.href = "/?q=" + encodeURIComponent(searchInput.value.trim());
+    }
+  });
+  searchInput.addEventListener("focus", function (e) {
+    if (searchInput.value) performSearch(searchInput.value);
+  });
+})();</script><div class=content><article><h2 id=general-information>General Information<a aria-label="Anchor link for: general-information" class=zola-anchor href=#general-information>🔗</a></h2><ul><li>Roles: Senior Software Engineer<li>Email: sanketkamath1996@gmail.com<li>Phone: 9449063585<li>Location: Bengaluru<li>Website: <a href=https://sak96.github.io/ rel=external>https://sak96.github.io/</a></ul><h2 id=work-experience>Work Experience<a aria-label="Anchor link for: work-experience" class=zola-anchor href=#work-experience>🔗</a></h2><h3 id=soroco-workfabric-senior-software-engineer>SOROCO (WorkFabric) - Senior Software Engineer<a aria-label="Anchor link for: soroco-workfabric-senior-software-engineer" class=zola-anchor href=#soroco-workfabric-senior-software-engineer>🔗</a></h3><p><em>Oct. 2021 - Present</em><ul><li><strong>AI-Powered Intent based Retrieval Tool:</strong> Developed an AI-powered intent-based retrieval tool that transformed unstructured interaction data into actionable insights, enabling personalized agent experiences and intelligent digital twin profiles.<li><strong>AI-Powered Tools for KPI Generation:</strong> Designed AI-driven project to generate potential KPIs for industry processes and contextualize business problems and gaps effecting them.<li><strong>Framework for Identifying Gaps and Optimization of Business Workflows:</strong> Designed and built framework for identifying gaps effect Business workflows and suggesting potential solution for solving gaps, resulting in reduction of around 10% of manual effort.<li><strong>Framework for understanding Work patterns:</strong> Built rule engine based framework for parsing millions of user events per day into understandable high-level user actions constituting users’ work flow.</ul><h3 id=soroco-software-engineer>SOROCO - Software Engineer<a aria-label="Anchor link for: soroco-software-engineer" class=zola-anchor href=#soroco-software-engineer>🔗</a></h3><p><em>Jan. 2018 - Oct. 2021</em><ul><li><strong>Cloud Adaption for platform services:</strong> Worked on integration of Automation and Task Mining Platform of Soroco with Kubernetes/Helm and Cloud platforms. Also designed and built custom platform agnostic libraries for interactions with key vaults, file storage, logging & database.<li><strong>Automated Product document hosting:</strong> Automated pipeline for integrating product documentation into a static website hosted on WordPress with PHP stubs for authentication. Reduced deployment size by 50% by avoiding duplication of assets.<li><strong>Industry specific Automation:</strong> Built industry specific process automations frameworks to parse and extract information from over 100 formats for documents. Built another automation framework for reconciling and audit transaction from multiple sources.<li><strong>Standardization of Project template:</strong> Built a standardized templates for automation project to ensure code quality, automated deployment, utility libraries for handling web based retry.</ul><h2 id=open-source>Open Source<a aria-label="Anchor link for: open-source" class=zola-anchor href=#open-source>🔗</a></h2><ul><li><strong>Improving lsp Support for vim-ale:</strong> Add ALEGoToImplementation, CodeAction and codeActionLiteralSupport feature<li><strong>Read Later App:</strong> Developed an article bookmarking Android application using the Tauri framework.</ul><h2 id=education>Education<a aria-label="Anchor link for: education" class=zola-anchor href=#education>🔗</a></h2><table><thead><tr><th>Degree<th>Institution<th>Year<th>Grade<tbody><tr><td>B.E in C.S.<td>R.V. College of Engineering<td>2018<td>9.17</table><h2 id=awards>Awards<a aria-label="Anchor link for: awards" class=zola-anchor href=#awards>🔗</a></h2><ul><li>Torch Bearer 2022</ul><h2 id=skills>Skills<a aria-label="Anchor link for: skills" class=zola-anchor href=#skills>🔗</a></h2><ul><li><strong>Programming:</strong> Python, Rust, JavaScript, Bash, Java<li><strong>Databases:</strong> SQLite, Postgres<li><strong>Web Server:</strong> FastAPI, Django<li><strong>Orchestration:</strong> Kubernetes, Airflow, Docker, Helm<li><strong>Cloud:</strong> Azure, AWS<li><strong>Fields:</strong> Task Mining, Automation<li><strong>Soft Skills:</strong> Quick thinker, Adaptability, Problem solving</ul><h2 id=tools>Tools<a aria-label="Anchor link for: tools" class=zola-anchor href=#tools>🔗</a></h2><ul><li><strong>Languages:</strong> Python, Rust, JavaScript, Bash, Java<li><strong>Frameworks:</strong> Pandas, Numpy, Pydantic, Request, FastAPI, Django, SQLAlchemy, Tesseract, PyMuPDF, Langchain<li><strong>Technology:</strong> Micro services, K8s, Docker, Helm, Apache Airflow, Redis, ELK, Azure, AWS, SQLite, Postgres</ul></article></div><div class=content><hr><div class=footer><span>Powered by:</span><a href=https://www.getzola.org/>Zola</a></div></div><script>document.querySelector("#theme-toggle").addEventListener("click", function () {
+    const html = document.documentElement;
+    const current = html.getAttribute("data-theme");
+    const theme = current === "light" ? "dark" : "light";
+
+    html.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+
+    document.querySelector("#giallo-light").disabled = theme !== "light";
+    document.querySelector("#giallo-dark").disabled = theme !== "dark";
+  });</script>

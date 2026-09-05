@@ -1,0 +1,61 @@
+<!doctype html><html lang=en><head><meta charset=UTF-8><meta content="width=device-width,initial-scale=1.0" name=viewport><title>Rust Ownership - Sanket's Blog</title><link href=https://sak96.github.io/images/favicon.svg rel=icon><link href=https://sak96.github.io/css/style.css rel=stylesheet><link href=https://sak96.github.io/giallo-light.css id=giallo-light rel=stylesheet><link disabled href=https://sak96.github.io/giallo-dark.css id=giallo-dark rel=stylesheet><script>let t = localStorage.getItem("theme");
+  let theme = t === "light" || (!t && matchMedia("(prefers-color-scheme: light)").matches) ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", theme);
+  document.querySelector("#giallo-light").disabled = theme !== "light";
+  document.querySelector("#giallo-dark").disabled = theme !== "dark";</script><body><nav class=navbar><div class=nav-header><a href=https://sak96.github.io/>Sanket's Blog</a><input id=search-input placeholder=Search...><div id=search-results popover></div></div><div class=nav-start><a href=https://sak96.github.io//>Home</a><a href=https://sak96.github.io//categories>Categories</a><a href=https://sak96.github.io//tags>Tags</a><a href=https://sak96.github.io//about>About Me</a><a href=https://sak96.github.io//atom.xml>Atom</a></div><div class=nav-end><button id=theme-toggle></button><button class=nav-hamburger popovertarget=nav-popover>|||</button></div><div id=nav-popover popover><a href=https://sak96.github.io//>Home</a><a href=https://sak96.github.io//categories>Categories</a><a href=https://sak96.github.io//tags>Tags</a><a href=https://sak96.github.io//about>About Me</a><a href=https://sak96.github.io//atom.xml>Atom</a></div></nav><script src=https://cdnjs.cloudflare.com/ajax/libs/elasticlunr/0.9.6/elasticlunr.min.js></script><script src=https://sak96.github.io/js/search.js></script><script>(function () {
+  var searchInput = document.getElementById("search-input");
+  var searchResults = document.getElementById("search-results");
+
+  function showResults() { try { searchResults.showPopover(); } catch(e) {} }
+  function hideResults() { try { searchResults.hidePopover(); } catch(e) {} }
+
+  function performSearch(query) {
+    if (!query) { searchResults.innerHTML = ""; hideResults(); return; }
+    var results = SearchApp.search(query);
+    if (results.length === 0) {
+      searchResults.innerHTML = "<p>No results found.</p>";
+      showResults();
+      return;
+    }
+    var html = "";
+    results.forEach(function (r) {
+      var doc = SearchApp.getDoc(r.ref);
+      html += SearchApp.renderResult(doc, r.ref);
+    });
+    searchResults.innerHTML = html;
+    showResults();
+  }
+
+  SearchApp.init();
+  searchInput.addEventListener("input", function (e) { performSearch(e.target.value); });
+  searchInput.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && searchInput.value.trim()) {
+      window.location.href = "/?q=" + encodeURIComponent(searchInput.value.trim());
+    }
+  });
+  searchInput.addEventListener("focus", function (e) {
+    if (searchInput.value) performSearch(searchInput.value);
+  });
+})();</script><div class=content><h1>Rust Ownership</h1><small class=page-meta>Read time: 2 min</small><small class=page-meta>Written on December 20, 2020</small><details class=toc><summary class=toc-title>Table of Contents</summary> <ul><li><a href=https://sak96.github.io/blog/rust-ownership/#memory-management-paradigms>Memory Management Paradigms</a><li><a href=https://sak96.github.io/blog/rust-ownership/#ownership-core-mechanism>Ownership: Core Mechanism</a><li><a href=https://sak96.github.io/blog/rust-ownership/#borrowing-safe-sharing>Borrowing: Safe Sharing</a><li><a href=https://sak96.github.io/blog/rust-ownership/#why-ownership-works>Why Ownership Works</a></ul></details><article><p>Program execution requires persistent storage of intermediate results to support sequential instruction execution. This stateful memory must be carefully managed across concurrent program executions, a task traditionally handled by operating systems through system calls (e.g., <code>brk</code>/<code>sbrk</code>). Programming languages provide abstractions over these mechanisms to enable safer memory management strategies.</p><span id=continue-reading></span><h4 id=memory-management-paradigms>Memory Management Paradigms<a aria-label="Anchor link for: memory-management-paradigms" class=zola-anchor href=#memory-management-paradigms>🔗</a></h4><ol><li><p><strong>Programmer-Managed (e.g., C)</strong>: The programmer explicitly allocates and deallocates memory via functions like <code>malloc</code> and <code>free</code>. This approach grants fine-grained control but introduces risks such as <strong>use-after-free</strong> (accessing freed memory) and <strong>double frees</strong> (freed memory reclaimed twice). These issues can cause undefined behavior or security vulnerabilities.</p><li><p><strong>Runtime-Managed (e.g., Python)</strong>: Runtimes maintain memory through reference counting: when a variable references memory, the count increments; when the variable goes out of scope, the count decrements. Memory is freed when the count reaches zero. Cycle detection (references mutually holding each other) requires <strong>stop-the-world pauses</strong> during garbage collection, resulting in performance overhead. Such pauses can cause latency spikes in production systems.</p><li><p><strong>Compiler-Enforced (e.g., Rust)</strong>: Rust leverages compile-time analysis to manage memory safely without runtime overhead. This approach eliminates common pitfalls through <strong>ownership semantics</strong>, which define strict rules for memory lifetime and borrowing.</p></ol><h4 id=ownership-core-mechanism>Ownership: Core Mechanism<a aria-label="Anchor link for: ownership-core-mechanism" class=zola-anchor href=#ownership-core-mechanism>🔗</a></h4><p>Rust's ownership model is designed to solve the limitations of runtime-based memory management by ensuring <strong>compile-time safety</strong> through predictable memory lifetimes. Unlike reference counting systems, ownership:<ul><li><strong>Explicitly governs memory lifetimes</strong>: Each memory region has a single owner. When the owner goes out of scope, the memory is automatically deallocated.<li><strong>Enforces transfer semantics</strong>: Ownership transfers via <em>move</em> operations, ensuring memory is reclaimed only when the new owner goes out of scope.<li><strong>Prevents invalid references</strong>: Borrowing mechanisms (read-only v/s mutable) ensure references are always valid at compile time.</ul><h4 id=borrowing-safe-sharing>Borrowing: Safe Sharing<a aria-label="Anchor link for: borrowing-safe-sharing" class=zola-anchor href=#borrowing-safe-sharing>🔗</a></h4><p>Borrowing allows temporary sharing of owned memory without transferring ownership. The compiler enforces:<ul><li><strong>Read-only borrows</strong> (immutable references): Multiple borrows are permitted.<li><strong>Write borrows</strong> (mutable references): Only one borrow is allowed at a time. This prevents re-entrancy issues and ensures data consistency.</ul><p>This design guarantees that:<ol><li>All borrowers access valid memory<li>Mutability conflicts are resolved at compile time<li>No data races occur without explicit unsafe code</ol><h4 id=why-ownership-works>Why Ownership Works<a aria-label="Anchor link for: why-ownership-works" class=zola-anchor href=#why-ownership-works>🔗</a></h4><p>Ownership resolves the "reference tracking problem" by restricting runtime outcomes to a finite set of scenarios. By requiring explicit ownership transfers and borrow checks at compile time, Rust eliminates classically unsafe patterns (e.g., dangling pointers, data races) without runtime overhead. This enables high-performance applications with guaranteed memory safety.</article><div class=tags><span>Post Tags:</span><a href=https://sak96.github.io/categories/rust/> #rust</a><a href=https://sak96.github.io/tags/rust/> #rust,</a><a href=https://sak96.github.io/tags/memory/> #memory,</a><a href=https://sak96.github.io/tags/tutorial/> #tutorial</a></div><hr><h3>Discussion <small><a href=https://github.com/sak96/sak96.github.io/issues/10 target=_blank>view on github →</a></small></h3><div data-issue=10 data-repo=sak96/sak96.github.io id=github-comments></div><script>document.addEventListener('DOMContentLoaded', async () => {
+  const el = document.getElementById('github-comments');
+  if (!el) return;
+  const repo = el.dataset.repo;
+  const issue = el.dataset.issue;
+  try {
+    const res = await fetch(`https://api.github.com/repos/${repo}/issues/${issue}/comments?per_page=5`);
+    if (!res.ok) return;
+    const comments = await res.json();
+    if (!comments.length) return;
+    el.innerHTML = comments.map(c => `<hr><div><h3>${c.user.login} <small>(${new Date(c.created_at).toLocaleDateString()})</small></h3><div>${c.body.substring(0,280)}${c.body.length>280?'...' :''}</div></div>`).join('');
+  } catch (e) { console.log('GitHub comments failed:', e); }
+});</script></div><div class=content><hr><div class=footer><span>Powered by:</span><a href=https://www.getzola.org/>Zola</a></div></div><script>document.querySelector("#theme-toggle").addEventListener("click", function () {
+    const html = document.documentElement;
+    const current = html.getAttribute("data-theme");
+    const theme = current === "light" ? "dark" : "light";
+
+    html.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+
+    document.querySelector("#giallo-light").disabled = theme !== "light";
+    document.querySelector("#giallo-dark").disabled = theme !== "dark";
+  });</script>

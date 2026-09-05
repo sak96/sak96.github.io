@@ -1,0 +1,64 @@
+<!doctype html><html lang=en><head><meta charset=UTF-8><meta content="width=device-width,initial-scale=1.0" name=viewport><title>Git Introduction - Sanket's Blog</title><link href=https://sak96.github.io/images/favicon.svg rel=icon><link href=https://sak96.github.io/css/style.css rel=stylesheet><link href=https://sak96.github.io/giallo-light.css id=giallo-light rel=stylesheet><link disabled href=https://sak96.github.io/giallo-dark.css id=giallo-dark rel=stylesheet><script>let t = localStorage.getItem("theme");
+  let theme = t === "light" || (!t && matchMedia("(prefers-color-scheme: light)").matches) ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", theme);
+  document.querySelector("#giallo-light").disabled = theme !== "light";
+  document.querySelector("#giallo-dark").disabled = theme !== "dark";</script><body><nav class=navbar><div class=nav-header><a href=https://sak96.github.io/>Sanket's Blog</a><input id=search-input placeholder=Search...><div id=search-results popover></div></div><div class=nav-start><a href=https://sak96.github.io//>Home</a><a href=https://sak96.github.io//categories>Categories</a><a href=https://sak96.github.io//tags>Tags</a><a href=https://sak96.github.io//about>About Me</a><a href=https://sak96.github.io//atom.xml>Atom</a></div><div class=nav-end><button id=theme-toggle></button><button class=nav-hamburger popovertarget=nav-popover>|||</button></div><div id=nav-popover popover><a href=https://sak96.github.io//>Home</a><a href=https://sak96.github.io//categories>Categories</a><a href=https://sak96.github.io//tags>Tags</a><a href=https://sak96.github.io//about>About Me</a><a href=https://sak96.github.io//atom.xml>Atom</a></div></nav><script src=https://cdnjs.cloudflare.com/ajax/libs/elasticlunr/0.9.6/elasticlunr.min.js></script><script src=https://sak96.github.io/js/search.js></script><script>(function () {
+  var searchInput = document.getElementById("search-input");
+  var searchResults = document.getElementById("search-results");
+
+  function showResults() { try { searchResults.showPopover(); } catch(e) {} }
+  function hideResults() { try { searchResults.hidePopover(); } catch(e) {} }
+
+  function performSearch(query) {
+    if (!query) { searchResults.innerHTML = ""; hideResults(); return; }
+    var results = SearchApp.search(query);
+    if (results.length === 0) {
+      searchResults.innerHTML = "<p>No results found.</p>";
+      showResults();
+      return;
+    }
+    var html = "";
+    results.forEach(function (r) {
+      var doc = SearchApp.getDoc(r.ref);
+      html += SearchApp.renderResult(doc, r.ref);
+    });
+    searchResults.innerHTML = html;
+    showResults();
+  }
+
+  SearchApp.init();
+  searchInput.addEventListener("input", function (e) { performSearch(e.target.value); });
+  searchInput.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && searchInput.value.trim()) {
+      window.location.href = "/?q=" + encodeURIComponent(searchInput.value.trim());
+    }
+  });
+  searchInput.addEventListener("focus", function (e) {
+    if (searchInput.value) performSearch(searchInput.value);
+  });
+})();</script><div class=content><h1>Git Introduction</h1><small class=page-meta>Read time: 2 min</small><small class=page-meta>Written on April 29, 2020</small><details class=toc><summary class=toc-title>Table of Contents</summary> <ul><li><a href=https://sak96.github.io/blog/git-simplified-1-introduction/#understanding-the-directed-acyclic-graph-dag>Understanding the Directed Acyclic Graph (DAG)</a><li><a href=https://sak96.github.io/blog/git-simplified-1-introduction/#hashes-and-cryptographic-security>Hashes and Cryptographic Security</a><li><a href=https://sak96.github.io/blog/git-simplified-1-introduction/#commits-snapshots-of-content>Commits: Snapshots of Content</a><li><a href=https://sak96.github.io/blog/git-simplified-1-introduction/#resources>Resources</a></ul></details><article><p>Git is a “content tracker” – it records how files change over time. Think of it as a detailed history of your project, noting when, where, and by whom changes were made. This enables key features like:<ul><li>Tracking who owns specific changes.<li>Backing up and reverting to older versions.<li>Synchronizing changes across multiple locations.</ul><span id=continue-reading></span><p>Git’s underlying structure is a <strong>Directed Acyclic Graph (DAG) of Hashes</strong>. Each “hash” represents a specific version (or “commit”) of your content.<h3 id=understanding-the-directed-acyclic-graph-dag>Understanding the Directed Acyclic Graph (DAG)<a aria-label="Anchor link for: understanding-the-directed-acyclic-graph-dag" class=zola-anchor href=#understanding-the-directed-acyclic-graph-dag>🔗</a></h3><p>A DAG shows the relationships between different versions of your content. It’s like a family tree for your files:<pre class="giallo z-l-code z-d-code"><code data-lang=plain><span class=giallo-l><span>+-------+       +-------+       +-------+</span></span>
+<span class=giallo-l><span>| grand |------>|parent |------>| child |</span></span>
+<span class=giallo-l><span>| parent|       |       |       |       |</span></span>
+<span class=giallo-l><span>+-------+       +-------+       +-------+</span></span></code></pre><ul><li><strong>Directed:</strong> Changes flow from a version to its parent.<li><strong>Acyclic:</strong> There are no loops – a version doesn’t directly influence itself.</ul><h3 id=hashes-and-cryptographic-security>Hashes and Cryptographic Security<a aria-label="Anchor link for: hashes-and-cryptographic-security" class=zola-anchor href=#hashes-and-cryptographic-security>🔗</a></h3><p>The DAG is built using “hashes”. A hash function takes any size input and produces a fixed-size output. In Git, each piece of content is hashed, creating a unique fingerprint. Cryptographic hashes, like SHA-1 (used in older versions) and SHA-256, are particularly important because they are designed to be extremely difficult to reverse – meaning you can’t figure out the original content just from its hash.<h3 id=commits-snapshots-of-content>Commits: Snapshots of Content<a aria-label="Anchor link for: commits-snapshots-of-content" class=zola-anchor href=#commits-snapshots-of-content>🔗</a></h3><p>A “commit” is a snapshot of your content at a specific point in time. Even though Git tracks changes at a file level, the commit itself records all the details of those alterations. We’ll delve deeper into commits in the next section.<h2 id=resources>Resources<a aria-label="Anchor link for: resources" class=zola-anchor href=#resources>🔗</a></h2><ol><li>Git: <a title="git man page" href=https://linux.die.net/man/1/git rel=external>Stupid Content Tracker</a>.<li><a href="https://www.youtube.com/watch?v=4XpnKHJAok8" title="Torvalds on git" rel=external>Tech Talk: Linus Torvalds on git</a><li><a title="Wikipedia: DAG" href=https://en.wikipedia.org/wiki/Directed_acyclic_graph rel=external>wiki: Directed acyclic graph</a><li><a href=https://git-scm.com/docs/hash-function-transition/2.18.0 rel=external title=Hashes>Hash Function Transition</a></ol></article><div class=tags><span>Post Tags:</span><a href=https://sak96.github.io/categories/devtools/> #devtools</a><a href=https://sak96.github.io/tags/git/> #git,</a><a href=https://sak96.github.io/tags/vcs/> #vcs,</a><a href=https://sak96.github.io/tags/tutorial/> #tutorial</a></div><hr><h3>Discussion <small><a href=https://github.com/sak96/sak96.github.io/issues/4 target=_blank>view on github →</a></small></h3><div data-issue=4 data-repo=sak96/sak96.github.io id=github-comments></div><script>document.addEventListener('DOMContentLoaded', async () => {
+  const el = document.getElementById('github-comments');
+  if (!el) return;
+  const repo = el.dataset.repo;
+  const issue = el.dataset.issue;
+  try {
+    const res = await fetch(`https://api.github.com/repos/${repo}/issues/${issue}/comments?per_page=5`);
+    if (!res.ok) return;
+    const comments = await res.json();
+    if (!comments.length) return;
+    el.innerHTML = comments.map(c => `<hr><div><h3>${c.user.login} <small>(${new Date(c.created_at).toLocaleDateString()})</small></h3><div>${c.body.substring(0,280)}${c.body.length>280?'...' :''}</div></div>`).join('');
+  } catch (e) { console.log('GitHub comments failed:', e); }
+});</script></div><div class=content><hr><div class=footer><span>Powered by:</span><a href=https://www.getzola.org/>Zola</a></div></div><script>document.querySelector("#theme-toggle").addEventListener("click", function () {
+    const html = document.documentElement;
+    const current = html.getAttribute("data-theme");
+    const theme = current === "light" ? "dark" : "light";
+
+    html.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+
+    document.querySelector("#giallo-light").disabled = theme !== "light";
+    document.querySelector("#giallo-dark").disabled = theme !== "dark";
+  });</script>

@@ -1,0 +1,92 @@
+<!doctype html><html lang=en><head><meta charset=UTF-8><meta content="width=device-width,initial-scale=1.0" name=viewport><title>Css Light and Dark Theme - Sanket's Blog</title><link href=https://sak96.github.io/images/favicon.svg rel=icon><link href=https://sak96.github.io/css/style.css rel=stylesheet><link href=https://sak96.github.io/giallo-light.css id=giallo-light rel=stylesheet><link disabled href=https://sak96.github.io/giallo-dark.css id=giallo-dark rel=stylesheet><script>let t = localStorage.getItem("theme");
+  let theme = t === "light" || (!t && matchMedia("(prefers-color-scheme: light)").matches) ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", theme);
+  document.querySelector("#giallo-light").disabled = theme !== "light";
+  document.querySelector("#giallo-dark").disabled = theme !== "dark";</script><body><nav class=navbar><div class=nav-header><a href=https://sak96.github.io/>Sanket's Blog</a><input id=search-input placeholder=Search...><div id=search-results popover></div></div><div class=nav-start><a href=https://sak96.github.io//>Home</a><a href=https://sak96.github.io//categories>Categories</a><a href=https://sak96.github.io//tags>Tags</a><a href=https://sak96.github.io//about>About Me</a><a href=https://sak96.github.io//atom.xml>Atom</a></div><div class=nav-end><button id=theme-toggle></button><button class=nav-hamburger popovertarget=nav-popover>|||</button></div><div id=nav-popover popover><a href=https://sak96.github.io//>Home</a><a href=https://sak96.github.io//categories>Categories</a><a href=https://sak96.github.io//tags>Tags</a><a href=https://sak96.github.io//about>About Me</a><a href=https://sak96.github.io//atom.xml>Atom</a></div></nav><script src=https://cdnjs.cloudflare.com/ajax/libs/elasticlunr/0.9.6/elasticlunr.min.js></script><script src=https://sak96.github.io/js/search.js></script><script>(function () {
+  var searchInput = document.getElementById("search-input");
+  var searchResults = document.getElementById("search-results");
+
+  function showResults() { try { searchResults.showPopover(); } catch(e) {} }
+  function hideResults() { try { searchResults.hidePopover(); } catch(e) {} }
+
+  function performSearch(query) {
+    if (!query) { searchResults.innerHTML = ""; hideResults(); return; }
+    var results = SearchApp.search(query);
+    if (results.length === 0) {
+      searchResults.innerHTML = "<p>No results found.</p>";
+      showResults();
+      return;
+    }
+    var html = "";
+    results.forEach(function (r) {
+      var doc = SearchApp.getDoc(r.ref);
+      html += SearchApp.renderResult(doc, r.ref);
+    });
+    searchResults.innerHTML = html;
+    showResults();
+  }
+
+  SearchApp.init();
+  searchInput.addEventListener("input", function (e) { performSearch(e.target.value); });
+  searchInput.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && searchInput.value.trim()) {
+      window.location.href = "/?q=" + encodeURIComponent(searchInput.value.trim());
+    }
+  });
+  searchInput.addEventListener("focus", function (e) {
+    if (searchInput.value) performSearch(searchInput.value);
+  });
+})();</script><div class=content><h1>Css Light and Dark Theme</h1><small class=page-meta>Read time: 2 min</small><small class=page-meta>Written on March 28, 2023</small><details class=toc><summary class=toc-title>Table of Contents</summary> <ul><li><a href=https://sak96.github.io/blog/css-light-and-dark-theme/#css-based-theme-implementation>CSS-Based Theme Implementation</a> <ul><li><a href=https://sak96.github.io/blog/css-light-and-dark-theme/#system-driven-theme-detection>System-Driven Theme Detection</a><li><a href=https://sak96.github.io/blog/css-light-and-dark-theme/#dynamic-theme-toggling-via-data-attributes>Dynamic Theme Toggling via Data Attributes</a><li><a href=https://sak96.github.io/blog/css-light-and-dark-theme/#system-color-scheme-management>System Color Scheme Management</a></ul><li><a href=https://sak96.github.io/blog/css-light-and-dark-theme/#rust-implementation>Rust Implementation</a><li><a href=https://sak96.github.io/blog/css-light-and-dark-theme/#best-practices>Best Practices</a><li><a href=https://sak96.github.io/blog/css-light-and-dark-theme/#references>References</a></ul></details><article><p>Dark themes provide significant benefits for user experience and accessibility, particularly for users who experience eye strain from bright displays This document details a robust approach to implementing theme switching in Rust web applications without relying on heavy UI frameworks.</p><span id=continue-reading></span><h2 id=css-based-theme-implementation>CSS-Based Theme Implementation<a aria-label="Anchor link for: css-based-theme-implementation" class=zola-anchor href=#css-based-theme-implementation>🔗</a></h2><h3 id=system-driven-theme-detection>System-Driven Theme Detection<a aria-label="Anchor link for: system-driven-theme-detection" class=zola-anchor href=#system-driven-theme-detection>🔗</a></h3><p>Modern CSS supports adaptive theming through the <code>prefers-color-scheme</code> media query, enabling applications to respect the user's native display preferences:<pre class="giallo z-l-code z-d-code"><code data-lang=css><span class=giallo-l><span class="z-l-8 z-d-7">:</span><span class="z-l-15 z-d-16">root</span><span class="z-l-8 z-d-7"> {</span></span>
+<span class=giallo-l><span class="z-l-1 z-d-3">  --c-bg</span><span class="z-l-8 z-d-7">:</span><span class="z-l-8 z-d-7"> #</span><span class="z-l-9 z-d-12">fff</span><span class="z-l-8 z-d-7">;</span></span>
+<span class=giallo-l><span class="z-l-1 z-d-3">  --c-text</span><span class="z-l-8 z-d-7">:</span><span class="z-l-8 z-d-7"> #</span><span class="z-l-9 z-d-12">000</span><span class="z-l-8 z-d-7">;</span></span>
+<span class=giallo-l><span class="z-l-8 z-d-7">}</span></span>
+<span class=giallo-l><span class="z-l-8 z-d-7">@</span><span class="z-l-12 z-d-17">media</span><span class="z-l-8 z-d-7"> (</span><span>prefers-color-scheme</span><span class="z-l-8 z-d-7">:</span><span> dark</span><span class="z-l-8 z-d-7">)</span><span class="z-l-8 z-d-7"> {</span></span>
+<span class=giallo-l><span class="z-l-8 z-d-7">  :</span><span class="z-l-15 z-d-16">root</span><span class="z-l-8 z-d-7"> {</span></span>
+<span class=giallo-l><span class="z-l-1 z-d-3">    --c-bg</span><span class="z-l-8 z-d-7">:</span><span class="z-l-8 z-d-7"> #</span><span class="z-l-9 z-d-12">000</span><span class="z-l-8 z-d-7">;</span></span>
+<span class=giallo-l><span class="z-l-1 z-d-3">    --c-text</span><span class="z-l-8 z-d-7">:</span><span class="z-l-8 z-d-7"> #</span><span class="z-l-9 z-d-12">fff</span><span class="z-l-8 z-d-7">;</span></span>
+<span class=giallo-l><span class="z-l-8 z-d-7">  }</span></span>
+<span class=giallo-l><span class="z-l-8 z-d-7">}</span></span></code></pre><p>This solution establishes system-aware color variables while maintaining separation between system preferences and application-specific styling.<h3 id=dynamic-theme-toggling-via-data-attributes>Dynamic Theme Toggling via Data Attributes<a aria-label="Anchor link for: dynamic-theme-toggling-via-data-attributes" class=zola-anchor href=#dynamic-theme-toggling-via-data-attributes>🔗</a></h3><p>For user-controlled theme switching, data attributes provide an efficient mechanism:<pre class="giallo z-l-code z-d-code"><code data-lang=css><span class=giallo-l><span class="z-l-8 z-d-7">[</span><span class="z-l-13 z-d-18">data-theme</span><span class="z-l-2 z-d-4">=</span><span class="z-l-8 z-d-7">"</span><span class="z-l-7 z-d-9">light</span><span class="z-l-8 z-d-7">"</span><span class="z-l-8 z-d-7">]</span><span class="z-l-8 z-d-7"> {</span></span>
+<span class=giallo-l><span class="z-l-1 z-d-3">  --bg</span><span class="z-l-8 z-d-7">:</span><span class="z-l-8 z-d-7"> #</span><span class="z-l-9 z-d-12">1d2021</span><span class="z-l-8 z-d-7">;</span></span>
+<span class=giallo-l><span class="z-l-1 z-d-3">  --fg</span><span class="z-l-8 z-d-7">:</span><span class="z-l-8 z-d-7"> #</span><span class="z-l-9 z-d-12">d4be98</span><span class="z-l-8 z-d-7">;</span></span>
+<span class=giallo-l><span class="z-l-8 z-d-7">}</span></span>
+<span class=giallo-l><span class="z-l-8 z-d-7">[</span><span class="z-l-13 z-d-18">data-theme</span><span class="z-l-2 z-d-4">=</span><span class="z-l-8 z-d-7">"</span><span class="z-l-7 z-d-9">dark</span><span class="z-l-8 z-d-7">"</span><span class="z-l-8 z-d-7">]</span><span class="z-l-8 z-d-7"> {</span></span>
+<span class=giallo-l><span class="z-l-1 z-d-3">  --bg</span><span class="z-l-8 z-d-7">:</span><span class="z-l-8 z-d-7"> #</span><span class="z-l-9 z-d-12">f9f5d7</span><span class="z-l-8 z-d-7">;</span></span>
+<span class=giallo-l><span class="z-l-1 z-d-3">  --fg</span><span class="z-l-8 z-d-7">:</span><span class="z-l-8 z-d-7"> #</span><span class="z-l-9 z-d-12">654735</span><span class="z-l-8 z-d-7">;</span></span>
+<span class=giallo-l><span class="z-l-8 z-d-7">}</span></span></code></pre><p>JavaScript can toggle these preferences dynamically by modifying the HTML root element's attribute:<pre class="giallo z-l-code z-d-code"><code data-lang=javascript><span class=giallo-l><span class="z-l-1 z-d-3">document</span><span class="z-l-8 z-d-7">.</span><span class="z-l-1 z-d-3">documentElement</span><span class="z-l-8 z-d-7">.</span><span class="z-l-15 z-d-16">setAttribute</span><span>(</span><span class="z-l-8 z-d-7">"</span><span class="z-l-7 z-d-9">data-theme</span><span class="z-l-8 z-d-7">"</span><span class="z-l-8 z-d-7">,</span><span class="z-l-8 z-d-7"> "</span><span class="z-l-7 z-d-9">dark</span><span class="z-l-8 z-d-7">"</span><span>)</span><span class="z-l-8 z-d-7">;</span></span></code></pre><h3 id=system-color-scheme-management>System Color Scheme Management<a aria-label="Anchor link for: system-color-scheme-management" class=zola-anchor href=#system-color-scheme-management>🔗</a></h3><p>Applications can also leverage the <code>&lt;meta name="color-scheme"></code> tag for document-level theme configuration:<pre class="giallo z-l-code z-d-code"><code data-lang=html><span class=giallo-l><span class="z-l-1 z-d-3">&lt;</span><span class="z-l-2 z-l-b z-d-4 z-d-b">meta</span><span class="z-l-15 z-d-16"> name</span><span class="z-l-8 z-d-7">=</span><span class="z-l-8 z-d-7">"</span><span class="z-l-7 z-d-9">color-scheme</span><span class="z-l-8 z-d-7">"</span><span class="z-l-15 z-d-16"> content</span><span class="z-l-8 z-d-7">=</span><span class="z-l-8 z-d-7">"</span><span class="z-l-7 z-d-9">dark light</span><span class="z-l-8 z-d-7">"</span><span class="z-l-1 z-d-3">></span></span></code></pre><p>This approach allows theme switching through JavaScript:<pre class="giallo z-l-code z-d-code"><code data-lang=javascript><span class=giallo-l><span class="z-l-1 z-d-3">document</span><span class="z-l-8 z-d-7">.</span><span class="z-l-15 z-d-16">getElementsByTagName</span><span>(</span><span class="z-l-8 z-d-7">"</span><span class="z-l-7 z-d-9">meta</span><span class="z-l-8 z-d-7">"</span><span>)</span><span class="z-l-8 z-d-7">.</span><span class="z-l-15 z-d-16">namedItem</span><span>(</span><span class="z-l-8 z-d-7">"</span><span class="z-l-7 z-d-9">color-scheme</span><span class="z-l-8 z-d-7">"</span><span>)</span><span class="z-l-8 z-d-7">.</span><span class="z-l-1 z-d-3">content</span><span class="z-l-2 z-d-4"> =</span><span class="z-l-8 z-d-7"> "</span><span class="z-l-7 z-d-9">dark</span><span class="z-l-8 z-d-7">"</span><span class="z-l-8 z-d-7">;</span></span></code></pre><h2 id=rust-implementation>Rust Implementation<a aria-label="Anchor link for: rust-implementation" class=zola-anchor href=#rust-implementation>🔗</a></h2><p>For Rust applications targeting web environments, the following implementation demonstrates theme management via WASM binding:<pre class="giallo z-l-code z-d-code"><code data-lang=rust><span class=giallo-l><span class="z-l-8 z-d-7">#</span><span class="z-l-8 z-d-7">[</span><span>wasm_bindgen</span><span class="z-l-8 z-d-7">(</span><span>inline_js </span><span class="z-l-2 z-d-4">=</span><span class="z-l-7 z-d-9"> r</span><span class="z-l-8 z-d-7">#</span><span class="z-l-8 z-d-7">"</span></span>
+<span class=giallo-l><span class="z-l-7 z-d-9">  export function toggleTheme() {</span></span>
+<span class=giallo-l><span class="z-l-7 z-d-9">    var theme = "light";</span></span>
+<span class=giallo-l><span class="z-l-7 z-d-9">    if  window.matchMedia("(prefers-color-scheme: light)").matches {</span></span>
+<span class=giallo-l><span class="z-l-7 z-d-9">        theme = "dark;</span></span>
+<span class=giallo-l><span class="z-l-7 z-d-9">    }</span></span>
+<span class=giallo-l><span class="z-l-7 z-d-9">    document.documentElement.setAttribute("data-theme", theme);</span></span>
+<span class=giallo-l><span class="z-l-7 z-d-9">    document.getElementsByTagName("meta").namedItem("color-scheme").content = theme;</span></span>
+<span class=giallo-l><span class="z-l-7 z-d-9">  }</span></span>
+<span class=giallo-l><span class="z-l-8 z-d-7">"</span><span class="z-l-8 z-d-7">#</span><span class="z-l-8 z-d-7">)</span><span class="z-l-8 z-d-7">]</span></span>
+<span class=giallo-l><span class="z-l-13 z-d-18">extern</span><span class="z-l-8 z-d-7"> "</span><span class="z-l-7 z-d-9">C</span><span class="z-l-8 z-d-7">"</span><span class="z-l-8 z-d-7"> {</span></span>
+<span class=giallo-l><span class="z-l-12 z-d-17">    pub</span><span class="z-l-12 z-d-17"> fn</span><span class="z-l-15 z-d-16"> toggleTheme</span><span class="z-l-8 z-d-7">(</span><span class="z-l-8 z-d-7">)</span><span class="z-l-8 z-d-7">;</span></span>
+<span class=giallo-l><span class="z-l-8 z-d-7">}</span></span>
+<span class=giallo-l></span>
+<span class=giallo-l><span class="z-l-10 z-l-i z-d-5 z-d-i">//</span><span class="z-l-10 z-l-i z-d-5 z-d-i"> Usage example</span></span>
+<span class=giallo-l><span class="z-l-15 z-d-16">toggleTheme</span><span class="z-l-8 z-d-7">(</span><span class="z-l-8 z-d-7">)</span><span class="z-l-8 z-d-7">;</span></span></code></pre><p>This implementation exposes a theme-toggling function through <code>wasmbindgen</code> that maintains compatibility with both system preferences and user-defined themes.<h2 id=best-practices>Best Practices<a aria-label="Anchor link for: best-practices" class=zola-anchor href=#best-practices>🔗</a></h2><ol><li>Prefer system colors for background and text elements<li>Use data attributes for theme-specific styling rather than inline styles<li>Maintain separation between system preferences and application-specific theming<li>Implement theme toggling via JavaScript for user control<li>Leverage CSS variables for consistent color management</ol><h2 id=references>References<a aria-label="Anchor link for: references" class=zola-anchor href=#references>🔗</a></h2><ul><li><a href=https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme rel=external>prefers-color-scheme</a><li><a href=https://developer.mozilla.org/en-US/docs/Web/CSS/color-scheme rel=external>CSS color-scheme</a><li><a href=https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/data rel=external>Data attributes</a><li><a href=https://rustwasm.github.io/docs/wasm-bindgen/reference/js-snippets.html rel=external>wasm-bindgen inline JS</a><li><a href=https://tauri.app/ rel=external>Tauri</a><li><a href=https://yew.rs/ rel=external>Yew</a></ul></article><div class=tags><span>Post Tags:</span><a href=https://sak96.github.io/categories/css/> #css</a><a href=https://sak96.github.io/tags/css/> #css,</a><a href=https://sak96.github.io/tags/dark-mode/> #dark-mode,</a><a href=https://sak96.github.io/tags/tutorial/> #tutorial</a></div><hr><h3>Discussion <small><a href=https://github.com/sak96/sak96.github.io/issues/15 target=_blank>view on github →</a></small></h3><div data-issue=15 data-repo=sak96/sak96.github.io id=github-comments></div><script>document.addEventListener('DOMContentLoaded', async () => {
+  const el = document.getElementById('github-comments');
+  if (!el) return;
+  const repo = el.dataset.repo;
+  const issue = el.dataset.issue;
+  try {
+    const res = await fetch(`https://api.github.com/repos/${repo}/issues/${issue}/comments?per_page=5`);
+    if (!res.ok) return;
+    const comments = await res.json();
+    if (!comments.length) return;
+    el.innerHTML = comments.map(c => `<hr><div><h3>${c.user.login} <small>(${new Date(c.created_at).toLocaleDateString()})</small></h3><div>${c.body.substring(0,280)}${c.body.length>280?'...' :''}</div></div>`).join('');
+  } catch (e) { console.log('GitHub comments failed:', e); }
+});</script></div><div class=content><hr><div class=footer><span>Powered by:</span><a href=https://www.getzola.org/>Zola</a></div></div><script>document.querySelector("#theme-toggle").addEventListener("click", function () {
+    const html = document.documentElement;
+    const current = html.getAttribute("data-theme");
+    const theme = current === "light" ? "dark" : "light";
+
+    html.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+
+    document.querySelector("#giallo-light").disabled = theme !== "light";
+    document.querySelector("#giallo-dark").disabled = theme !== "dark";
+  });</script>

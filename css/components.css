@@ -1,0 +1,96 @@
+/* Article list */
+.item {
+  display: block;
+  margin: 0.5rem 0;
+  padding: 1rem;
+  border-top: 1px dashed var(--red);
+  color: var(--fg);
+}
+
+/* Paginator */
+.paginator {
+  margin: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer,
+.tags {
+  margin: 0.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.disabled {
+  pointer-events: none;
+  color: var(--gray);
+}
+
+/* Table of Contents */
+.toc {
+  background-color: var(--bg1);
+  border: 2px solid var(--blue);
+  border-radius: 4px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.toc-title {
+  color: var(--green);
+  font-weight: bold;
+  margin-top: 0;
+  cursor: pointer;
+  list-style: none;
+}
+
+.toc-title::-webkit-details-marker {
+  display: none;
+}
+
+.toc ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.toc li {
+  margin: 0.25rem 0;
+}
+
+/* 404 / Empty state */
+.not-found,
+.coming-soon {
+  text-align: center;
+}
+
+.not-found span {
+  display: block;
+}
+
+/* Page meta */
+.page-meta {
+  display: block;
+}
+
+/* Article card */
+.item span {
+  display: block;
+}
+
+/* Taxonomy list */
+.taxonomy-list {
+  list-style: none;
+  padding: 0;
+}
+
+.taxonomy-list li {
+  margin: 0.5rem 0;
+}
+
+.taxonomy-list .count {
+  color: var(--gray);
+}
+
+/* Search page (hidden by default) */
+#search-page {
+  display: none;
+}

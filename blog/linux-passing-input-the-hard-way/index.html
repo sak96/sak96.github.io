@@ -1,0 +1,61 @@
+<!doctype html><html lang=en><head><meta charset=UTF-8><meta content="width=device-width,initial-scale=1.0" name=viewport><title>Linux Input Injection Through Unusual Methods - Sanket's Blog</title><link href=https://sak96.github.io/images/favicon.svg rel=icon><link href=https://sak96.github.io/css/style.css rel=stylesheet><link href=https://sak96.github.io/giallo-light.css id=giallo-light rel=stylesheet><link disabled href=https://sak96.github.io/giallo-dark.css id=giallo-dark rel=stylesheet><script>let t = localStorage.getItem("theme");
+  let theme = t === "light" || (!t && matchMedia("(prefers-color-scheme: light)").matches) ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", theme);
+  document.querySelector("#giallo-light").disabled = theme !== "light";
+  document.querySelector("#giallo-dark").disabled = theme !== "dark";</script><body><nav class=navbar><div class=nav-header><a href=https://sak96.github.io/>Sanket's Blog</a><input id=search-input placeholder=Search...><div id=search-results popover></div></div><div class=nav-start><a href=https://sak96.github.io//>Home</a><a href=https://sak96.github.io//categories>Categories</a><a href=https://sak96.github.io//tags>Tags</a><a href=https://sak96.github.io//about>About Me</a><a href=https://sak96.github.io//atom.xml>Atom</a></div><div class=nav-end><button id=theme-toggle></button><button class=nav-hamburger popovertarget=nav-popover>|||</button></div><div id=nav-popover popover><a href=https://sak96.github.io//>Home</a><a href=https://sak96.github.io//categories>Categories</a><a href=https://sak96.github.io//tags>Tags</a><a href=https://sak96.github.io//about>About Me</a><a href=https://sak96.github.io//atom.xml>Atom</a></div></nav><script src=https://cdnjs.cloudflare.com/ajax/libs/elasticlunr/0.9.6/elasticlunr.min.js></script><script src=https://sak96.github.io/js/search.js></script><script>(function () {
+  var searchInput = document.getElementById("search-input");
+  var searchResults = document.getElementById("search-results");
+
+  function showResults() { try { searchResults.showPopover(); } catch(e) {} }
+  function hideResults() { try { searchResults.hidePopover(); } catch(e) {} }
+
+  function performSearch(query) {
+    if (!query) { searchResults.innerHTML = ""; hideResults(); return; }
+    var results = SearchApp.search(query);
+    if (results.length === 0) {
+      searchResults.innerHTML = "<p>No results found.</p>";
+      showResults();
+      return;
+    }
+    var html = "";
+    results.forEach(function (r) {
+      var doc = SearchApp.getDoc(r.ref);
+      html += SearchApp.renderResult(doc, r.ref);
+    });
+    searchResults.innerHTML = html;
+    showResults();
+  }
+
+  SearchApp.init();
+  searchInput.addEventListener("input", function (e) { performSearch(e.target.value); });
+  searchInput.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && searchInput.value.trim()) {
+      window.location.href = "/?q=" + encodeURIComponent(searchInput.value.trim());
+    }
+  });
+  searchInput.addEventListener("focus", function (e) {
+    if (searchInput.value) performSearch(searchInput.value);
+  });
+})();</script><div class=content><h1>Linux Input Injection Through Unusual Methods</h1><small class=page-meta>Read time: 2 min</small><small class=page-meta>Written on July 18, 2020</small><details class=toc><summary class=toc-title>Table of Contents</summary> <ul><li><a href=https://sak96.github.io/blog/linux-passing-input-the-hard-way/#problem>Problem</a><li><a href=https://sak96.github.io/blog/linux-passing-input-the-hard-way/#solution-in-theory>Solution in Theory</a><li><a href=https://sak96.github.io/blog/linux-passing-input-the-hard-way/#solution-demonstration>Solution Demonstration</a></ul></details><article><p>For people familiar with Unix philosophy, ["Everything is a file"][everyting_is_file] is a common phrase. Rarely do we get a case to use it in practice. This is one of those cases.</p><span id=continue-reading></span><h1 id=problem>Problem<a aria-label="Anchor link for: problem" class=zola-anchor href=#problem>🔗</a></h1><p>At work, a pipeline that needed to be run by the end of the day got stuck. After checking the logs, it appeared to be waiting for an input prompt. The prompt was supposed to be bypassed by setting an environment variable, but recent changes had introduced a flaw.<p>Since the patch would take time and the pipeline was lengthy, we had to manually resume it. However, the prompt wasn't directly available because this process was deeply nested within the pipeline logic.<h1 id=solution-in-theory>Solution in Theory<a aria-label="Anchor link for: solution-in-theory" class=zola-anchor href=#solution-in-theory>🔗</a></h1><p>"Everything is a file" in Unix includes directories, devices, and even processes. We can leverage this fact to provide input to a process.<ul><li><p><strong>Processes are represented by directories under <code>/proc/</code></strong>: Each process has a unique PID which names its directory. For example, <code>/proc/1234/</code> represents a process with PID 1234.</p><li><p><strong>Files associated with processes are stored in the <code>fd/</code> subdirectory of each process's directory</strong>: Each file descriptor is assigned a number unique to that process and is used to name the files. For example, <code>/proc/1234/fd/0</code> corresponds to the standard input or prompt file for the process with PID 1234.</p><li><p><strong>In normal cases, file descriptor 1</strong> (associated with standard input) contains the user's prompt. This was applicable in our case.</p></ul><h1 id=solution-demonstration>Solution Demonstration<a aria-label="Anchor link for: solution-demonstration" class=zola-anchor href=#solution-demonstration>🔗</a></h1><p>To demonstrate, let us use the <code>cat</code> program.<ol><li>Run <code>cat</code> in a terminal. It will wait for input.<li>Use the command <code>echo "Hello World" >> "/proc/$(pidof -s cat)/fd/1"</code> to "Hello World" to the <code>cat</code> program.</ol></article><div class=tags><span>Post Tags:</span><a href=https://sak96.github.io/categories/stories/> #stories</a><a href=https://sak96.github.io/tags/linux/> #linux,</a><a href=https://sak96.github.io/tags/debugging/> #debugging,</a><a href=https://sak96.github.io/tags/story/> #story</a></div><hr><h3>Discussion <small><a href=https://github.com/sak96/sak96.github.io/issues/6 target=_blank>view on github →</a></small></h3><div data-issue=6 data-repo=sak96/sak96.github.io id=github-comments></div><script>document.addEventListener('DOMContentLoaded', async () => {
+  const el = document.getElementById('github-comments');
+  if (!el) return;
+  const repo = el.dataset.repo;
+  const issue = el.dataset.issue;
+  try {
+    const res = await fetch(`https://api.github.com/repos/${repo}/issues/${issue}/comments?per_page=5`);
+    if (!res.ok) return;
+    const comments = await res.json();
+    if (!comments.length) return;
+    el.innerHTML = comments.map(c => `<hr><div><h3>${c.user.login} <small>(${new Date(c.created_at).toLocaleDateString()})</small></h3><div>${c.body.substring(0,280)}${c.body.length>280?'...' :''}</div></div>`).join('');
+  } catch (e) { console.log('GitHub comments failed:', e); }
+});</script></div><div class=content><hr><div class=footer><span>Powered by:</span><a href=https://www.getzola.org/>Zola</a></div></div><script>document.querySelector("#theme-toggle").addEventListener("click", function () {
+    const html = document.documentElement;
+    const current = html.getAttribute("data-theme");
+    const theme = current === "light" ? "dark" : "light";
+
+    html.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+
+    document.querySelector("#giallo-light").disabled = theme !== "light";
+    document.querySelector("#giallo-dark").disabled = theme !== "dark";
+  });</script>

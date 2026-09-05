@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>Sanket&#39;s Blog - rust</title>
+    <subtitle>A personal blog where I share my thoughts and experiences.</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://sak96.github.io/categories/rust/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://sak96.github.io/"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2020-12-20T00:00:00+00:00</updated>
+    <id>https://sak96.github.io/categories/rust/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Rust Ownership</title>
+        <published>2020-12-20T00:00:00+00:00</published>
+        <updated>2020-12-20T00:00:00+00:00</updated>
+        
+        <author>
+          <name>Sanket Kamath</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://sak96.github.io/blog/rust-ownership/"/>
+        <id>https://sak96.github.io/blog/rust-ownership/</id>
+        
+        <summary type="html">&lt;!-- cSpell:ignore sbrk, malloc --&gt;
+&lt;p&gt;Program execution requires persistent storage of intermediate results to support sequential instruction execution.
+This stateful memory must be carefully managed across concurrent program executions, a task traditionally handled by operating systems through system calls (e.g., &lt;code&gt;brk&lt;/code&gt;/&lt;code&gt;sbrk&lt;/code&gt;).
+Programming languages provide abstractions over these mechanisms to enable safer memory management strategies.&lt;/p&gt;</summary>
+        
+    </entry>
+</feed>
