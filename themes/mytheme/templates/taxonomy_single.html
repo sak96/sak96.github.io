@@ -5,13 +5,17 @@
 {% block content %}
 <h2>{{ term.name }}</h2>
 
-
-{% if term.pages %}
-    {% for page in term.pages %}
+{% if paginator.pages %}
+    {% for page in paginator.pages %}
         {{ <article_card page={page} /> }}
     {% endfor %}
+
+    {% if paginator.number_pagers > 1 %}
+        {{ <paginator paginator={paginator} /> }}
+    {% endif %}
 {% else %}
     {{ <empty_state /> }}
 {% endif %}
 
 {% endblock content %}
+
