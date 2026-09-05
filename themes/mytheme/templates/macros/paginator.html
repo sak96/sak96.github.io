@@ -1,4 +1,4 @@
-{% macro paginator(paginator) %}
+{% component paginator(paginator) %}
 <div class="paginator">
   {% if paginator.previous %}
   <a href="{{ paginator.first }}">&lt;&lt;<span> First</span></a>
@@ -26,4 +26,4 @@
   <span class="disabled"><span>Last </span>&gt;&gt;</span>
   {% endif %}
 </div>
-{% endmacro paginator %}
+{% endcomponent paginator %}

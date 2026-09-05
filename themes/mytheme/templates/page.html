@@ -1,6 +1,4 @@
 {% extends "layouts/base.html" %}
-{% import "macros/toc.html" as toc %}
-{% import "macros/tags.html" as tags %}
 
 {% block title %}{% if page.draft %}[Draft] {% endif %}{{ page.title }} - {{ config.title }}{% endblock %}
 
@@ -16,7 +14,7 @@
 {% if page.toc and config.extra.toc %}
 <details class="toc">
   <summary class="toc-title">Table of Contents</summary>
-  {{ toc::toc_render(items=page.toc) }}
+  {{ <toc_render items={page.toc} /> }}
 </details>
 {% endif %}
 
@@ -24,7 +22,7 @@
   {{ page.content | safe }}
 </article>
 
-{{ tags::tags(page=page) }}
+{{ <tags page={page} /> }}
 
 {% if page.extra.github_issue %}
   {% if config.extra.github_repo %}

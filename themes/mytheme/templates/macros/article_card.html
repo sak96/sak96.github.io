@@ -1,7 +1,7 @@
-{% macro article_card(page) %}
+{% component article_card(page) %}
 <a href="{{ page.permalink }}" class="item">
   <h4>{% if page.draft %}[Draft] {% endif %}{{ page.title }}</h4>
   <span>{{ page.summary  | default(value="") | striptags }}</span>
   <small>{{ page.date | date(format="%B %d, %Y") }}</small>
 </a>
-{% endmacro article_card %}
+{% endcomponent article_card %}

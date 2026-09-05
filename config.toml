@@ -5,6 +5,9 @@ base_url = "https://sak96.github.io/"
 title = "Sanket's Blog"
 description = "A personal blog where I share my thoughts and experiences."
 
+# Disable Templating
+skip_content_templating = ["**/*.md"]
+
 # The site theme to use.
 theme = "mytheme"
 
@@ -19,8 +22,8 @@ author = "Sanket Kamath"
 
 # The taxonomies to be rendered for the site and their configuration of the default languages
 taxonomies = [
-    { name = "tags", feed = true},
-    { name = "categories", feed = true},
+    { name = "tags", feed = true, paginate_by = 5},
+    { name = "categories", feed = true, paginate_by = 5},
     { name = "authors", feed = true},
 ]
 

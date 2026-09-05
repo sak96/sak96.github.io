@@ -1,9 +1,9 @@
-{% macro search() %}
+{% component search() %}
 <input type="text" placeholder="Search..." id="search-input">
 <div id="search-results" popover></div>
-{% endmacro search %}
+{% endcomponent search %}
 
-{% macro search_script() %}
+{% component search_script() %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/elasticlunr/0.9.6/elasticlunr.min.js"></script>
 <script src="{{ get_url(path='js/search.js') }}"></script>
 <script>
@@ -43,4 +43,4 @@
   });
 })();
 </script>
-{% endmacro search_script %}
+{% endcomponent search_script %}

@@ -1,17 +1,20 @@
 {% extends "layouts/base.html" %}
-{% import "macros/article_card.html" as card %}
-{% import "macros/empty_state.html" as empty %}
 
 {% block title %}{{ section.title }} - {{ config.title }}{% endblock %}
 
 {% block content %}
 <h2>{{ section.title }} Articles</h2>
 
-{% if section.pages %}
-{% for page in section.pages %}
-{{ card::article_card(page=page) }}
-{% endfor %}
+{% if paginator.pages %}
+    {% for page in paginator.pages %}
+        {{ <article_card page={page} /> }}
+    {% endfor %}
+
+    {% if paginator.number_pagers > 1 %}
+        {{ <paginator paginator={paginator} /> }}
+    {% endif %}
 {% else %}
-{{ empty::empty_state() }}
+    {{ <empty_state /> }}
 {% endif %}
 {% endblock content %}
+

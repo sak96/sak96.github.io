@@ -1,22 +1,17 @@
 {% extends "layouts/base.html" %}
-{% import "macros/article_card.html" as card %}
-{% import "macros/paginator.html" as pg %}
-{% import "macros/empty_state.html" as empty %}
 
 {% block title %}{{ term.name }} - {{ taxonomy.name | capitalize }} - {{ config.title }}{% endblock %}
 
 {% block content %}
 <h2>{{ term.name }}</h2>
 
-{% if term.pages %}
-{% for page in term.pages %}
-{{ card::article_card(page=page) }}
-{% endfor %}
 
-{% if paginator.pages %}
-{{ pg::paginator(paginator=paginator) }}
-{% endif %}
+{% if term.pages %}
+    {% for page in term.pages %}
+        {{ <article_card page={page} /> }}
+    {% endfor %}
 {% else %}
-{{ empty::empty_state() }}
+    {{ <empty_state /> }}
 {% endif %}
+
 {% endblock content %}

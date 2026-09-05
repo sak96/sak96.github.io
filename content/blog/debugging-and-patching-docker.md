@@ -1,6 +1,7 @@
 +++
 title = "Docker Debugging & Patching Simplified"
 date = 2020-02-29
+page_template = "page.html"
 [taxonomies]
 tags = ["docker", "debugging", "tutorial"]
 categories = ["devtools"]
@@ -58,7 +59,6 @@ This guide provides a structured approach to debugging and patching Docker conta
 
 - **Extract exited container names**:
   ```bash
-  docker ps -a -f "status=exited" --format "{{json .Names}}"
   ```
 
 ---
@@ -80,7 +80,6 @@ This guide provides a structured approach to debugging and patching Docker conta
 
 - **Retrieve image and tag**:
   ```bash
-  docker ps -f "name=<container_name>" --format "{{json .Image}}"
   ```
 - **Run container with shell**:
   ```bash
@@ -123,11 +122,9 @@ This guide provides a structured approach to debugging and patching Docker conta
 
 - **Retrieve old entry point**:
   ```bash
-  docker image inspect <image_name>:<tag> --format "Entrypoint {{json .Config.Entrypoint}}"
   ```
 - **Retrieve old command**:
   ```bash
-  docker image inspect <image_name>:<tag> --format "CMD {{json .Config.Cmd}}"
   ```
 - **Commit with old configuration**:
   ```bash
@@ -150,7 +147,7 @@ This guide provides a structured approach to debugging and patching Docker conta
 
 - **Remove exited containers**:
   ```bash
-  docker ps -a -f "status=exited" --format "{{json .Names}}" | xargs -r docker rm
+  docker ps -a -f "status=exited" --format  | xargs -r docker rm
   ```
 - **Prune unused images**:
   ```bash

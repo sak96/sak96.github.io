@@ -1,11 +1,9 @@
-{% import "macros/search.html" as search_macros %}
-
-{% macro navbar() %}
+{% component navbar(config) %}
 <nav class="navbar">
   <div class="nav-header">
     <a href="{{ config.base_url }}">{{ config.extra.radion_title | default(value=config.title) }}</a>
     {% if config.extra.enable_search %}
-    {{ search_macros::search() }}
+    {{ <search /> }}
     {% endif %}
   </div>
 
@@ -33,6 +31,6 @@
   </div>
 </nav>
 {% if config.extra.enable_search %}
-{{ search_macros::search_script() }}
+{{ <search_script /> }}
 {% endif %}
-{% endmacro navbar %}
+{% endcomponent navbar %}

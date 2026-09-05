@@ -1,4 +1,4 @@
-{% macro tags(page) %}
+{% component tags(page) %}
 {% if page.taxonomies %}
 <div class="tags">
   <span>Post Tags:</span>
@@ -9,4 +9,4 @@
   {% endfor %}
 </div>
 {% endif %}
-{% endmacro tags %}
+{% endcomponent tags %}

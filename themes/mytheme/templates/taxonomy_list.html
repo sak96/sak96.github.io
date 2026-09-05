@@ -1,5 +1,4 @@
 {% extends "layouts/base.html" %}
-{% import "macros/empty_state.html" as empty %}
 
 {% block title %}{{ taxonomy.name | capitalize }} - {{ config.title }}{% endblock %}
 
@@ -16,6 +15,6 @@
   {% endfor %}
 </ul>
 {% else %}
-{{ empty::empty_state() }}
+{{ <empty_state /> }}
 {% endif %}
 {% endblock content %}
