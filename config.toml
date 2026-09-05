@@ -32,7 +32,7 @@ taxonomies = [
 build_search_index = true
 
 [markdown]
-insert_anchor_links = "left"
+insert_anchor_links = "right"
 
 [markdown.highlighting]
 style = "class"
